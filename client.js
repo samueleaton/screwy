@@ -18,8 +18,6 @@ const remote = require('remote');
 const app = remote.require('app');
 const renderer = app.renderer;
 const fang = require('fangs');
-const colors = require('colors');
-
 
 const projPath = process.cwd();
 const packageJsonPath = path.join(projPath, 'package.json');
