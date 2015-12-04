@@ -1,5 +1,5 @@
-# npm Scripts Gui (NSG)
-A ~~GUI~~gooey interface for npm scripts.
+# npm scripts GUI (NSG)
+A ~~GUI~~ gooey interface for npm scripts.
 
 ### install
 Install globally  
@@ -14,10 +14,10 @@ While in a directory with a `package.json` file, simply run `npm-script-gui` or 
 NSG will automatically search for a `.nsgrc` in the same directory as the `package.json`. It should be in json format.
 
 These are the available options:
-- name (choose different name than defined in `package.json`)
-- primary (the primary script buttons for scripts that will be ran more frequently)
-- exclude (scripts to NOT include in the GUI)
-- font-stack (the font in the GUI)
+- *name* (choose different name than defined in `package.json`)
+- *primary* (the primary script buttons for scripts that will be ran more frequently)
+- *exclude* (scripts to NOT include in the GUI)
+- *font-stack* (the font in the GUI)
 
 **Example**  
 ```
@@ -31,8 +31,7 @@ These are the available options:
 
 Any script not specfied in `primary` or `excludes` will show up a a normal button. 
 
-#### To-do:
-in .scriptguirc file:  
+#### Future Configuration Plans:  
 - ability to sort scripts (e.g. alphabetically)
 - define font-stack/font-weight for gui
 - different skins/themes (npm, node, light, dark, etc.)
