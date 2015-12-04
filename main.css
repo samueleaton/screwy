@@ -1,0 +1,258 @@
+html,
+body,
+div,
+span,
+object,
+iframe,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+abbr,
+address,
+cite,
+code,
+del,
+dfn,
+em,
+img,
+ins,
+kbd,
+q,
+samp,
+small,
+strong,
+sub,
+sup,
+var,
+b,
+i,
+dl,
+dt,
+dd,
+ol,
+ul,
+li,
+fieldset,
+form,
+label,
+legend,
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+td,
+article,
+aside,
+canvas,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section,
+summary,
+time,
+mark,
+audio,
+video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  font-size: 100%;
+  vertical-align: baseline;
+  background: transparent;
+}
+body {
+  line-height: 1;
+}
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section {
+  display: block;
+}
+nav ul {
+  list-style: none;
+}
+blockquote,
+q {
+  quotes: none;
+}
+blockquote:before,
+blockquote:after,
+q:before,
+q:after {
+  content: '';
+  content: none;
+}
+a {
+  margin: 0;
+  padding: 0;
+  font-size: 100%;
+  vertical-align: baseline;
+  background: transparent;
+}
+ins {
+  background-color: #ff9;
+  color: #000;
+  text-decoration: none;
+}
+mark {
+  background-color: #ff9;
+  color: #000;
+  font-style: italic;
+  font-weight: bold;
+}
+del {
+  text-decoration: line-through;
+}
+abbr[title],
+dfn[title] {
+  border-bottom: 1px dotted;
+  cursor: help;
+}
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+hr {
+  display: block;
+  height: 1px;
+  border: 0;
+  border-top: 1px solid #ccc;
+  margin: 1em 0;
+  padding: 0;
+}
+input,
+select {
+  vertical-align: middle;
+}
+html {
+  border: 1px solid #e1e1e1;
+  height: 273px;
+  width: 518px;
+  overflow: hidden;
+}
+body {
+  border-top: 40px solid #e6e6e6;
+  background-color: #fafafa;
+  font-family: "source sans pro", menlo, "andale mono", consolas, monospace;
+  padding: 15px 15px 0;
+}
+body * {
+  font-family: inherit;
+  font-weight: 100;
+}
+img#npm-logo {
+  position: absolute;
+  top: 12px;
+  right: 15px;
+  height: 20px;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+}
+h1 {
+  color: #505050;
+  margin: 0 0 15px 0;
+  cursor: default;
+  font-size: 18px;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+}
+button {
+  outline: none;
+  border: 1px solid #c8c8c8;
+  background-color: #e1e1e1;
+  color: #191919;
+  margin: 6px;
+  padding: 4px 8px;
+  font-size: 15px;
+  line-height: 15px;
+  cursor: pointer;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+  -webkit-transition: background-color 0.3s ease, color 0.3s ease, border 0.3s ease;
+          transition: background-color 0.3s ease, color 0.3s ease, border 0.3s ease;
+}
+button:hover {
+  border: 1px solid #afafaf;
+  background-color: #c8c8c8;
+  color: #000;
+}
+button img.in-progress {
+  height: 15px;
+  width: auto;
+  vertical-align: middle;
+  margin: 0 0 0 8px;
+  -webkit-animation: spin 0.75s linear infinite;
+          animation: spin 0.75s linear infinite;
+}
+section#primaryScripts {
+  background-color: #f0f0f0;
+  border: 1px solid #d4d4d4;
+  border-radius: 2px;
+  padding: 5px;
+  margin: 10px 0 10px;
+}
+section#primaryScripts button {
+  border: 1px solid #ad2e2a;
+  background-color: #cc3632;
+  color: #faebea;
+  margin: 6px;
+  font-size: 18px;
+  line-height: 18px;
+}
+section#primaryScripts button:hover {
+  border: 1px solid #cc3632;
+  background-color: #d45450;
+  color: #faebea;
+}
+section#primaryScripts button img.in-progress {
+  height: 18px;
+}
+@-webkit-keyframes spin {
+  0% {
+    -webkit-transform: rotate(0deg);
+            transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+            transform: rotate(360deg);
+  }
+}
+@keyframes spin {
+  0% {
+    -webkit-transform: rotate(0deg);
+            transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+            transform: rotate(360deg);
+  }
+}

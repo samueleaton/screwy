@@ -1,0 +1,94 @@
+@require 'reset'
+windowWidth = 520px
+windowHeight = 275px
+backgroundColor = rgb(250,250,250)
+font-stack = "source sans pro", menlo, "andale mono", consolas, monospace
+primaryColor = rgb(204,54,50)
+html
+	border 1px solid darken(backgroundColor, 10%)
+	height windowHeight - 2
+	width windowWidth - 2
+	overflow hidden
+body
+	border-top 40px solid darken(backgroundColor, 8%)
+	background-color backgroundColor
+	font-family font-stack
+	padding 15px 15px 0
+	*
+		font-family inherit
+		font-weight 100
+
+img#npm-logo
+	position absolute
+	top 12px
+	right 15px
+	height 20px
+	user-select none
+
+h1
+	color rgb(80,80,80)
+	// position absolute
+	// top 40px
+	// right 20px
+	margin 0 0 15px 0
+	cursor default
+	font-size 18px
+	user-select none
+
+
+
+// button reset
+button
+	fontSize = 15px
+	outline none
+	border 1px solid darken(backgroundColor, 20%)
+	background-color darken(backgroundColor, 10%)
+	color darken(backgroundColor, 90%)
+	margin 6px
+	padding 4px 8px
+	font-size fontSize
+	line-height fontSize
+	cursor pointer
+	user-select none
+	transition background-color .3s ease, color .3s ease, border .3s ease
+	&:hover
+		border 1px solid darken(backgroundColor, 30%)
+		background-color darken(backgroundColor, 20%)
+		color darken(backgroundColor, 100%)
+	img.in-progress
+		height fontSize
+		width auto
+		vertical-align middle
+		margin 0 0 0 8px
+		animation spin .75s linear infinite
+
+section#primaryScripts
+	background-color darken(backgroundColor, 4%)
+	border 1px solid darken(backgroundColor, 15%)
+	border-radius 2px
+	padding 5px
+	margin 10px 0 10px
+
+	button
+		fontSize = 18px
+		border 1px solid darken(primaryColor, 15%)
+		background-color primaryColor
+		color lighten(primaryColor, 90%)
+		margin 6px
+		font-size fontSize
+		line-height fontSize
+		&:hover
+			border 1px solid primaryColor
+			background-color lighten(primaryColor, 15%)
+			color lighten(primaryColor, 90%)
+		img.in-progress
+			height fontSize
+
+@keyframes spin {
+	0% {
+		transform rotate(0deg)
+	}
+	100% {
+		transform rotate(360deg)
+	}
+}

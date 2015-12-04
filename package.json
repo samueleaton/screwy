@@ -1,0 +1,26 @@
+{
+  "name": "npm-scripts-gui",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "bin": {
+    "npm-scripts-gui": "./index.js",
+    "npm-sg": "./index.js"
+  },
+  "scripts": {
+    "stylus": "stylus --watch src/styles/main.styl --use autoprefixer-stylus --out ./",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Sam Eaton",
+  "license": "MIT",
+  "devDependencies": {
+    "autoprefixer-stylus": "^0.8.1",
+    "stylus": "^0.52.4",
+    "postinstall": "node renameMenuLabel.js"
+  },
+  "dependencies": {
+    "colors": "^1.1.2",
+    "electron-prebuilt": "^0.35.4",
+    "fangs": "0.0.11"
+  }
+}
