@@ -95,6 +95,11 @@ fang(
 					runCommand(btn, btn.dataset.cmd);
 				});
 
+				btn.listen('dblclick', e => {
+					if (btn.classList.contains('in-progress'))
+						processQueue.kill(btn.dataset.cmd);
+				});
+
 				// does button have primary or secondary status
 				if (primaryCommands[cmdName])
 					primaryScriptsCont.appendChild(btn);
