@@ -131,16 +131,16 @@ function runCommand(btn, cmdName) {
 
 	btn.append(spinnerImg);
 
-	const cmd = spawn('npm', ['run', cmdName], {
-		cwd: projPath,
-		stdio: [0,1,2]
-	});
+	const cmd = processQueue.run(cmdName);
 
-	cmd.on('exit', function(error) {
+	cmd.on('exit', function() {
 		btn.classList.remove('in-progress');
 		logger('\n["' + cmdName + '" command ended]\n');
 		dom.remove(spinnerImg);
-		cmd.kill();
+		processQueue.kill(cmdName);
 	});
-
 }
+
+renderer.on('close', evt => {
+	processQueue.killAll();
+});
