@@ -61,6 +61,10 @@ app.on('ready', function(evt) {
 			resizable: false,
 			'always-on-top': (configData.window['always-on-top'] ? configData['always-on-top'] : false)
 		});
+		app.renderer.on('closed', () => {
+			app.renderer = null;
+			app.exit(0);
+		});
 
 		app.renderer.loadURL(path.join('file://',  __dirname, 'index.html'));
 		// app.renderer.toggleDevTools();

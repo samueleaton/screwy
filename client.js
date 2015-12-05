@@ -7,10 +7,7 @@ process.on('uncaughtException', function(e) {
 const dom = require('./dom');
 const childProcess = require('child_process');
 const spawn = childProcess.spawn;
-const exec = childProcess.exec;
 
-// const projPathField = dom('projPath');
-const lintBtn = dom('lintBtn');
 const path = require('path');
 const fs = require('fs');
 
@@ -92,7 +89,11 @@ fang(
 				let btn = dom.create('button').text(cmdName).attr('data-cmd', cmdName);
 
 				// add the btn `click` handler	
-				btn.listen('click', e => runCommand(btn, btn.dataset.cmd));
+				btn.listen('click', e => {
+					if (btn.classList.contains('in-progress'))
+						return;
+					runCommand(btn, btn.dataset.cmd);
+				});
 
 				// does button have primary or secondary status
 				if (primaryCommands[cmdName])
@@ -122,9 +123,11 @@ function logger(message) {
 }
 
 function runCommand(btn, cmdName) {
+	btn.classList.add('in-progress');
 	logger('\n[Running "' + cmdName + '" command...]\n');
 
-	const spinnerImg = dom.create('img').addClass('in-progress').attr('src', 'loader.png');
+	const spinnerImg = dom.create('img')
+		.addClass('in-progress').attr('src', 'loader.png');
 
 	btn.append(spinnerImg);
 
@@ -134,9 +137,10 @@ function runCommand(btn, cmdName) {
 	});
 
 	cmd.on('exit', function(error) {
-		cmd.kill();
+		btn.classList.remove('in-progress');
 		logger('\n["' + cmdName + '" command ended]\n');
 		dom.remove(spinnerImg);
+		cmd.kill();
 	});
 
 }
