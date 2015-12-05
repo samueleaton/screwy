@@ -2,13 +2,13 @@
 <br>  
 <br>  
 <p align="center">
-<img width="300" src="npm-scripts.png"> 	
+<img width="350" src="npm-scripts.png"> 	
 </p>
 <br>  
 <br>  
 <br>  
 
-# npm scripts GUI (NSG)
+# npm scripts gui (NSG)
 A ~~GUI~~ gooey interface for npm scripts.
 
 <br>
@@ -17,14 +17,14 @@ A ~~GUI~~ gooey interface for npm scripts.
 </p>
 <br>
 
-### install
+### Install
 Install globally  
 ```
 npm i -g npm-scripts-gui
 ```
 
 ### Instructions
-While in a directory with a `package.json` file, simply run `npm-script-gui` or the shorter `npm-sg`.
+While in a directory with a `package.json` file, simply run `npm-script-gui` or the shorter `npm-sg`. Any text output associated with the command will be printed to the command line where the gui was launched. 
 
 ### Configurations
 NSG will automatically search for a `.nsgrc` in the same directory as the `package.json`. It should be in json format.
