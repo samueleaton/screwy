@@ -1,10 +1,8 @@
 <br>  
 <br>  
-<br>  
 <p align="center">
 <img width="350" src="npm-scripts.png"> 	
 </p>
-<br>  
 <br>  
 <br>  
 
