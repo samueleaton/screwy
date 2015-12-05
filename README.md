@@ -1,7 +1,7 @@
 <br>  
 <br>  
 <p align="center">
-<img width="350" src="npm-scripts.png"> 	
+<img width="350" src="images/npm-scripts.png"> 	
 </p>
 <br>  
 <br>  
@@ -11,7 +11,7 @@ A ~~GUI~~ gooey interface for npm scripts.
 
 <br>
 <p align="center">
-<img height="250" src="npmsg.png"> 	
+<img height="250" src="images/npmsg.png"> 	
 </p>
 <br>
 

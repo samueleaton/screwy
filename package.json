@@ -8,14 +8,16 @@
     "nsg": "bin/cli.js"
   },
   "scripts": {
-    "stylus": "stylus --watch src/styles/main.styl --use autoprefixer-stylus --out ./"
+    "stylus": "stylus --watch src/styles/main.styl --use autoprefixer-stylus --out ./styles",
+    "babel": "babel src/scripts --out-dir scripts",
+    "postinstall": "node renameMenuLabel.js"
   },
   "author": "Sam Eaton",
   "license": "MIT",
   "devDependencies": {
     "autoprefixer-stylus": "^0.8.1",
-    "stylus": "^0.52.4",
-    "postinstall": "node renameMenuLabel.js"
+    "babel-cli": "^6.3.13",
+    "stylus": "^0.52.4"
   },
   "dependencies": {
     "electron-prebuilt": "^0.35.4",

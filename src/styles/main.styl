@@ -43,7 +43,7 @@ button
 	outline none
 	border 1px solid darken(backgroundColor, 20%)
 	background-color darken(backgroundColor, 10%)
-	color darken(backgroundColor, 90%)
+	color black
 	margin 6px
 	padding 4px 8px
 	font-size fontSize
@@ -55,6 +55,15 @@ button
 		border 1px solid darken(backgroundColor, 30%)
 		background-color darken(backgroundColor, 20%)
 		color darken(backgroundColor, 100%)
+	&.in-progress
+		bgColor = rgb(60,60,60)
+		background-color bgColor
+		border 1px solid darken(bgColor, 10%)
+		color white
+		&:hover
+			border 1px solid darken(bgColor, 40%)
+			background-color darken(bgColor, 30%)
+			color white
 	img.in-progress
 		height fontSize
 		width auto
@@ -77,6 +86,8 @@ section#primaryScripts
 		margin 6px
 		font-size fontSize
 		line-height fontSize
+		&.in-progress
+			background-color primaryColor
 		&:hover
 			border 1px solid primaryColor
 			background-color lighten(primaryColor, 15%)

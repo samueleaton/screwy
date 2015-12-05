@@ -187,7 +187,7 @@ button {
   outline: none;
   border: 1px solid #c8c8c8;
   background-color: #e1e1e1;
-  color: #191919;
+  color: #000;
   margin: 6px;
   padding: 4px 8px;
   font-size: 15px;
@@ -204,6 +204,16 @@ button:hover {
   border: 1px solid #afafaf;
   background-color: #c8c8c8;
   color: #000;
+}
+button.in-progress {
+  background-color: #3c3c3c;
+  border: 1px solid #363636;
+  color: #fff;
+}
+button.in-progress:hover {
+  border: 1px solid #242424;
+  background-color: #2a2a2a;
+  color: #fff;
 }
 button img.in-progress {
   height: 15px;
@@ -227,6 +237,9 @@ section#primaryScripts button {
   margin: 6px;
   font-size: 18px;
   line-height: 18px;
+}
+section#primaryScripts button.in-progress {
+  background-color: #cc3632;
 }
 section#primaryScripts button:hover {
   border: 1px solid #cc3632;

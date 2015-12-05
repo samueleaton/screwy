@@ -6,7 +6,7 @@ const Renderer = require('browser-window');
 const Menu = require('menu');
 const fs = require('fs');
 
-const configName = '.npmsgrc';
+const configName = '.nsgrc';
 app.config = path.join(process.cwd(), configName);
 
 const menuTemplate = [
@@ -67,7 +67,7 @@ app.on('ready', function(evt) {
 		});
 
 		app.renderer.loadURL(path.join('file://',  __dirname, 'index.html'));
-		// app.renderer.toggleDevTools();
+		app.renderer.toggleDevTools();
 	});
 
 	

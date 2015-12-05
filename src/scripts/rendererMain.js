@@ -1,19 +1,19 @@
 'use strict';
 
-process.on('uncaughtException', function(e) {
-	logger(e);
-});
-
-const dom = require('./dom');
-const childProcess = require('child_process');
-const spawn = childProcess.spawn;
-
+// process.on('uncaughtException', function(e) {
+// 	logger(e);
+// });
 const path = require('path');
 const fs = require('fs');
 
+const scriptsDir = path.join(__dirname, 'scripts');
 const remote = require('remote');
 const app = remote.require('app');
 const renderer = app.renderer;
+
+const dom = require(path.join(scriptsDir, 'dom'));
+const childProcess = require('child_process');
+const spawn = childProcess.spawn;
 const fang = require('fangs');
 
 const projPath = process.cwd();
@@ -23,11 +23,13 @@ const secondaryScriptsCont = dom('secondaryScripts');
 let primaryCommands = {};
 let excludedCommands = {};
 
+const processQueue = require(path.join(scriptsDir, 'processQueue'));
+
 fang(
 	next => {
 		fs.readFile(app.config, 'utf8', (err, data) => {
 			if (err) {
-				logger('no .npmsgrc found');
+				logger('no .nsgrc found');
 				return next();
 			}
 
@@ -75,8 +77,6 @@ fang(
 				logger(err);
 				renderer.close();
 			}
-
-
 
 			// set title if not already set
 			if (!dom('title').hasClass('hasTitle'))
@@ -127,7 +127,7 @@ function runCommand(btn, cmdName) {
 	logger('\n[Running "' + cmdName + '" command...]\n');
 
 	const spinnerImg = dom.create('img')
-		.addClass('in-progress').attr('src', 'loader.png');
+		.addClass('in-progress').attr('src', 'images/loader.png');
 
 	btn.append(spinnerImg);
 
