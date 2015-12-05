@@ -28,6 +28,13 @@ const menuTemplate = [
 				label: 'Minimize',
 				accelerator: 'CmdOrCtrl+M',
 				role: 'minimize'
+			},
+			{
+				label: 'Quit',
+				accelerator: 'Cmd+Q',
+				click() {
+					app.renderer.close();
+				}
 			}
 		]
 	}
@@ -63,11 +70,12 @@ app.on('ready', function(evt) {
 		});
 		app.renderer.on('closed', () => {
 			app.renderer = null;
+			console.log('NSG exited');
 			app.exit(0);
 		});
 
 		app.renderer.loadURL(path.join('file://',  __dirname, 'index.html'));
-		app.renderer.toggleDevTools();
+		// app.renderer.toggleDevTools(); // uncomment to view dev tools in renderer
 	});
 
 	
