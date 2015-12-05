@@ -1,4 +1,5 @@
 {
 	"name": "NSG",
-	"primary": ["stylus"]
+	"primary": ["stylus"],
+	"exclude": ["postinstall"]
 }
