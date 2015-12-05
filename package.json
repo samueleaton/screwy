@@ -5,7 +5,7 @@
   "main": "bin/cli.js",
   "bin": {
     "npm-scripts-gui": "bin/cli.js",
-    "npm-sg": "bin/cli.js"
+    "nsg": "bin/cli.js"
   },
   "scripts": {
     "stylus": "stylus --watch src/styles/main.styl --use autoprefixer-stylus --out ./"

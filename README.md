@@ -22,7 +22,9 @@ npm i -g npm-scripts-gui
 ```
 
 ### Instructions
-While in a directory with a `package.json` file, simply run `npm-script-gui` or the shorter `npm-sg`. Any text output associated with the command will be printed to the command line where the gui was launched. 
+To launch Npm Script GUI (NSG), you must be in a directory with a `package.json` file. Then simply run `npm-script-gui` or the shorter `nsg`. 
+
+Any text output associated with the command will be printed to the command line where NSG was launched. 
 
 ### Configurations
 NSG will automatically search for a `.nsgrc` in the same directory as the `package.json`. It should be in json format.
@@ -36,14 +38,14 @@ These are the available options:
 **Example**  
 ```
 {
-	"name": "Qualtrics Node SFDC",
+	"name": "Qualtrics to SFDC",
 	"primary": ["build", "run-production", "run-sandbox"],
 	"exclude": ["scripts-gui", "prebuild"],
 	"font-stack": ["source sans pro", "helvetica neue"]
 }
 ```
 
-Any script not specfied in `primary` or `excludes` will show up as a normal button. 
+Any script not specified in `primary` or `exclude` will show up as a normal button. 
 
 #### Future Configuration Plans:  
 - ability to sort scripts (e.g. alphabetically)
