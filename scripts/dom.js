@@ -1,42 +1,42 @@
 'use strict';
 
 module.exports = (function () {
-	const _cache = {};
+	var _cache = {};
 
 	function cleanCache() {
-		const htmlDoc = document.getElementsByTagName('html')[0];
+		var htmlDoc = document.getElementsByTagName('html')[0];
 		Object.keys(_cache).forEach(function (k) {
 			if (!htmlDoc.contains(_cache[k])) delete _cache[k];
 		});
 	}
 
 	function removeFromCache() {
-		const args = [];
-		for (let i = 0, ii = arguments.length; i < ii; i++) {
+		var args = [];
+		for (var i = 0, ii = arguments.length; i < ii; i++) {
 			args.push(arguments[i]);
 		}
 		args.forEach(function (elm) {
-			let elementId = elm;
+			var elementId = elm;
 			if (elm instanceof HTMLElement && elm.id) elementId = elm.id;
 			if (_cache[elementId]) delete _cache[elementId];
 		});
 	}
 
 	function getElementById(id) {
-		const element = document.getElementById(id);
+		var element = document.getElementById(id);
 		if (!element) return null;
 		_cache[id] = addMethods(element);
 		return _cache[id];
 	}
 
 	function getElementsByClassName(parent, className) {
-		const elements = parent.getElementsByClassName(className);
+		var elements = parent.getElementsByClassName(className);
 		addCollectionMethods(elements);
 		return elements;
 	}
 
 	function getElementsByTagName(parent, tag) {
-		const elements = parent.getElementsByTagName(tag);
+		var elements = parent.getElementsByTagName(tag);
 		addCollectionMethods(elements);
 		return elements;
 	}
@@ -46,8 +46,8 @@ module.exports = (function () {
 	}
 
 	function removeElement(el, destroy) {
-		const DESTROY = destroy === false ? destroy : true;
-		let element = el;
+		var DESTROY = destroy === false ? destroy : true;
+		var element = el;
 		if (typeof el === 'string') {
 			element = dom(el);
 		}
@@ -61,15 +61,15 @@ module.exports = (function () {
 
 	function addCollectionMethods(elements) {
 		elements.each = function (toEach) {
-			const self = this;
-			for (let i = 0, ii = self.length; i < ii; i++) {
+			var self = this;
+			for (var i = 0, ii = self.length; i < ii; i++) {
 				toEach(self[i]);
 			}
 		};
 
 		elements.toArr = function (toEach) {
-			const arr = [];
-			for (let i = 0, ii = this.length; i < ii; i++) {
+			var arr = [];
+			for (var i = 0, ii = this.length; i < ii; i++) {
 				arr.push(this[i]);
 			}
 			return arr;
@@ -78,15 +78,15 @@ module.exports = (function () {
 
 	function addMethods(obj) {
 		obj.append = function () {
-			for (let i = 0, ii = arguments.length; i < ii; i++) {
+			for (var i = 0, ii = arguments.length; i < ii; i++) {
 				this.appendChild(arguments[i]);
 			}
 			return this;
 		};
 
 		obj.addClass = function () {
-			const args = [];
-			for (let i = 0, ii = arguments.length; i < ii; i++) {
+			var args = [];
+			for (var i = 0, ii = arguments.length; i < ii; i++) {
 				args.push(arguments[i]);
 			}
 			this.classList.add.apply(this.classList, args);
@@ -98,7 +98,7 @@ module.exports = (function () {
 		};
 
 		obj.removeClass = function () {
-			for (let i = 0, ii = arguments.length; i < ii; i++) {
+			for (var i = 0, ii = arguments.length; i < ii; i++) {
 				this.classList.remove(arguments[i]);
 			}
 			return this;
@@ -118,7 +118,7 @@ module.exports = (function () {
 			enumerable: true,
 			writable: true,
 			// property value is a method
-			value(str) {
+			value: function value(str) {
 				if (typeof str === 'string') obj.appendChild(document.createTextNode(str));
 				return obj;
 			}
@@ -137,8 +137,8 @@ module.exports = (function () {
 		};
 
 		obj.listen = function () {
-			const args = [];
-			for (let i = 0, ii = arguments.length; i < ii; i++) {
+			var args = [];
+			for (var i = 0, ii = arguments.length; i < ii; i++) {
 				args.push(arguments[i]);
 			}
 			this.addEventListener.apply(this, args);
@@ -158,8 +158,8 @@ module.exports = (function () {
 		};
 
 		obj.getComputedStyle = function (prop, format) {
-			const computedStyle = getComputedStyle(this);
-			const propVal = computedStyle.getPropertyValue(prop);
+			var computedStyle = getComputedStyle(this);
+			var propVal = computedStyle.getPropertyValue(prop);
 			if (format === 'int') return parseInt(propVal);
 			if (format === 'float') return parseFloat(propVal);
 			return propVal;
@@ -210,8 +210,8 @@ module.exports = (function () {
 	_dom.cache = {
 		delete: removeFromCache,
 		clean: cleanCache,
-		get: function () {
-			const obj = {};
+		get: function get() {
+			var obj = {};
 			Object.keys(_cache).forEach(function (key) {
 				obj[key] = _cache[key];
 			});

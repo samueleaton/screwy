@@ -1,39 +1,35 @@
-'use strict'
+'use strict';
 
-// process.on('uncaughtException', function(e) {
-// 	logger(e);
-// });
-;
-const path = require('path');
-const fs = require('fs');
+var path = require('path');
+var fs = require('fs');
 
-const scriptsDir = path.join(__dirname, 'scripts');
-const remote = require('remote');
-const app = remote.require('app');
-const renderer = app.renderer;
+var scriptsDir = path.join(__dirname, 'scripts');
+var remote = require('remote');
+var app = remote.require('app');
+var renderer = app.renderer;
 
-const dom = require(path.join(scriptsDir, 'dom'));
-const childProcess = require('child_process');
-const spawn = childProcess.spawn;
-const fang = require('fangs');
+var dom = require(path.join(scriptsDir, 'dom'));
+var childProcess = require('child_process');
+var spawn = childProcess.spawn;
+var fang = require('fangs');
 
-const projPath = process.cwd();
-const packageJsonPath = path.join(projPath, 'package.json');
-const primaryScriptsCont = dom('primaryScripts');
-const secondaryScriptsCont = dom('secondaryScripts');
-let primaryCommands = {};
-let excludedCommands = {};
+var projPath = process.cwd();
+var packageJsonPath = path.join(projPath, 'package.json');
+var primaryScriptsCont = dom('primaryScripts');
+var secondaryScriptsCont = dom('secondaryScripts');
+var primaryCommands = {};
+var excludedCommands = {};
 
-const processQueue = require(path.join(scriptsDir, 'processQueue'));
+var processQueue = require(path.join(scriptsDir, 'processQueue'));
 
-fang(next => {
-	fs.readFile(app.config, 'utf8', (err, data) => {
+fang(function (next) {
+	fs.readFile(app.config, 'utf8', function (err, data) {
 		if (err) {
 			logger('no .nsgrc found');
 			return next();
 		}
 
-		let jsonData;
+		var jsonData = undefined;
 		try {
 			jsonData = JSON.parse(data);
 		} catch (e) {
@@ -45,28 +41,28 @@ fang(next => {
 
 		// get primary commands from the .rc file
 		if (Array.isArray(jsonData.primary)) {
-			jsonData.primary.forEach(cmd => {
+			jsonData.primary.forEach(function (cmd) {
 				primaryCommands[cmd] = true;
 			});
 		}
 
 		// get commands to exclude from the .rc file
 		if (Array.isArray(jsonData.exclude)) {
-			jsonData.exclude.forEach(cmd => {
+			jsonData.exclude.forEach(function (cmd) {
 				excludedCommands[cmd] = true;
 			});
 		}
 
 		return next();
 	});
-}, next => {
-	fs.readFile(packageJsonPath, 'utf8', (err, data) => {
+}, function (next) {
+	fs.readFile(packageJsonPath, 'utf8', function (err, data) {
 		if (err) {
 			logger('(package.json error) ' + err);
 			renderer.close();
 		}
 
-		let jsonData;
+		var jsonData = undefined;
 		try {
 			jsonData = JSON.parse(data);
 		} catch (e) {
@@ -77,19 +73,19 @@ fang(next => {
 		// set title if not already set
 		if (!dom('title').hasClass('hasTitle')) dom('title').text(jsonData.name).addClass('hasTitle');;
 
-		Object.keys(jsonData.scripts).forEach(cmdName => {
+		Object.keys(jsonData.scripts).forEach(function (cmdName) {
 			// if this command is to be excluded, do nothing
 			if (excludedCommands[cmdName]) return;
 
-			let btn = dom.create('button').text(cmdName).attr('data-cmd', cmdName);
+			var btn = dom.create('button').text(cmdName).attr('data-cmd', cmdName);
 
 			// add the btn `click` handler	
-			btn.listen('click', e => {
+			btn.listen('click', function (e) {
 				if (btn.classList.contains('in-progress')) return;
 				runCommand(btn, btn.dataset.cmd);
 			});
 
-			btn.listen('dblclick', e => {
+			btn.listen('dblclick', function (e) {
 				if (btn.classList.contains('in-progress')) processQueue.kill(btn.dataset.cmd);
 			});
 
@@ -103,7 +99,7 @@ fang(next => {
 })();
 
 function logger(message) {
-	const logSpawn = spawn('echo', [message], {
+	var logSpawn = spawn('echo', [message], {
 		cwd: projPath,
 		stdio: 'inherit'
 	});
@@ -113,15 +109,19 @@ function logger(message) {
 	});
 }
 
+process.on('uncaughtException', function (e) {
+	logger(e);
+});
+
 function runCommand(btn, cmdName) {
 	btn.classList.add('in-progress');
 	logger('\n[Running "' + cmdName + '" command...]\n');
 
-	const spinnerImg = dom.create('img').addClass('in-progress').attr('src', 'images/loader.png');
+	var spinnerImg = dom.create('img').addClass('in-progress').attr('src', 'images/loader.png');
 
 	btn.append(spinnerImg);
 
-	const cmd = processQueue.run(cmdName);
+	var cmd = processQueue.run(cmdName);
 
 	cmd.on('exit', function () {
 		btn.classList.remove('in-progress');
@@ -131,6 +131,6 @@ function runCommand(btn, cmdName) {
 	});
 }
 
-renderer.on('close', evt => {
+renderer.on('close', function (evt) {
 	processQueue.killAll();
 });

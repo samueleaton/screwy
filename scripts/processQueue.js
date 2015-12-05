@@ -1,12 +1,12 @@
 'use strict';
 
-const childProcess = require('child_process');
-const spawn = childProcess.spawn;
+var childProcess = require('child_process');
+var spawn = childProcess.spawn;
 
-const queue = {};
+var queue = {};
 
 function killAll() {
-	Object.keys(queue).forEach(c => {
+	Object.keys(queue).forEach(function (c) {
 		kill(c);
 	});
 	console.log('killed all!');
@@ -26,7 +26,7 @@ function run(cmdName) {
 };
 
 module.exports = {
-	kill,
-	killAll,
-	run
+	kill: kill,
+	killAll: killAll,
+	run: run
 };

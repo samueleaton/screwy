@@ -1,8 +1,6 @@
 'use strict';
 
-// process.on('uncaughtException', function(e) {
-// 	logger(e);
-// });
+
 const path = require('path');
 const fs = require('fs');
 
@@ -126,6 +124,10 @@ function logger(message) {
 		logSpawn.kill();
 	});
 }
+
+process.on('uncaughtException', function(e) {
+	logger(e);
+});
 
 function runCommand(btn, cmdName) {
 	btn.classList.add('in-progress');
