@@ -1,6 +1,6 @@
 {
   "name": "npm-scripts-gui",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "GUI for npm scripts",
   "main": "bin/cli.js",
   "bin": {
