@@ -15,6 +15,8 @@ A ~~GUI~~ gooey interface for npm scripts.
 </p>
 <br>
 
+*Tested on OS X Yosemite and El Capitan*
+
 ### Install
 Install globally  
 ```
@@ -25,6 +27,8 @@ npm i -g npm-scripts-gui
 To launch Npm Script GUI (NSG), you must be in a directory with a `package.json` file. Then simply run `npm-script-gui` or the shorter `nsg`. 
 
 Any text output associated with the command will be printed to the command line where NSG was launched. 
+
+To **quit** the app, it is safer to close the actual renderer window rather than quiting the process from the command line. If quiting from the command line, NSG may not do the check to make sure all processes are killed before closing. 
 
 ### Configurations
 NSG will automatically search for a `.nsgrc` in the same directory as the `package.json`. It should be in json format.
