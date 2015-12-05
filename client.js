@@ -30,7 +30,7 @@ fang(
 	next => {
 		fs.readFile(app.config, 'utf8', (err, data) => {
 			if (err) {
-				logger('no .scriptsguirc found');
+				logger('no .npmsgrc found');
 				return next();
 			}
 

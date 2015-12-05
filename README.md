@@ -1,5 +1,21 @@
+<br>  
+<br>  
+<br>  
+<p align="center">
+<img width="300" src="npm-scripts.png"> 	
+</p>
+<br>  
+<br>  
+<br>  
+
 # npm scripts GUI (NSG)
 A ~~GUI~~ gooey interface for npm scripts.
+
+<br>
+<p align="center">
+<img height="250" src="npmsg.png"> 	
+</p>
+<br>
 
 ### install
 Install globally  

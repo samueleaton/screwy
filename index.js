@@ -6,7 +6,8 @@ const Renderer = require('browser-window');
 const Menu = require('menu');
 const fs = require('fs');
 
-app.config = path.join(process.cwd(), '.scriptsguirc');
+const configName = '.npmsgrc';
+app.config = path.join(process.cwd(), configName);
 
 const menuTemplate = [
 	{
@@ -46,7 +47,7 @@ app.on('ready', function(evt) {
 			}
 			catch (e) {
 				configData = {};
-				console.error('ERROR with .scriptsguirc parse: ', e);
+				console.error('ERROR with ' + configName + ' parse: ', e);
 			}
 		}
 		
