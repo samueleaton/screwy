@@ -43,7 +43,7 @@ These are the available options:
 }
 ```
 
-Any script not specfied in `primary` or `excludes` will show up a a normal button. 
+Any script not specfied in `primary` or `excludes` will show up as a normal button. 
 
 #### Future Configuration Plans:  
 - ability to sort scripts (e.g. alphabetically)
