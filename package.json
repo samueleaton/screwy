@@ -12,7 +12,7 @@
     "babel-scripts": "babel src/scripts --out-dir scripts",
     "babel-cli": "babel src/cli.js > bin/cli.js",
     "babel-index": "babel src/index.js > index.js",
-    "postinstall": "node renameMenuLabel.js"
+    "postinstall": "node postInstall.js"
   },
   "author": "Sam Eaton",
   "license": "MIT",
