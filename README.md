@@ -41,6 +41,7 @@ These are the available options:
 - *name* (choose different name than defined in `package.json`)
 - *primary* (the primary script buttons for scripts that will be ran more frequently)
 - *exclude* (scripts to NOT include in the GUI)
+- *alwaysOnTop* (whether the window is always in front of other windows)
 - *font-stack* (the font in the GUI)
 
 **Example**  
@@ -49,6 +50,7 @@ These are the available options:
 	"name": "Qualtrics to SFDC",
 	"primary": ["build", "run-production", "run-sandbox"],
 	"exclude": ["scripts-gui", "prebuild"],
+	"alwaysOnTop": true
 	"font-stack": ["source sans pro", "helvetica neue"]
 }
 ```
