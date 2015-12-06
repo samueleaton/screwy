@@ -13,6 +13,7 @@
     "babel-scripts": "babel src/scripts --out-dir scripts",
     "babel-cli": "babel src/cli.js > bin/cli.js",
     "babel-index": "babel src/index.js > index.js",
+    "babel-postinstall": "babel src/postInstall.js > postInstall.js",
     "postinstall": "node postInstall.js"
   },
   "author": "Sam Eaton",

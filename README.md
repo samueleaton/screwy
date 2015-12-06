@@ -36,7 +36,7 @@ or the shorter
 nsg
 ``` 
 
-Any text output associated with the command will be printed to the command line where NSG was launched. 
+Any text output associated with any npm script in the `package.json` will be printed to the command line where NSG was launched. 
 
 ##### Quiting  
 To **quit** the app, it is safer to close the actual renderer window rather than quiting the process from the command line. If quiting from the command line, NSG may not do the check to make sure all processes are killed before closing. 
@@ -48,11 +48,11 @@ Processes will die automatically when they finish or when the app is closed, but
 NSG will automatically search for a `.nsgrc` in the same directory as the `package.json`. It should be in json format.
 
 These are the available options:
-- *name* (choose different name than defined in `package.json`)
-- *primary* (the primary script buttons for scripts that will be ran more frequently)
-- *exclude* (scripts to NOT include in the GUI)
-- *alwaysOnTop* (whether the window is always in front of other windows)
-- *font-stack* (the fonts in the GUI)
+- **name**, choose different name than defined in `package.json`
+- **primary**, the primary script buttons for scripts that will be ran more frequently
+- **exclude**, scripts to NOT include in the GUI
+- **alwaysOnTop**, whether the window is always in front of other windows
+- **font-stack**, the fonts in the GUI
 
 **.nsgrc Example**  
 ```
