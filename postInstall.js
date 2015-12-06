@@ -10,7 +10,9 @@ const infoPlistPath = path.join(
 
 fs.readFile(infoPlistPath, 'utf8', (err, data) => {
 	if (err) return err;
-	const file = data.replace(/<key>CFBundleName<\/key>(\s)*<string>Electron<\/string>/g, "<key>CFBundleName</key>\n\t<string>Window</string>");
+	const file = data
+    .replace(/<key>CFBundleName<\/key>(\s)*<string>Electron<\/string>/, "<key>CFBundleName</key>\n\t<string>Window</string>")
+    .replace("atom.icns", "n.icns");
 	fs.writeFile(infoPlistPath, file, err => {
 		if (err) return err;
 	});
