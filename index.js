@@ -11,13 +11,16 @@ app.config = path.join(process.cwd(), configName);
 
 var menuTemplate = [{
 	label: 'Window',
-	submenu: [{
-		label: 'Reload',
-		accelerator: 'CmdOrCtrl+R',
-		click: function click(item, focusedWindow) {
-			if (focusedWindow) focusedWindow.reload();
-		}
-	}, {
+	submenu: [
+	// {
+	// 	label: 'Reload',
+	// 	accelerator: 'CmdOrCtrl+R',
+	// 	click: function(item, focusedWindow) {
+	// 		if (focusedWindow)
+	// 			focusedWindow.reload();
+	// 	}
+	// },
+	{
 		type: 'separator'
 	}, {
 		label: 'Minimize',

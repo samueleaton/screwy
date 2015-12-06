@@ -39,18 +39,29 @@ fang(function (next) {
 		// set title
 		if (jsonData.name) dom('title').text(jsonData.name).addClass('hasTitle');
 
-		// get primary commands from the .rc file
+		// get primary commands from the .nsgrc file
 		if (Array.isArray(jsonData.primary)) {
 			jsonData.primary.forEach(function (cmd) {
 				primaryCommands[cmd] = true;
 			});
 		}
 
-		// get commands to exclude from the .rc file
+		// get commands to exclude from the .nsgrc file
 		if (Array.isArray(jsonData.exclude)) {
 			jsonData.exclude.forEach(function (cmd) {
 				excludedCommands[cmd] = true;
 			});
+		}
+
+		// get font-stack from the .nsgrc file
+		if (Array.isArray(jsonData['font-stack'])) {
+			var customCSS = "body { font-family: ";
+			jsonData['font-stack'].forEach(function (font) {
+				customCSS += "'" + font + "', ";
+			});
+			customCSS = customCSS.slice(0, -2) + ';}';
+
+			dom('user-styles').text(customCSS);
 		}
 
 		return next();

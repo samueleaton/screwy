@@ -156,7 +156,7 @@ html {
 body {
   border-top: 40px solid #e6e6e6;
   background-color: #fafafa;
-  font-family: "source sans pro", menlo, "andale mono", consolas, monospace;
+  font-family: menlo, "andale mono", consolas, monospace;
   padding: 15px 15px 0;
 }
 body * {

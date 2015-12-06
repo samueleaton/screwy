@@ -13,14 +13,14 @@ const menuTemplate = [
 	{
 		label: 'Window',
 		submenu: [
-			{
-				label: 'Reload',
-				accelerator: 'CmdOrCtrl+R',
-				click: function(item, focusedWindow) {
-					if (focusedWindow)
-						focusedWindow.reload();
-				}
-			},
+			// {
+			// 	label: 'Reload',
+			// 	accelerator: 'CmdOrCtrl+R',
+			// 	click: function(item, focusedWindow) {
+			// 		if (focusedWindow)
+			// 			focusedWindow.reload();
+			// 	}
+			// },
 			{
 				type: 'separator'
 			},
