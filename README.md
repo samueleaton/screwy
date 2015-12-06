@@ -24,7 +24,9 @@ npm i -g npm-scripts-gui
 ```
 
 ## Instructions
-To launch Npm Script GUI (NSG), you must be in a directory with a `package.json` file. Then simply run `npm-script-gui` or the shorter `nsg`. 
+##### Launching  
+To launch Npm Script GUI (NSG), you must be in a directory with a `package.json` file.   
+Then simply run `npm-script-gui` or the shorter `nsg`. 
 
 Any text output associated with the command will be printed to the command line where NSG was launched. 
 
@@ -42,7 +44,7 @@ These are the available options:
 - *primary* (the primary script buttons for scripts that will be ran more frequently)
 - *exclude* (scripts to NOT include in the GUI)
 - *alwaysOnTop* (whether the window is always in front of other windows)
-- *font-stack* (the font in the GUI)
+- *font-stack* (the fonts in the GUI)
 
 **.nsgrc Example**  
 ```
@@ -57,9 +59,8 @@ These are the available options:
 
 Any script not specified in `primary` or `exclude` will show up as a normal button. 
 
-#### Future Configuration Plans:  
+### Future Configuration Plans:  
 - ability to sort scripts (e.g. alphabetically)
-- define font-stack/font-weight for gui
 - different skins/themes (npm, node, light, dark, etc.)
 - create custom commands not in package.json (specific to gui)
 - run npm scripts in silent mode (good for linting tasks)
