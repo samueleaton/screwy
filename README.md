@@ -9,6 +9,8 @@
 # npm scripts gui (NSG)
 A ~~GUI~~ gooey interface for npm scripts.
 
+[![GitHub version](https://badge.fury.io/gh/samueleaton%2Fnpm-scripts-gui.svg)](https://badge.fury.io/gh/samueleaton%2Fnpm-scripts-gui) [![npm version](https://badge.fury.io/js/npm-scripts-gui.svg)](https://badge.fury.io/js/npm-scripts-gui) <img src="https://img.shields.io/badge/license-MIT-blue.svg">
+
 <br>
 <p align="center">
 <img height="250" src="images/npmsg.png"> 	
