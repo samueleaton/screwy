@@ -26,7 +26,15 @@ npm i -g npm-scripts-gui
 ## Instructions
 ##### Launching  
 To launch Npm Script GUI (NSG), you must be in a directory with a `package.json` file.   
-Then simply run `npm-script-gui` or the shorter `nsg`. 
+
+Then simply run:  
+```
+npm-script-gui
+```   
+or the shorter   
+```
+nsg
+``` 
 
 Any text output associated with the command will be printed to the command line where NSG was launched. 
 
