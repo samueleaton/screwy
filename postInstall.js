@@ -8,7 +8,7 @@ var infoPlistPath = path.join(__dirname, 'node_modules', 'electron-prebuilt', 'd
 
 fs.readFile(infoPlistPath, 'utf8', function (err, data) {
   if (err) return err;
-  var file = data.replace(/<key>CFBundleName<\/key>(\s)*<string>Electron<\/string>/, "<key>CFBundleName</key>\n\t<string>npm scripts</string>");
+  var file = data.replace(/>Electron</g, ">npm scripts<");
   fs.writeFile(infoPlistPath, file, function (err) {
     if (err) return err;
   });
