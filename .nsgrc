@@ -1,5 +1,6 @@
 {
 	"name": "NSG",
 	"primary": ["stylus"],
-	"exclude": ["postinstall"]
+	"exclude": ["postinstall"],
+	"alwaysOnTop": true
 }

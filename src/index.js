@@ -58,7 +58,7 @@ app.on('ready', function(evt) {
 			}
 		}
 		
-		if (!configData.hasOwnProperty('window')) configData.window = {};
+		const alwaysOnTop = configData.alwaysOnTop === true;
 
 		app.renderer = new Renderer({
 			width: 520,
@@ -66,8 +66,9 @@ app.on('ready', function(evt) {
 			'title-bar-style': 'hidden-inset',
 			fullscreen: false,
 			resizable: false,
-			'always-on-top': (configData.window['always-on-top'] ? configData['always-on-top'] : false)
+			alwaysOnTop
 		});
+
 		app.renderer.on('closed', () => {
 			app.renderer = null;
 			console.log('NSG exited');
