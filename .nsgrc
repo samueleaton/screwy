@@ -2,5 +2,6 @@
 	"name": "NSG",
 	"primary": ["stylus"],
 	"exclude": ["postinstall"],
-	"alwaysOnTop": true
+	"alwaysOnTop": true,
+	"theme": "dark"
 }

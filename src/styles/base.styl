@@ -1,9 +1,18 @@
 @require 'reset'
+
+// Variables
 windowWidth = 520px
 windowHeight = 275px
-backgroundColor = rgb(250,250,250)
-font-stack = "source sans pro", menlo, "andale mono", consolas, monospace
-primaryColor = rgb(204,54,50)
+
+font-stack = "source code pro", menlo, "andale mono", consolas, monospace
+
+backgroundColor = rgb(255,255,255)
+primaryColor = rgb(80,80,80)
+inProgressBG = rgb(60,60,60)
+
+defaultBtnFontSize = 16px
+primaryBtnFontSize = 18px
+
 html
 	border 1px solid darken(backgroundColor, 10%)
 	height windowHeight - 2
@@ -27,9 +36,6 @@ img#npm-logo
 
 h1
 	color rgb(80,80,80)
-	// position absolute
-	// top 40px
-	// right 20px
 	margin 0 0 15px 0
 	cursor default
 	font-size 18px
@@ -39,15 +45,14 @@ h1
 
 // button reset
 button
-	fontSize = 15px
 	outline none
 	border 1px solid darken(backgroundColor, 20%)
 	background-color darken(backgroundColor, 10%)
 	color black
 	margin 6px
 	padding 4px 8px
-	font-size fontSize
-	line-height fontSize
+	font-size defaultBtnFontSize
+	line-height defaultBtnFontSize
 	cursor pointer
 	user-select none
 	transition background-color .3s ease, color .3s ease, border .3s ease
@@ -56,16 +61,15 @@ button
 		background-color darken(backgroundColor, 20%)
 		color darken(backgroundColor, 100%)
 	&.in-progress
-		bgColor = rgb(60,60,60)
-		background-color bgColor
-		border 1px solid darken(bgColor, 10%)
+		background-color inProgressBG
+		border 1px solid darken(inProgressBG, 10%)
 		color white
 		&:hover
-			border 1px solid darken(bgColor, 40%)
-			background-color darken(bgColor, 30%)
+			border 1px solid darken(inProgressBG, 40%)
+			background-color darken(inProgressBG, 30%)
 			color white
 	img.in-progress
-		height fontSize
+		height 1em
 		width auto
 		vertical-align middle
 		margin 0 0 0 8px
@@ -79,13 +83,12 @@ section#primaryScripts
 	margin 10px 0 10px
 
 	button
-		fontSize = 18px
 		border 1px solid darken(primaryColor, 15%)
 		background-color primaryColor
 		color lighten(primaryColor, 90%)
 		margin 6px
-		font-size fontSize
-		line-height fontSize
+		font-size primaryBtnFontSize
+		line-height primaryBtnFontSize
 		&.in-progress
 			background-color primaryColor
 		&:hover
@@ -93,7 +96,7 @@ section#primaryScripts
 			background-color lighten(primaryColor, 15%)
 			color lighten(primaryColor, 90%)
 		img.in-progress
-			height fontSize
+			height primaryBtnFontSize
 
 @keyframes spin {
 	0% {

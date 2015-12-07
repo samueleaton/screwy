@@ -1,0 +1,77 @@
+// light theme
+primaryColor = rgb(204,54,50)
+backgroundColor = rgb(250,250,250)
+inProgressBG = rgb(255,255,255)
+defaultBtnFontSize = 15px
+primaryBtnFontSize = 18px
+
+html
+	border 1px solid darken(backgroundColor, 10%)
+body
+	border-top 40px solid darken(backgroundColor, 8%)
+	background-color backgroundColor
+
+img#npm-logo
+	top 12px
+	right 15px
+	height 20px
+
+h1
+	color rgb(80,80,80)
+	margin 0 0 15px 0
+	font-size 18px
+
+button
+	btnColor = black
+	border 1px solid darken(backgroundColor, 20%)
+	background-color darken(backgroundColor, 10%)
+	color black
+	margin 6px
+	padding 4px 8px
+	font-size defaultBtnFontSize
+	line-height defaultBtnFontSize
+	&:hover
+		border 1px solid darken(backgroundColor, 30%)
+		background-color darken(backgroundColor, 20%)
+		color darken(backgroundColor, 100%)
+	&.in-progress
+		background-color inProgressBG
+		border 1px solid darken(inProgressBG, 40%)
+		color rgb(50,50,50)
+		&:hover
+			background-color darken(inProgressBG, 5%)
+			border 1px solid darken(inProgressBG, 45%)
+			color rgb(40,40,40)
+	img.in-progress
+		height defaultBtnFontSize
+		margin 0 0 0 8px
+
+section#primaryScripts
+	background-color darken(backgroundColor, 4%)
+	border 1px solid darken(backgroundColor, 15%)
+	border-radius 2px
+	padding 5px
+	margin 10px 0 10px
+
+	button
+		border 1px solid darken(primaryColor, 15%)
+		background-color primaryColor
+		color lighten(primaryColor, 90%)
+		margin 6px
+		font-size primaryBtnFontSize
+		line-height primaryBtnFontSize
+		&:hover
+			border 1px solid darken(primaryColor, 20%)
+			background-color lighten(primaryColor, 7%)
+			color white
+		&.in-progress
+			background-color primaryColor
+			border 1px solid darken(primaryColor, 15%)
+			color lighten(primaryColor, 90%)
+			&:hover
+				border 1px solid darken(primaryColor, 20%)
+				background-color lighten(primaryColor, 7%)
+				color white
+		img.in-progress
+			height primaryBtnFontSize
+

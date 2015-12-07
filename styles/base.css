@@ -148,15 +148,15 @@ select {
   vertical-align: middle;
 }
 html {
-  border: 1px solid #e1e1e1;
+  border: 1px solid #e6e6e6;
   height: 273px;
   width: 518px;
   overflow: hidden;
 }
 body {
-  border-top: 40px solid #e6e6e6;
-  background-color: #fafafa;
-  font-family: menlo, "andale mono", consolas, monospace;
+  border-top: 40px solid #ebebeb;
+  background-color: #fff;
+  font-family: "source code pro", menlo, "andale mono", consolas, monospace;
   padding: 15px 15px 0;
 }
 body * {
@@ -185,13 +185,13 @@ h1 {
 }
 button {
   outline: none;
-  border: 1px solid #c8c8c8;
-  background-color: #e1e1e1;
+  border: 1px solid #ccc;
+  background-color: #e6e6e6;
   color: #000;
   margin: 6px;
   padding: 4px 8px;
-  font-size: 15px;
-  line-height: 15px;
+  font-size: 16px;
+  line-height: 16px;
   cursor: pointer;
   -webkit-user-select: none;
      -moz-user-select: none;
@@ -201,8 +201,8 @@ button {
           transition: background-color 0.3s ease, color 0.3s ease, border 0.3s ease;
 }
 button:hover {
-  border: 1px solid #afafaf;
-  background-color: #c8c8c8;
+  border: 1px solid #b3b3b3;
+  background-color: #ccc;
   color: #000;
 }
 button.in-progress {
@@ -216,7 +216,7 @@ button.in-progress:hover {
   color: #fff;
 }
 button img.in-progress {
-  height: 15px;
+  height: 1em;
   width: auto;
   vertical-align: middle;
   margin: 0 0 0 8px;
@@ -224,27 +224,27 @@ button img.in-progress {
           animation: spin 0.75s linear infinite;
 }
 section#primaryScripts {
-  background-color: #f0f0f0;
-  border: 1px solid #d4d4d4;
+  background-color: #f5f5f5;
+  border: 1px solid #d9d9d9;
   border-radius: 2px;
   padding: 5px;
   margin: 10px 0 10px;
 }
 section#primaryScripts button {
-  border: 1px solid #ad2e2a;
-  background-color: #cc3632;
-  color: #faebea;
+  border: 1px solid #444;
+  background-color: #505050;
+  color: #ededed;
   margin: 6px;
   font-size: 18px;
   line-height: 18px;
 }
 section#primaryScripts button.in-progress {
-  background-color: #cc3632;
+  background-color: #505050;
 }
 section#primaryScripts button:hover {
-  border: 1px solid #cc3632;
-  background-color: #d45450;
-  color: #faebea;
+  border: 1px solid #505050;
+  background-color: #6a6a6a;
+  color: #ededed;
 }
 section#primaryScripts button img.in-progress {
   height: 18px;

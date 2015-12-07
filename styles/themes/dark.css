@@ -1,0 +1,78 @@
+html {
+  border: 1px solid #363636;
+}
+body {
+  border-top: 40px solid #333;
+  background-color: #3c3c3c;
+}
+img#npm-logo {
+  top: 12px;
+  right: 15px;
+  height: 20px;
+}
+h1 {
+  color: #fff;
+  margin: 0 0 15px 0;
+  font-size: 18px;
+}
+button {
+  border: 1px solid #333;
+  background-color: #595959;
+  color: #fafafa;
+  margin: 6px;
+  padding: 4px 8px;
+  font-size: 15px;
+  line-height: 15px;
+}
+button:hover {
+  border: 1px solid #393939;
+  background-color: #636363;
+  color: #fff;
+}
+button.in-progress {
+  background-color: #282828;
+  border: 1px solid #484848;
+  color: #fff;
+}
+button.in-progress:hover {
+  background-color: #242424;
+  border: 1px solid #484848;
+  color: #fff;
+}
+button img.in-progress {
+  height: 15px;
+  margin: 0 0 0 8px;
+}
+section#primaryScripts {
+  background-color: #464646;
+  border: 1px solid #333;
+  border-radius: 2px;
+  padding: 5px;
+  margin: 10px 0 10px;
+}
+section#primaryScripts button {
+  border: 1px solid #a32b28;
+  background-color: #b8312d;
+  color: #fff;
+  margin: 6px;
+  font-size: 18px;
+  line-height: 18px;
+}
+section#primaryScripts button:hover {
+  border: 1px solid #a32b28;
+  background-color: #d04440;
+  color: #fff;
+}
+section#primaryScripts button.in-progress {
+  background-color: #cc3632;
+  border: 1px solid #b8312d;
+  color: #fff;
+}
+section#primaryScripts button.in-progress:hover {
+  background-color: #c23330;
+  border: 1px solid #ad2e2a;
+  color: #fff;
+}
+section#primaryScripts button img.in-progress {
+  height: 18px;
+}
