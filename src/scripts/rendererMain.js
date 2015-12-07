@@ -1,13 +1,12 @@
 'use strict';
 
-
 const path = require('path');
 const fs = require('fs');
 
 const scriptsDir = path.join(__dirname, 'scripts');
 const remote = require('remote');
 const app = remote.require('app');
-const renderer = app.renderer;
+const ipcRenderer = require('electron').ipcRenderer;
 
 const dom = require(path.join(scriptsDir, 'dom'));
 const childProcess = require('child_process');
@@ -21,9 +20,11 @@ const secondaryScriptsCont = dom('secondaryScripts');
 let primaryCommands = {};
 let excludedCommands = {};
 
-const processQueue = require(path.join(scriptsDir, 'processQueue'));
+const theme = require(path.join(scriptsDir, 'theme'));
+window.processQueue = require(path.join(scriptsDir, 'processQueue'));
 
 fang(
+	// read .nsgrc config file
 	next => {
 		fs.readFile(app.config, 'utf8', (err, data) => {
 			if (err) {
@@ -67,15 +68,18 @@ fang(
 				dom('user-styles').text(customCSS);
 			}
 
+			theme.set(jsonData.theme);
+
 			return next();
 		});
 	},
 
 	next => {
+		// read package.json file
 		fs.readFile(packageJsonPath, 'utf8', (err, data) => {
 			if (err) {
 				logger('(package.json error) ' + err);
-				renderer.close();
+				ipcRenderer.send('error');
 			}
 
 			let jsonData;
@@ -84,7 +88,7 @@ fang(
 			}
 			catch (e) {
 				logger(err);
-				renderer.close();
+				ipcRenderer.send('error');
 			}
 
 			// set title if not already set
@@ -101,20 +105,22 @@ fang(
 				btn.listen('click', e => {
 					if (btn.classList.contains('in-progress'))
 						return;
+					console.log('CLICKED');
 					runCommand(btn, btn.dataset.cmd);
 				});
 
 				btn.listen('dblclick', e => {
 					if (btn.classList.contains('in-progress'))
-						processQueue.kill(btn.dataset.cmd);
+						process.nextTick(
+							() => processQueue.kill(btn.dataset.cmd)
+						);
 				});
 
-				// does button have primary or secondary status
+				// does button have primary or normal status
 				if (primaryCommands[cmdName])
-					primaryScriptsCont.appendChild(btn);
+					primaryScriptsCont.appendChild(btn.attr('data-primary', 'true'));
 				else
 					secondaryScriptsCont.appendChild(btn);
-
 			});
 
 			// if no primary commands are found, remove the container
@@ -144,21 +150,27 @@ function runCommand(btn, cmdName) {
 	btn.classList.add('in-progress');
 	logger('\n[Running "' + cmdName + '" command...]\n');
 
-	const spinnerImg = dom.create('img')
-		.addClass('in-progress').attr('src', 'images/loader.png');
+	if (btn.dataset.primary === 'true')
+		var spinnerImgFile = path.join('images', theme.getPrimaryLoader());
+	else
+		var spinnerImgFile = path.join('images', theme.getLoader());
+
+	const spinnerImg = dom.create('img').addClass('in-progress')
+		.attr('src', spinnerImgFile);
 
 	btn.append(spinnerImg);
 
-	const cmd = processQueue.run(cmdName);
+	let cmd = processQueue.run(cmdName);
 
-	cmd.on('exit', function() {
+	cmd.on('exit', function(code, signal) {
 		btn.classList.remove('in-progress');
 		logger('\n["' + cmdName + '" command ended]\n');
 		dom.remove(spinnerImg);
-		processQueue.kill(cmdName);
 	});
+
 }
 
-renderer.on('close', evt => {
-	processQueue.killAll();
-});
+
+function appQuitting() {
+	processQueue.killAll(() => ipcRenderer.send('can-quit'));
+}

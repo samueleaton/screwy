@@ -1,29 +1,51 @@
 'use strict';
 
-var childProcess = require('child_process');
-var spawn = childProcess.spawn;
+var spawn = require('child_process').spawn;
+var psTree = require('ps-tree');
 
 var queue = {};
 
-function killAll() {
-	Object.keys(queue).forEach(function (c) {
-		kill(c);
+function terminate(pid, cb) {
+	psTree(pid, function (err, children) {
+		spawn('kill', ['-9'].concat(children.map(function (p) {
+			return p.PID;
+		})));
+		if (typeof cb === 'function') return cb(err);
 	});
-	console.log('killed all!');
-};
+}
 
-function kill(cmdName) {
-	if (queue[cmdName] && typeof queue[cmdName].kill === 'function') queue[cmdName].kill();
-};
+function killAll(cb) {
+	var cmds = Object.keys(queue);
+	var total = cmds.length;
+	var completedCount = 0;
+
+	if (total === 0) return cb();
+
+	cmds.forEach(function (cmd) {
+		kill(cmd, function () {
+			completedCount++;
+			console.log('killed: ', cmd);
+			if (completedCount === total) cb();
+		});
+	});
+}
+
+function kill(cmdName, cb) {
+	if (queue[cmdName] && queue[cmdName].pid) {
+		terminate(queue[cmdName].pid, function (err) {
+			if (err) return alert('ERROR ' + err);
+			if (typeof cb === 'function') cb();
+		});
+	}
+}
 
 function run(cmdName) {
 	queue[cmdName] = spawn('npm', ['run', cmdName], {
 		cwd: projPath,
 		stdio: [0, 1, 2]
 	});
-	console.log('running ' + cmdName);
 	return queue[cmdName];
-};
+}
 
 module.exports = {
 	kill: kill,

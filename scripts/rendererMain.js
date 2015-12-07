@@ -6,7 +6,7 @@ var fs = require('fs');
 var scriptsDir = path.join(__dirname, 'scripts');
 var remote = require('remote');
 var app = remote.require('app');
-var renderer = app.renderer;
+var ipcRenderer = require('electron').ipcRenderer;
 
 var dom = require(path.join(scriptsDir, 'dom'));
 var childProcess = require('child_process');
@@ -20,9 +20,12 @@ var secondaryScriptsCont = dom('secondaryScripts');
 var primaryCommands = {};
 var excludedCommands = {};
 
-var processQueue = require(path.join(scriptsDir, 'processQueue'));
+var theme = require(path.join(scriptsDir, 'theme'));
+window.processQueue = require(path.join(scriptsDir, 'processQueue'));
 
-fang(function (next) {
+fang(
+// read .nsgrc config file
+function (next) {
 	fs.readFile(app.config, 'utf8', function (err, data) {
 		if (err) {
 			logger('no .nsgrc found');
@@ -64,13 +67,16 @@ fang(function (next) {
 			dom('user-styles').text(customCSS);
 		}
 
+		theme.set(jsonData.theme);
+
 		return next();
 	});
 }, function (next) {
+	// read package.json file
 	fs.readFile(packageJsonPath, 'utf8', function (err, data) {
 		if (err) {
 			logger('(package.json error) ' + err);
-			renderer.close();
+			ipcRenderer.send('error');
 		}
 
 		var jsonData = undefined;
@@ -78,7 +84,7 @@ fang(function (next) {
 			jsonData = JSON.parse(data);
 		} catch (e) {
 			logger(err);
-			renderer.close();
+			ipcRenderer.send('error');
 		}
 
 		// set title if not already set
@@ -93,15 +99,18 @@ fang(function (next) {
 			// add the btn `click` handler	
 			btn.listen('click', function (e) {
 				if (btn.classList.contains('in-progress')) return;
+				console.log('CLICKED');
 				runCommand(btn, btn.dataset.cmd);
 			});
 
 			btn.listen('dblclick', function (e) {
-				if (btn.classList.contains('in-progress')) processQueue.kill(btn.dataset.cmd);
+				if (btn.classList.contains('in-progress')) process.nextTick(function () {
+					return processQueue.kill(btn.dataset.cmd);
+				});
 			});
 
-			// does button have primary or secondary status
-			if (primaryCommands[cmdName]) primaryScriptsCont.appendChild(btn);else secondaryScriptsCont.appendChild(btn);
+			// does button have primary or normal status
+			if (primaryCommands[cmdName]) primaryScriptsCont.appendChild(btn.attr('data-primary', 'true'));else secondaryScriptsCont.appendChild(btn);
 		});
 
 		// if no primary commands are found, remove the container
@@ -128,20 +137,23 @@ function runCommand(btn, cmdName) {
 	btn.classList.add('in-progress');
 	logger('\n[Running "' + cmdName + '" command...]\n');
 
-	var spinnerImg = dom.create('img').addClass('in-progress').attr('src', 'images/loader.png');
+	if (btn.dataset.primary === 'true') var spinnerImgFile = path.join('images', theme.getPrimaryLoader());else var spinnerImgFile = path.join('images', theme.getLoader());
+
+	var spinnerImg = dom.create('img').addClass('in-progress').attr('src', spinnerImgFile);
 
 	btn.append(spinnerImg);
 
 	var cmd = processQueue.run(cmdName);
 
-	cmd.on('exit', function () {
+	cmd.on('exit', function (code, signal) {
 		btn.classList.remove('in-progress');
 		logger('\n["' + cmdName + '" command ended]\n');
 		dom.remove(spinnerImg);
-		processQueue.kill(cmdName);
 	});
 }
 
-renderer.on('close', function (evt) {
-	processQueue.killAll();
-});
+function appQuitting() {
+	processQueue.killAll(function () {
+		return ipcRenderer.send('can-quit');
+	});
+}

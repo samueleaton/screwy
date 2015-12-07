@@ -23,4 +23,3 @@ fs.readFile('images/n.icns', function (err, data) {
     if (err) return err;
   });
 });
-

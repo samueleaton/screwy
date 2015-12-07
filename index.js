@@ -6,21 +6,26 @@ var Renderer = require('browser-window');
 var Menu = require('menu');
 var fs = require('fs');
 
+var ipcMain = require('electron').ipcMain;
+
+app.canQuit = false;
+
+ipcMain.on('can-quit', function () {
+	app.canQuit = true;
+	app.renderer.close();
+});
+
+ipcMain.on('error', function (evt, msg) {
+	app.canQuit = true;
+	app.renderer.close();
+});
+
 var configName = '.nsgrc';
 app.config = path.join(process.cwd(), configName);
 
 var menuTemplate = [{
 	label: 'Window',
-	submenu: [
-	// {
-	// 	label: 'Reload',
-	// 	accelerator: 'CmdOrCtrl+R',
-	// 	click: function(item, focusedWindow) {
-	// 		if (focusedWindow)
-	// 			focusedWindow.reload();
-	// 	}
-	// },
-	{
+	submenu: [{
 		type: 'separator'
 	}, {
 		label: 'Minimize',
@@ -69,8 +74,19 @@ app.on('ready', function (evt) {
 			app.exit(0);
 		});
 
+		app.renderer.on('close', function (evt) {
+			if (app.canQuit) return;
+			evt.preventDefault();
+			app.renderer.webContents.executeJavaScript('appQuitting();');
+		});
+
 		app.renderer.loadURL(path.join('file://', __dirname, 'index.html'));
 		// app.renderer.toggleDevTools(); // uncomment to view dev tools in renderer
 	});
+});
+
+app.on('before-quit', function (evt) {
+	if (app.canQuit) return;
+	evt.preventDefault();
 });
 
