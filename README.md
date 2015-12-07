@@ -55,6 +55,7 @@ These are the available options:
 - **exclude**, scripts to NOT include in the GUI
 - **alwaysOnTop**, whether the window is always in front of other windows
 - **font-stack**, the fonts in the GUI
+- **theme**, choose a light or dark theme for window
 
 **.nsgrc Example**  
 ```
@@ -63,7 +64,8 @@ These are the available options:
 	"primary": ["build", "run-production", "run-sandbox"],
 	"exclude": ["scripts-gui", "prebuild"],
 	"alwaysOnTop": true,
-	"font-stack": ["source code pro", "menlo", "helvetica neue"]
+	"font-stack": ["source code pro", "menlo", "helvetica neue"],
+	"theme": dark
 }
 ```
 
