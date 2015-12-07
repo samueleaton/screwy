@@ -65,7 +65,7 @@ These are the available options:
 	"exclude": ["scripts-gui", "prebuild"],
 	"alwaysOnTop": true,
 	"font-stack": ["source code pro", "menlo", "helvetica neue"],
-	"theme": dark
+	"theme": "dark"
 }
 ```
 
