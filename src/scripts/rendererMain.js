@@ -29,6 +29,7 @@ fang(
 		fs.readFile(app.config, 'utf8', (err, data) => {
 			if (err) {
 				logger('no .nsgrc found');
+				theme.set();
 				return next();
 			}
 

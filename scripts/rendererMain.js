@@ -29,6 +29,7 @@ function (next) {
 	fs.readFile(app.config, 'utf8', function (err, data) {
 		if (err) {
 			logger('no .nsgrc found');
+			theme.set();
 			return next();
 		}
 
