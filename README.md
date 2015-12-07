@@ -1,7 +1,7 @@
 <br>  
 <br>  
 <p align="center">
-<img width="350" src="images/npm-scripts.png"> 	
+<img width="350" src="images/npm-scripts-black.png"> 	
 </p>
 <br>  
 <br>  
