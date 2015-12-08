@@ -32,7 +32,7 @@ module.exports = {
 		return themes[selectedTheme].loader;
 	},
 	set: function set(themeName) {
-		selectedTheme = themes[themeName] ? themeName : 'dark';
+		selectedTheme = themes[themeName] ? themeName : 'light';
 		var themePath = path.join(themesPath, selectedTheme + '.css');
 		fs.readFile(themePath, 'utf8', function (err, data) {
 			if (err) return alert('Error. Could not load theme file.');

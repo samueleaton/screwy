@@ -156,7 +156,7 @@ html {
 body {
   border-top: 40px solid #ebebeb;
   background-color: #fff;
-  font-family: "source code pro", menlo, "andale mono", consolas, monospace;
+  font-family: menlo, "source code pro", "andale mono", consolas, monospace;
   padding: 15px 15px 0;
 }
 body * {
@@ -248,6 +248,147 @@ section#primaryScripts button:hover {
 }
 section#primaryScripts button img.in-progress {
   height: 18px;
+}
+section#npm-installer {
+  width: 100%;
+  height: 160px;
+  background-color: #232323;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  box-shadow: inset 0 1px 2px rgba(0,0,0,0.5), 0 -1px 4px rgba(0,0,0,0.4);
+  border-top: 3px solid #cc3632;
+  z-index: 10;
+  -webkit-transition: bottom 0.35s ease, background-color 0.2s ease;
+          transition: bottom 0.35s ease, background-color 0.2s ease;
+}
+section#npm-installer.hide {
+  bottom: -200px;
+}
+section#npm-installer.error {
+  background-color: #cc3632;
+}
+section#npm-installer span,
+section#npm-installer label,
+section#npm-installer div {
+  color: #fff;
+  vertical-align: middle;
+  display: inline-block;
+}
+section#npm-installer span,
+section#npm-installer label,
+section#npm-installer input,
+section#npm-installer div {
+  font-family: menlo, "source code pro", "andale mono", consolas, monospace !important;
+}
+section#npm-installer form {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+  width: 90%;
+  height: 70%;
+}
+section#npm-installer form div#command-line {
+  width: 100%;
+  height: 40px;
+  position: relative;
+  margin: 0 auto;
+  padding: 8px 0;
+  background-color: #282828;
+  outline: 1px solid #191919;
+  box-shadow: 0 2px 3px rgba(0,0,0,0.3);
+}
+section#npm-installer form div#command-line div.npm-install {
+  width: 26%;
+  display: block;
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  left: 2%;
+  -webkit-transform: translateY(-50%);
+          transform: translateY(-50%);
+  height: 30px;
+  line-height: 30px;
+  color: #fff;
+}
+section#npm-installer form div#command-line input#package-name {
+  outline-offset: 0;
+  padding: 0;
+  height: 30px;
+  line-height: 30px;
+  text-indent: 5px;
+  font-size: 15px;
+  margin: 0;
+  outline: 1px solid rgba(255,255,255,0.2);
+  border: none;
+  color: #fff;
+  background-color: rgba(255,255,255,0.1);
+  width: 67%;
+  position: absolute;
+  top: 50%;
+  right: 3%;
+  -webkit-transform: translateY(-50%);
+          transform: translateY(-50%);
+  -webkit-transition: outline 0.3s ease, background-color 0.3s ease;
+          transition: outline 0.3s ease, background-color 0.3s ease;
+}
+section#npm-installer form div#command-line input#package-name:focus {
+  outline: 1px solid rgba(0,0,0,0.4);
+  background-color: #141414;
+}
+section#npm-installer form div#command-line input#package-name::-webkit-input-placeholder {
+  color: rgba(255,255,255,0.6);
+}
+section#npm-installer form fieldset.radios {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+}
+section#npm-installer form fieldset.radios label {
+  display: inline-block;
+  margin: 2px 0;
+  vertical-align: middle;
+  font-size: 15px;
+}
+section#npm-installer form fieldset.radios label input {
+  margin-left: 6px;
+}
+section#npm-installer input#npm-installer-submit {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  outline: none;
+  border: none;
+  background-color: #2d2d2d;
+  font-size: 17px;
+  padding: 5px 10px;
+  color: #fff;
+  cursor: pointer;
+  outline: 1px solid #0a0a0a;
+  box-shadow: 0 2px 1px rgba(0,0,0,0.6);
+  -webkit-transition: background-color 0.3s ease;
+          transition: background-color 0.3s ease;
+}
+section#npm-installer input#npm-installer-submit:hover {
+  background-color: #373737;
+}
+div#cover {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background-color: rgba(0,0,0,0.5);
+  z-index: 1;
+  -webkit-transition: background-color 0.35s ease;
+          transition: background-color 0.35s ease;
+}
+div#cover.hide {
+  height: 0;
+  width: 0;
+  background-color: rgba(0,0,0,0);
 }
 @-webkit-keyframes spin {
   0% {

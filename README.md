@@ -71,8 +71,17 @@ These are the available options:
 
 Any script not specified in `primary` or `exclude` will show up as a normal button. 
 
+## npm install
+this feature was added to keep you from needing to open an extra terminal tab just to run `npm install <package>`. Hit `cmd+i` (or select 'npm installer' from the menu bar) to open the npm installer.
+
+You can run:  
+- `npm install`
+- `npm install <package>`
+- `npm install --save <package>`
+- `npm install --save-dev <package>`
+
 ### Future Configuration Plans:  
 - ability to sort scripts (e.g. alphabetically)
-- different skins/themes (npm, node, light, dark, etc.)
 - create custom commands not in package.json (specific to gui)
 - run npm scripts in silent mode (good for linting tasks)
+- npm installer memory

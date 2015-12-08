@@ -28,6 +28,13 @@ const menuTemplate = [
 		label: 'Window',
 		submenu: [
 			{
+				label: 'npm Installer',
+				accelerator: 'Cmd+i',
+				click() {
+					app.renderer.webContents.executeJavaScript('npmInstaller.toggle();');
+				}
+			},
+			{
 				type: 'separator'
 			},
 			{
