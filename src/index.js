@@ -28,7 +28,7 @@ const menuTemplate = [
 		label: 'Window',
 		submenu: [
 			{
-				label: 'npm Installer',
+				label: 'Npm Package Installer',
 				accelerator: 'Cmd+i',
 				click() {
 					app.renderer.webContents.executeJavaScript('npmInstaller.toggle();');

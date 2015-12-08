@@ -26,7 +26,7 @@ app.config = path.join(process.cwd(), configName);
 var menuTemplate = [{
 	label: 'Window',
 	submenu: [{
-		label: 'npm Installer',
+		label: 'Npm Package Installer',
 		accelerator: 'Cmd+i',
 		click: function click() {
 			app.renderer.webContents.executeJavaScript('npmInstaller.toggle();');
