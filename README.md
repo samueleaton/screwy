@@ -71,13 +71,15 @@ These are the available options:
 
 Any script not specified in `primary` or `exclude` will show up as a normal button.
 
+
+## Npm Package Installer
+
 <br>
 <p align="center">
 <img height="250" src="images/npmsg2.png"> 	
 </p>
 <br> 
 
-## Npm Package Installer
 This feature was added to keep you from needing to open an extra terminal tab just to run `npm install <package>`. Hit `cmd+i` (or select 'npm installer' from the menu bar) to open the npm installer.
 
 You can run:  
