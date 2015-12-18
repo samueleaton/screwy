@@ -39,9 +39,22 @@ function kill(cmdName, cb) {
 	}
 }
 
+function install(obj) {
+	var opts = ['install'];
+
+	if (obj.package.length) opts.push(obj.package);
+	if (obj.depType) opts.push(obj.depType);
+
+	queue[obj.id] = spawn('npm', opts, {
+		cwd: process.cwd(),
+		stdio: [0, 1, 2]
+	});
+	return queue[obj.id];
+}
+
 function run(cmdName) {
 	queue[cmdName] = spawn('npm', ['run', cmdName], {
-		cwd: projPath,
+		cwd: process.cwd(),
 		stdio: [0, 1, 2]
 	});
 	return queue[cmdName];
@@ -50,5 +63,6 @@ function run(cmdName) {
 module.exports = {
 	kill: kill,
 	killAll: killAll,
-	run: run
+	run: run,
+	install: install
 };

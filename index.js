@@ -26,6 +26,12 @@ app.config = path.join(process.cwd(), configName);
 var menuTemplate = [{
 	label: 'Window',
 	submenu: [{
+		label: 'Npm Package Installer',
+		accelerator: 'Cmd+i',
+		click: function click() {
+			app.renderer.webContents.executeJavaScript('npmInstaller.toggle();');
+		}
+	}, {
 		type: 'separator'
 	}, {
 		label: 'Minimize',

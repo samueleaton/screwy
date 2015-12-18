@@ -69,10 +69,31 @@ These are the available options:
 }
 ```
 
-Any script not specified in `primary` or `exclude` will show up as a normal button. 
+Any script not specified in `primary` or `exclude` will show up as a normal button.
+
+
+## Npm Package Installer
+
+<br>
+<p align="center">
+<img height="250" src="images/npmsg2.png"> 	
+</p>
+<br> 
+
+This feature was added to keep you from needing to open an extra terminal tab just to run `npm install <package>`. Hit `cmd+i` (or select 'npm installer' from the menu bar) to open the npm installer.
+
+You can run:  
+- `npm install`
+- `npm install <package>`
+- `npm install --save <package>`
+- `npm install --save-dev <package>`
+
+Just like with the npm scripts buttons, output for the npm package installer will be rendered in the terminal where NSG was launched.  
+
+If there is a non-zero return code (aka an error code) for the `npm install` then the Npm Package installer will flash red--you should also see errors in the terminal. 
 
 ### Future Configuration Plans:  
 - ability to sort scripts (e.g. alphabetically)
-- different skins/themes (npm, node, light, dark, etc.)
 - create custom commands not in package.json (specific to gui)
 - run npm scripts in silent mode (good for linting tasks)
+- npm installer memory

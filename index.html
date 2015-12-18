@@ -11,6 +11,23 @@
 <section id="primaryScripts"></section>
 <section id="secondaryScripts"></section>
 
+<div id="cover" class="hide"></div>
+
+<section id="npm-installer" class="hide">
+	<form id="npm-installer-form">
+		<div id="command-line">
+			<div class="npm-install">npm install</div>
+			<input id="package-name" placeholder="package name (optional)">
+		</div>
+		<fieldset class="radios">
+			<label>Save<input name="dependency" value="save" type="radio"></label><br>
+			<label>Save Dev<input name="dependency" value="save-dev" type="radio"></label><br>
+		</fieldset>
+		
+		<input id="npm-installer-submit" type="submit" value="Run">
+	</form>
+</section>
+
 <script src="scripts/rendererMain.js"></script>
 </body>
 </html>
