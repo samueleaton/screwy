@@ -91,11 +91,11 @@ app.on('ready', function(evt) {
 		app.renderer.on('close', evt => {
 			if (app.canQuit) return;
 			evt.preventDefault();
-			app.renderer.webContents.executeJavaScript('appQuitting();');
+			app.renderer.webContents.executeJavaScript('main.quitApp();');
 		});
 
 		app.renderer.loadURL(path.join('file://',  __dirname, 'index.html'));
-		// app.renderer.toggleDevTools(); // uncomment to view dev tools in renderer
+		app.renderer.toggleDevTools(); // uncomment to view dev tools in renderer
 	});
 
 	

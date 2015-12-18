@@ -1,259 +1,135 @@
 'use strict';
 
-var path = require('path');
-var fs = require('fs');
+var main = (function () {
+	'use strict';
 
-var scriptsDir = path.join(__dirname, 'scripts');
-var remote = require('remote');
-var app = remote.require('app');
-var ipcRenderer = require('electron').ipcRenderer;
+	var path = require('path');
+	var fs = require('fs');
 
-var dom = require(path.join(scriptsDir, 'dom'));
-var childProcess = require('child_process');
-var spawn = childProcess.spawn;
-var fang = require('fangs');
-var rand = require(path.join(scriptsDir, 'rand'));
+	var scriptsDir = path.join(__dirname, 'scripts');
+	var remote = require('remote');
+	var app = remote.require('app');
+	var ipcRenderer = require('electron').ipcRenderer;
 
-var projPath = process.cwd();
-var packageJsonPath = path.join(projPath, 'package.json');
-var primaryScriptsCont = dom('primaryScripts');
-var secondaryScriptsCont = dom('secondaryScripts');
-var primaryCommands = {};
-var excludedCommands = {};
+	var dom = require(path.join(scriptsDir, 'dom'));
+	var fang = require('fangs');
 
-var theme = require(path.join(scriptsDir, 'theme'));
-window.processQueue = require(path.join(scriptsDir, 'processQueue'));
+	var projPath = process.cwd();
+	var packageJsonPath = path.join(projPath, 'package.json');
+	var primaryScriptsCont = dom('primaryScripts');
+	var secondaryScriptsCont = dom('secondaryScripts');
+	var primaryCommands = {};
+	var excludedCommands = {};
 
-function toArr(list) {
-	var arr = [];
-	if (!list.hasOwnProperty(length)) {
-		arr.push(list);
-		return arr;
-	}
-	for (var i = 0, ii = list.length; i < ii; i++) {
-		arr.push(list[i]);
-	}
-	return arr;
-}
+	window.processQueue = require(path.join(scriptsDir, 'processQueue'));
 
-fang(
-// read .nsgrc config file
-function (next) {
-	fs.readFile(app.config, 'utf8', function (err, data) {
-		if (err) {
-			logger('no .nsgrc found');
-			theme.set();
-			return next();
-		}
+	var logger = require(path.join(scriptsDir, 'terminalLogger'));
 
-		var jsonData = undefined;
-		try {
-			jsonData = JSON.parse(data);
-		} catch (e) {
-			jsonData = {};
-		}
+	fang(
+	// read .nsgrc config file
+	function (next) {
+		fs.readFile(app.config, 'utf8', function (err, data) {
+			if (err) {
+				logger('no .nsgrc found');
+				theme.set();
+				return next();
+			}
 
-		// set title
-		if (jsonData.name) dom('title').text(jsonData.name).addClass('hasTitle');
+			var jsonData = undefined;
+			try {
+				jsonData = JSON.parse(data);
+			} catch (e) {
+				jsonData = {};
+			}
 
-		// get primary commands from the .nsgrc file
-		if (Array.isArray(jsonData.primary)) {
-			jsonData.primary.forEach(function (cmd) {
-				primaryCommands[cmd] = true;
-			});
-		}
+			// set title
+			if (jsonData.name) dom('title').text(jsonData.name).addClass('hasTitle');
 
-		// get commands to exclude from the .nsgrc file
-		if (Array.isArray(jsonData.exclude)) {
-			jsonData.exclude.forEach(function (cmd) {
-				excludedCommands[cmd] = true;
-			});
-		}
-
-		// get font-stack from the .nsgrc file
-		if (Array.isArray(jsonData['font-stack'])) {
-			var customCSS = "body { font-family: ";
-			jsonData['font-stack'].forEach(function (font) {
-				customCSS += "'" + font + "', ";
-			});
-			customCSS = customCSS.slice(0, -2) + ';}';
-
-			dom('user-styles').text(customCSS);
-		}
-
-		theme.set(jsonData.theme);
-
-		return next();
-	});
-}, function (next) {
-	// read package.json file
-	fs.readFile(packageJsonPath, 'utf8', function (err, data) {
-		if (err) {
-			logger('(package.json error) ' + err);
-			ipcRenderer.send('error');
-		}
-
-		var jsonData = undefined;
-		try {
-			jsonData = JSON.parse(data);
-		} catch (e) {
-			logger(err);
-			ipcRenderer.send('error');
-		}
-
-		// set title if not already set
-		if (!dom('title').hasClass('hasTitle')) dom('title').text(jsonData.name).addClass('hasTitle');;
-
-		Object.keys(jsonData.scripts).forEach(function (cmdName) {
-			// if this command is to be excluded, do nothing
-			if (excludedCommands[cmdName]) return;
-
-			var btn = dom.create('button').text(cmdName).attr('data-cmd', cmdName);
-
-			// add the btn `click` handler	
-			btn.listen('click', function (e) {
-				if (btn.classList.contains('in-progress')) return;
-				console.log('CLICKED');
-				runCommand(btn, btn.dataset.cmd);
-			});
-
-			btn.listen('dblclick', function (e) {
-				if (btn.classList.contains('in-progress')) process.nextTick(function () {
-					return processQueue.kill(btn.dataset.cmd);
+			// get primary commands from the .nsgrc file
+			if (Array.isArray(jsonData.primary)) {
+				jsonData.primary.forEach(function (cmd) {
+					primaryCommands[cmd] = true;
 				});
+			}
+
+			// get commands to exclude from the .nsgrc file
+			if (Array.isArray(jsonData.exclude)) {
+				jsonData.exclude.forEach(function (cmd) {
+					excludedCommands[cmd] = true;
+				});
+			}
+
+			// get font-stack from the .nsgrc file
+			if (Array.isArray(jsonData['font-stack'])) {
+				var customCSS = "body { font-family: ";
+				jsonData['font-stack'].forEach(function (font) {
+					customCSS += "'" + font + "', ";
+				});
+				customCSS = customCSS.slice(0, -2) + ';}';
+
+				dom('user-styles').text(customCSS);
+			}
+
+			theme.set(jsonData.theme);
+
+			return next();
+		});
+	}, function (next) {
+		// read package.json file
+		fs.readFile(packageJsonPath, 'utf8', function (err, data) {
+			if (err) {
+				logger('(package.json error) ' + err);
+				ipcRenderer.send('error');
+			}
+
+			var jsonData = undefined;
+			try {
+				jsonData = JSON.parse(data);
+			} catch (e) {
+				logger(err);
+				ipcRenderer.send('error');
+			}
+
+			// set title if not already set
+			if (!dom('title').hasClass('hasTitle')) dom('title').text(jsonData.name).addClass('hasTitle');;
+
+			Object.keys(jsonData.scripts).forEach(function (cmdName) {
+				// if this command is to be excluded, do nothing
+				if (excludedCommands[cmdName]) return;
+
+				var btn = dom.create('button').text(cmdName).attr('data-cmd', cmdName);
+
+				// add the btn `click` handler	
+				btn.listen('click', function (e) {
+					if (btn.classList.contains('in-progress')) return;
+					commandClick(btn);
+				});
+
+				btn.listen('dblclick', function (e) {
+					if (btn.classList.contains('in-progress')) process.nextTick(function () {
+						return processQueue.kill(btn.dataset.cmd);
+					});
+				});
+
+				// does button have primary or normal status
+				if (primaryCommands[cmdName]) primaryScriptsCont.appendChild(btn.attr('data-primary', 'true'));else secondaryScriptsCont.appendChild(btn);
 			});
 
-			// does button have primary or normal status
-			if (primaryCommands[cmdName]) primaryScriptsCont.appendChild(btn.attr('data-primary', 'true'));else secondaryScriptsCont.appendChild(btn);
+			// if no primary commands are found, remove the container
+			if (Object.keys(primaryCommands).length === 0) dom.remove(primaryScriptsCont);
 		});
+	})();
 
-		// if no primary commands are found, remove the container
-		if (Object.keys(primaryCommands).length === 0) dom.remove(primaryScriptsCont);
-	});
-})();
-
-function logger(message) {
-	var logSpawn = spawn('echo', [message], {
-		cwd: projPath,
-		stdio: 'inherit'
+	process.on('uncaughtException', function (e) {
+		logger('NSG ERROR:');
+		logger(e.stack);
 	});
 
-	logSpawn.on('exit', function (error) {
-		logSpawn.kill();
-	});
-}
-
-process.on('uncaughtException', function (e) {
-	logger(e);
-});
-
-function runCommand(btn, cmdName) {
-	btn.classList.add('in-progress');
-	logger('\n[Running "' + cmdName + '" command...]\n');
-
-	if (btn.dataset.primary === 'true') var spinnerImgFile = path.join('images', theme.getPrimaryLoader());else var spinnerImgFile = path.join('images', theme.getLoader());
-
-	var spinnerImg = dom.create('img').addClass('in-progress').attr('src', spinnerImgFile);
-
-	btn.append(spinnerImg);
-
-	var cmd = processQueue.run(cmdName);
-
-	cmd.on('exit', function (code, signal) {
-		btn.classList.remove('in-progress');
-		logger('\n["' + cmdName + '" command ended]\n');
-		dom.remove(spinnerImg);
-	});
-}
-
-function appQuitting() {
-	processQueue.killAll(function () {
-		return ipcRenderer.send('can-quit');
-	});
-}
-
-// == npm installer ==
-var npmInstaller = (function () {
-	var active = false;
-
-	var section = document.getElementById('npm-installer');
-	var form = document.getElementById('npm-installer-form');
-	var packageNameField = document.getElementById('package-name');
-	var radios = toArr(document.querySelectorAll('input[type=radio]'));
-	var cover = document.getElementById('cover');
-
-	function toggle() {
-		active ? hide() : show();
-	}
-
-	function hide() {
-		if (active === false) return;
-		active = false;
-		section.classList.add('hide');
-		cover.classList.add('hide');
-		radios.forEach(function (r) {
-			r.checked = false;
-			r.blur();
-		});
-		packageNameField.value = '';
-		packageNameField.blur();
-	}
-
-	function show() {
-		if (active === true) return;
-		active = true;
-		section.classList.remove('hide');
-		cover.classList.remove('hide');
-		setTimeout(function () {
-			return packageNameField.focus();
-		}, 300);
-	}
-
-	function getPackageName() {
-		return packageNameField.value.trim();
-	}
-
-	function getCheckedRadio() {
-		var checkedRadio = radios.find(function (r) {
-			return r.checked;
-		});
-		// returns 'undefined', '--save' or '--save-dev'
-		return checkedRadio && (checkedRadio.value === 'save' ? '--save' : '-save-dev');
-	}
-
-	function installerError() {
-		section.classList.add('error');
-		setTimeout(function () {
-			section.classList.remove('error');
-		}, 400);
-	}
-
-	function run() {
-		var packName = getPackageName();
-		var checkedRadio = getCheckedRadio();
-
-		var commandString = 'npm install';
-		if (packName.length) commandString += ' ' + packName;
-		if (checkedRadio) commandString += ' ' + checkedRadio;
-
-		logger('\n[Running "' + commandString + '"...]\n');
-
-		var cmd = processQueue.install({
-			id: rand(12),
-			package: packName,
-			depType: checkedRadio
-		});
-
-		cmd.on('exit', function (code, signal) {
-			logger('\n["' + commandString + '" ended]\n');
-			if (code === 0) hide();else installerError();
-		});
-	}
-
-	form.addEventListener('submit', function (evt) {
-		evt.preventDefault();
-		run();
-	});
-
-	return { toggle: toggle };
+	return {
+		quitApp: function quitApp() {
+			processQueue.killAll(function () {
+				return ipcRenderer.send('can-quit');
+			});
+		}
+	};
 })();
