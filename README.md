@@ -50,6 +50,7 @@ These are the available options:
 - **alwaysOnTop**, whether the window is always in front of other windows
 - **font-stack**, the fonts in the GUI
 - **theme**, choose a light or dark theme for window
+- **hotkeys**, define hotkey combinations that will trigger npm scripts
 
 **.nsgrc Example**  
 ```
