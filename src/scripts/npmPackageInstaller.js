@@ -2,17 +2,22 @@
 const npmInstaller = (function() {
   
   let active = false;
-  const path = require('path');
-  const scriptsDir = path.join(__dirname, 'scripts');
-  const toArr = require(path.join(scriptsDir, 'toArray'));
-  const rand = require(path.join(scriptsDir, 'rand'));
+
+  require.local = function(...args) {
+    args.unshift(__dirname);
+    return require(require('path').join.apply(null, args));
+  }
+  
+  const toArr = require.local('scripts', 'toArray');
+  const rand = require.local('scripts', 'rand');
+  const logger = require.local('scripts', 'terminalLogger');
 
   const section = document.getElementById('npm-installer');
   const form = document.getElementById('npm-installer-form');
   const packageNameField = document.getElementById('package-name');
-  const radios = toArr(document.querySelectorAll('input[type=radio]'));
+  const radios = toArr(section.querySelectorAll('input[type=radio]'));
   const cover = document.getElementById('cover');
-  
+  const loader = document.getElementById('npm-installer-loader');
 
   function toggle() {
     active ? hide() : show() ;
@@ -55,6 +60,16 @@ const npmInstaller = (function() {
     setTimeout(() => {section.classList.remove('error')}, 400);
   }
 
+  function installerSuccess() {
+    section.classList.add('success');
+    setTimeout(() => {
+      section.classList.remove('success');
+      setTimeout(function() {
+        hide();
+      }, 200);
+    }, 400);
+  }
+
   function run() {
     const packName = getPackageName();
     const checkedRadio = getCheckedRadio();
@@ -71,9 +86,12 @@ const npmInstaller = (function() {
       depType: checkedRadio
     });
 
+    loader.classList.add('active');
+
     cmd.on('exit', function(code, signal) {
       logger('\n["' + commandString + '" ended]\n');
-      if (code === 0) hide();
+      loader.classList.remove('active');
+      if (code === 0) installerSuccess();
       else installerError();
     });
   }

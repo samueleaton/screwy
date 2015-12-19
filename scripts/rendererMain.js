@@ -6,24 +6,32 @@ var main = (function () {
 	var path = require('path');
 	var fs = require('fs');
 
-	var scriptsDir = path.join(__dirname, 'scripts');
+	require.local = function () {
+		for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+			args[_key] = arguments[_key];
+		}
+
+		args.unshift(__dirname);
+		return require(require('path').join.apply(null, args));
+	};
+
 	var remote = require('remote');
 	var app = remote.require('app');
-	var ipcRenderer = require('electron').ipcRenderer;
+	var electron = require('electron');
+	var ipcRenderer = electron.ipcRenderer;
+	var remoteElectron = remote.require('electron');
+	var globalShortcut = remoteElectron.globalShortcut;
 
-	var dom = require(path.join(scriptsDir, 'dom'));
+	var logger = require.local('scripts', 'terminalLogger');
+	var dom = require.local('scripts', 'dom');
 	var fang = require('fangs');
+	window.processQueue = require.local('scripts', 'processQueue');
 
-	var projPath = process.cwd();
-	var packageJsonPath = path.join(projPath, 'package.json');
+	var packageJsonPath = path.join(process.cwd(), 'package.json');
 	var primaryScriptsCont = dom('primaryScripts');
 	var secondaryScriptsCont = dom('secondaryScripts');
 	var primaryCommands = {};
 	var excludedCommands = {};
-
-	window.processQueue = require(path.join(scriptsDir, 'processQueue'));
-
-	var logger = require(path.join(scriptsDir, 'terminalLogger'));
 
 	fang(
 	// read .nsgrc config file

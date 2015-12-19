@@ -1,12 +1,16 @@
 'use strict';
 
-var app = require('app');
+function _typeof(obj) { return obj && typeof Symbol !== "undefined" && obj.constructor === Symbol ? "symbol" : typeof obj; }
+
+var electron = require('electron');
+var app = electron.app;
 var path = require('path');
 var Renderer = require('browser-window');
 var Menu = require('menu');
 var fs = require('fs');
 
-var ipcMain = require('electron').ipcMain;
+var globalShortcut = electron.globalShortcut;
+var ipcMain = electron.ipcMain;
 
 app.canQuit = false;
 
@@ -30,6 +34,12 @@ var menuTemplate = [{
 		accelerator: 'Cmd+i',
 		click: function click() {
 			app.renderer.webContents.executeJavaScript('npmInstaller.toggle();');
+		}
+	}, {
+		label: 'Bash Commands',
+		accelerator: 'Cmd+Shift+c',
+		click: function click() {
+			app.renderer.webContents.executeJavaScript('bashCommander.toggle();');
 		}
 	}, {
 		type: 'separator'
@@ -77,6 +87,7 @@ app.on('ready', function (evt) {
 		app.renderer.on('closed', function () {
 			app.renderer = null;
 			console.log('NSG exited');
+			globalShortcut.unregisterAll();
 			app.exit(0);
 		});
 
@@ -86,8 +97,17 @@ app.on('ready', function (evt) {
 			app.renderer.webContents.executeJavaScript('main.quitApp();');
 		});
 
+		if (_typeof(configData.hotkeys) === 'object') {
+			Object.keys(configData.hotkeys).forEach(function (cmd) {
+				var hotkeys = configData.hotkeys[cmd];
+				globalShortcut.register(hotkeys, function () {
+					app.renderer.webContents.executeJavaScript('buttonTrigger("' + cmd + '");');
+				});
+			});
+		}
+
 		app.renderer.loadURL(path.join('file://', __dirname, 'index.html'));
-		app.renderer.toggleDevTools(); // uncomment to view dev tools in renderer
+		// app.renderer.toggleDevTools(); // uncomment to view dev tools in renderer
 	});
 });
 

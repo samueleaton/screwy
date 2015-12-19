@@ -3,5 +3,9 @@
 	"primary": ["stylus"],
 	"exclude": ["postinstall"],
 	"alwaysOnTop": true,
-  "theme": "dark"
+  "theme": "dark",
+  "hotkeys": {
+  	"babel-scripts": "Control+Cmd+Alt+s",
+  	"stylus": "Control+Cmd+Alt+c"
+  }
 }

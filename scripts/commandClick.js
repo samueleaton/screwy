@@ -2,10 +2,19 @@
 
 var commandClick = (function () {
   var path = require('path');
-  var scriptsDir = path.join(__dirname, 'scripts');
-  var dom = require(path.join(scriptsDir, 'dom'));
-  var logger = require(path.join(scriptsDir, 'terminalLogger'));
   var EventEmitter = require('events').EventEmitter;
+
+  require.local = function () {
+    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
+
+    args.unshift(__dirname);
+    return require(require('path').join.apply(null, args));
+  };
+
+  var dom = require.local('scripts', 'dom');
+  var logger = require.local('scripts', 'terminalLogger');
 
   function createSpinnerImg(btn) {
     if (btn.dataset.primary === 'true') var spinnerImgFile = path.join('images', theme.getPrimaryLoader());else var spinnerImgFile = path.join('images', theme.getLoader());

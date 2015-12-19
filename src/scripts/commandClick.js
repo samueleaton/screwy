@@ -1,10 +1,15 @@
 const commandClick = (function() {
   const path = require('path');
-  const scriptsDir = path.join(__dirname, 'scripts');
-  const dom = require(path.join(scriptsDir, 'dom'));
-  const logger = require(path.join(scriptsDir, 'terminalLogger'));
   const EventEmitter = require('events').EventEmitter;
-  
+
+  require.local = function(...args) {
+    args.unshift(__dirname);
+    return require(require('path').join.apply(null, args));
+  }
+
+  const dom = require.local('scripts', 'dom');
+  const logger = require.local('scripts', 'terminalLogger');
+ 
   function createSpinnerImg(btn) {
     if (btn.dataset.primary === 'true')
       var spinnerImgFile = path.join('images', theme.getPrimaryLoader());
@@ -14,7 +19,6 @@ const commandClick = (function() {
     return dom.create('img').addClass('in-progress')
       .attr('src', spinnerImgFile);
   }
-
 
   return function(btn) {
     if (btn.classList.contains('in-progress')) return;

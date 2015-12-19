@@ -4,27 +4,29 @@ const main = (function() {
 	const path = require('path');
 	const fs = require('fs');
 
-	const scriptsDir = path.join(__dirname, 'scripts');
+	require.local = function(...args) {
+	  args.unshift(__dirname);
+	  return require(require('path').join.apply(null, args));
+	}
+
 	const remote = require('remote');
 	const app = remote.require('app');
-	const ipcRenderer = require('electron').ipcRenderer;
+	const electron = require('electron');
+	const ipcRenderer = electron.ipcRenderer;
+	const remoteElectron = remote.require('electron');
+	const globalShortcut = remoteElectron.globalShortcut;
 
-	const dom = require(path.join(scriptsDir, 'dom'));
+	const logger = require.local('scripts', 'terminalLogger');
+	const dom = require.local('scripts', 'dom');
 	const fang = require('fangs');
-	
+	window.processQueue = require.local('scripts', 'processQueue');
 
-	const projPath = process.cwd();
-	const packageJsonPath = path.join(projPath, 'package.json');
+	const packageJsonPath = path.join(process.cwd(), 'package.json');
 	const primaryScriptsCont = dom('primaryScripts');
 	const secondaryScriptsCont = dom('secondaryScripts');
 	let primaryCommands = {};
 	let excludedCommands = {};
-
-	window.processQueue = require(path.join(scriptsDir, 'processQueue'));
-
-
-	const logger = require(path.join(scriptsDir, 'terminalLogger'));
-
+	
 	fang(
 		// read .nsgrc config file
 		next => {
@@ -132,16 +134,10 @@ const main = (function() {
 		}
 	)();
 
-
-
-
 	process.on('uncaughtException', function(e) {
 		logger('NSG ERROR:');
 		logger(e.stack);
 	});
-
-
-
 
 	return {
 		quitApp() {
