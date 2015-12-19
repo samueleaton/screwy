@@ -1,12 +1,14 @@
 'use strict';
 
-const app = require('app');
+const electron = require('electron');
+const app = electron.app;
 const path = require('path');
 const Renderer = require('browser-window');
 const Menu = require('menu');
 const fs = require('fs');
 
-const ipcMain = require('electron').ipcMain;
+const globalShortcut = electron.globalShortcut;
+const ipcMain = electron.ipcMain;
 
 app.canQuit = false;
 
@@ -32,6 +34,13 @@ const menuTemplate = [
 				accelerator: 'Cmd+i',
 				click() {
 					app.renderer.webContents.executeJavaScript('npmInstaller.toggle();');
+				}
+			},
+			{
+				label: 'Bash Commands',
+				accelerator: 'Cmd+Shift+c',
+				click() {
+					app.renderer.webContents.executeJavaScript('bashCommander.toggle();');
 				}
 			},
 			{
@@ -85,14 +94,24 @@ app.on('ready', function(evt) {
 		app.renderer.on('closed', () => {
 			app.renderer = null;
 			console.log('NSG exited');
+			globalShortcut.unregisterAll();
 			app.exit(0);
 		});
 
 		app.renderer.on('close', evt => {
 			if (app.canQuit) return;
 			evt.preventDefault();
-			app.renderer.webContents.executeJavaScript('appQuitting();');
+			app.renderer.webContents.executeJavaScript('main.quitApp();');
 		});
+
+		if (typeof configData.hotkeys === 'object') {
+			Object.keys(configData.hotkeys).forEach(cmd => {
+				const hotkeys = configData.hotkeys[cmd];
+				globalShortcut.register(hotkeys, () => {
+					app.renderer.webContents.executeJavaScript('buttonTrigger("' + cmd + '");');
+				});
+			});
+		}
 
 		app.renderer.loadURL(path.join('file://',  __dirname, 'index.html'));
 		// app.renderer.toggleDevTools(); // uncomment to view dev tools in renderer

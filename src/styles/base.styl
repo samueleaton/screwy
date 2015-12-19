@@ -119,6 +119,9 @@ section#npm-installer
 		bottom -200px
 	&.error
 		background-color rgb(204,54,50)
+	&.success
+		// background-color rgb(240,240,240)
+		background-color rgb(27,84,159)
 	span, label, div
 		color white
 		vertical-align middle
@@ -133,7 +136,19 @@ section#npm-installer
 		width 90%
 		height 70%
 		// background-color orange
-		div#command-line
+		img.loader
+			height 15px
+			width 15px
+			position absolute
+			bottom 6px
+			right 15%
+			user-select none
+			pointer-events none
+			visibility hidden
+			&.active
+				visibility visible
+				animation spin .75s linear infinite
+		div#npm-installer-command-line
 			width 100%
 			height 40px
 			position relative
@@ -189,6 +204,104 @@ section#npm-installer
 				input
 					margin-left 6px
 	input#npm-installer-submit
+		position absolute
+		right 0
+		bottom 0
+		outline none
+		border none
+		background-color rgb(45,45,45)
+		font-size 17px
+		padding 5px 10px
+		color white
+		cursor pointer
+		outline 1px solid rgb(10,10,10)
+		box-shadow 0 2px 1px rgba(0,0,0,.6)
+		transition background-color .3s ease
+		&:hover
+			background-color rgb(55,55,55)
+
+section#bash-commander
+	width 100%
+	height 160px
+	background-color rgb(35,35,35)
+	position absolute
+	bottom 0
+	left 0
+	box-shadow inset 0 1px 2px rgba(0,0,0,.5), 0 -1px 4px rgba(0,0,0,.4)
+	border-top 3px solid rgb(204,54,50)
+	z-index 10
+	transition bottom .35s ease, background-color .2s ease
+	&.hide
+		bottom -200px
+	&.error
+		background-color rgb(204,54,50)
+	span, label, div
+		color white
+		vertical-align middle
+		display inline-block
+	span, label, input, div
+		font-family font-stack !important
+	h2.bash-commander
+		display block
+		// background-color purple
+		margin 0
+		// position absolute
+		top 0
+		left 0
+		// transform translateY(-50%)
+		height 30px
+		line-height 30px
+		color white
+	form
+		position absolute
+		top 50%
+		left 50%
+		transform translate(-50%, -50%)
+		width 90%
+		height 70%
+		// background-color orange
+		div#bash-commander-command-line
+			HEIGHT = 40px
+			width 100%
+			height HEIGHT
+			position relative
+			margin 0 auto
+			padding 0 0
+			input#bash-commander-input
+				outline-offset 0
+				padding 0
+				height HEIGHT
+				line-height HEIGHT
+				text-indent 5px
+				font-size 15px
+				margin 0
+				outline none
+				border none
+				color white
+				background-color rgb(45,45,45)
+				outline 1px solid rgb(25,25,25)
+				box-shadow 0 2px 3px rgba(0,0,0,.3)
+				width 100%
+				position absolute
+				top 0
+				transition outline .3s ease, background-color .3s ease
+				&:focus
+					outline 1px solid rgb(10,10,10)
+					background-color rgb(25,25,25)
+				&::-webkit-input-placeholder
+					color rgba(255,255,255,.6)
+		fieldset.radios
+			position absolute
+			bottom 0
+			left 0
+			label
+				display inline-block
+				margin 2px 0
+				vertical-align middle
+				font-size 15px
+				input
+					margin-left 6px
+	input#bash-commander-submit
 		position absolute
 		right 0
 		bottom 0

@@ -2,6 +2,15 @@
 
 var spawn = require('child_process').spawn;
 var psTree = require('ps-tree');
+require.local = function () {
+	for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+		args[_key] = arguments[_key];
+	}
+
+	args.unshift(__dirname);
+	return require(require('path').join.apply(null, args));
+};
+var logger = require.local('terminalLogger');
 
 var queue = {};
 
@@ -18,13 +27,12 @@ function killAll(cb) {
 	var cmds = Object.keys(queue);
 	var total = cmds.length;
 	var completedCount = 0;
-
 	if (total === 0) return cb();
 
 	cmds.forEach(function (cmd) {
 		kill(cmd, function () {
 			completedCount++;
-			console.log('killed: ', cmd);
+
 			if (completedCount === total) cb();
 		});
 	});
@@ -36,7 +44,18 @@ function kill(cmdName, cb) {
 			if (err) return alert('ERROR ' + err);
 			if (typeof cb === 'function') cb();
 		});
-	}
+	} else if (typeof cb === 'function') cb();
+}
+
+function runBash(obj) {
+	queue[obj.id] = spawn(obj.command, obj.arguments, {
+		cwd: process.cwd(),
+		stdio: [0, 1, 2]
+	}).on('error', function (err) {
+		logger('ERROR WITH COMMAND: ' + obj.command + ' ' + obj.arguments.join(' '));
+		kill(obj.id);
+	});
+	return queue[obj.id];
 }
 
 function install(obj) {
@@ -64,5 +83,6 @@ module.exports = {
 	kill: kill,
 	killAll: killAll,
 	run: run,
-	install: install
+	install: install,
+	runBash: runBash
 };
