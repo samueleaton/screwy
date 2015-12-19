@@ -74,7 +74,7 @@ Any script not specified in ` primary ` or ` exclude ` will show up as a normal 
 
 Hotkey combinations are configurable in the ` .nsgrc ` file. These allow you to trigger any npm scripts without needing to even click on the button or even being focused on the GUI window. 
 
-I repeat, you can have the GUI window minimized and the hotkeys will still trigger button clicks, and output will be sent visible in the terminal.
+Again, you can have the GUI window minimized and the hotkeys will still trigger button clicks, and output will be sent to the terminal.
 
 Hotkeys are defined in the ` .nsgrc ` file. They require the name of the npm script as the key and the hotkey combination as the value. Here is an example:  
 ```
