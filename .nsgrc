@@ -2,5 +2,10 @@
 	"name": "NSG",
 	"primary": ["stylus"],
 	"exclude": ["postinstall"],
-	"alwaysOnTop": true
+	"alwaysOnTop": true,
+  "theme": "dark",
+  "hotkeys": {
+  	"babel-scripts": "Control+Cmd+Alt+s",
+  	"stylus": "Control+Cmd+Alt+c"
+  }
 }

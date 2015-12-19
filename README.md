@@ -27,18 +27,12 @@ npm i -g npm-scripts-gui
 
 ## Instructions
 ##### Launching  
-To launch Npm Script GUI (NSG), you must be in a directory with a `package.json` file.   
+To launch Npm Script GUI (NSG), you must be in a directory with a ` package.json ` file.   
 
 Then simply run:  
-```
-npm-script-gui
-```   
-or the shorter   
-```
-nsg
-``` 
-
-Any text output associated with any npm script in the `package.json` will be printed to the command line where NSG was launched. 
+` npm-script-gui ` or the shorter ` nsg `
+  
+Any text output associated with any npm script in the ` package.json ` will be printed to the command line where NSG was launched. 
 
 ##### Quiting  
 To **quit** the app, it is safer to close the actual renderer window rather than quiting the process from the command line. If quiting from the command line, NSG may not do the check to make sure all processes are killed before closing. 
@@ -47,10 +41,10 @@ To **quit** the app, it is safer to close the actual renderer window rather than
 Processes will die automatically when they finish or when the app is closed, but there may be times when you want to manually kill a process. Simply **double click the button**. 
 
 ## Configurations
-NSG will automatically search for a `.nsgrc` in the same directory as the `package.json`. It should be in json format.
+NSG will automatically search for a ` .nsgrc ` in the same directory as the ` package.json `. It should be in json format.
 
 These are the available options:
-- **name**, choose different name than defined in `package.json`
+- **name**, choose different name than defined in ` package.json `
 - **primary**, the primary script buttons for scripts that will be ran more frequently
 - **exclude**, scripts to NOT include in the GUI
 - **alwaysOnTop**, whether the window is always in front of other windows
@@ -65,12 +59,33 @@ These are the available options:
 	"exclude": ["scripts-gui", "prebuild"],
 	"alwaysOnTop": true,
 	"font-stack": ["source code pro", "menlo", "helvetica neue"],
-	"theme": "dark"
+	"theme": "dark",
+    "hotkeys": {
+        "build": "Control+Alt+b",
+        "run-production": "Shift+Command+1",
+        "run-sandbox": "Shift+Command+2"
+    }
 }
 ```
 
-Any script not specified in `primary` or `exclude` will show up as a normal button.
+Any script not specified in ` primary ` or ` exclude ` will show up as a normal button.
 
+## Hotkeys
+
+Hotkey combinations are configurable in the ` .nsgrc ` file. These allow you to trigger any npm scripts without needing to even click on the button or even being focused on the GUI window. 
+
+I repeat, you can have the GUI window minimized and the hotkeys will still trigger button clicks, and output will be sent visible in the terminal.
+
+Hotkeys are defined in the ` .nsgrc ` file. They require the name of the npm script as the key and the hotkey combination as the value. Here is an example:  
+```
+{
+    "hotkeys": {
+        "build": "Control+Alt+b",
+        "run-production": "Shift+Command+1",
+        "run-sandbox": "Shift+Command+2"
+    }
+}
+```
 
 ## Npm Package Installer
 
@@ -83,14 +98,14 @@ Any script not specified in `primary` or `exclude` will show up as a normal butt
 This feature was added to keep you from needing to open an extra terminal tab just to run `npm install <package>`. Hit `cmd+i` (or select 'npm installer' from the menu bar) to open the npm installer.
 
 You can run:  
-- `npm install`
-- `npm install <package>`
-- `npm install --save <package>`
-- `npm install --save-dev <package>`
+- ` npm install `
+- ` npm install <package> `
+- ` npm install --save <package> `
+- ` npm install --save-dev <package> `
 
 Just like with the npm scripts buttons, output for the npm package installer will be rendered in the terminal where NSG was launched.  
 
-If there is a non-zero return code (aka an error code) for the `npm install` then the Npm Package installer will flash red--you should also see errors in the terminal. 
+If there is a non-zero return code (aka an error code) for the ` npm install ` then the Npm Package installer will flash red--you should also see errors in the terminal. 
 
 ### Future Configuration Plans:  
 - ability to sort scripts (e.g. alphabetically)
