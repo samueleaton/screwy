@@ -1,7 +1,7 @@
 {
 	"name": "NSG",
 	"primary": ["stylus"],
-	"exclude": ["postinstall"],
+	"exclude": ["babel-postinstall", "postinstall"],
 	"alwaysOnTop": true,
   "theme": "dark",
   "hotkeys": {
