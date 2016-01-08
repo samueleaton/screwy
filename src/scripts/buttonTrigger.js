@@ -1,8 +1,6 @@
-const buttonTrigger = (function() {
-  return function(commandName) {
-    const btn = document.querySelector('[data-cmd="' + commandName + '"]');
+function buttonTrigger(commandName) {
+  const btn = document.querySelector('[data-cmd="' + commandName + '"]');
 
-    if (btn instanceof HTMLElement)
-      btn.click();
-  };
-})();
+  if (btn instanceof HTMLElement)
+    btn.click();
+}

@@ -37,13 +37,6 @@ const menuTemplate = [
 				}
 			},
 			{
-				label: 'Bash Commands',
-				accelerator: 'Cmd+Shift+c',
-				click() {
-					app.renderer.webContents.executeJavaScript('bashCommander.toggle();');
-				}
-			},
-			{
 				type: 'separator'
 			},
 			{
