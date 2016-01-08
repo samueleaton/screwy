@@ -1,7 +1,7 @@
 'use strict';
 
 // will run in global scope in renderer
-var npmInstaller = (function () {
+var npmInstaller = function () {
 
   var active = false;
 
@@ -112,4 +112,4 @@ var npmInstaller = (function () {
   });
 
   return { toggle: toggle };
-})();
+}();

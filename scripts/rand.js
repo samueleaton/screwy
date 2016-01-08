@@ -1,6 +1,6 @@
 'use strict';
 
-module.exports = (function () {
+module.exports = function () {
 
 	var charMap = {
 		numeric: '1234567890',
@@ -33,4 +33,4 @@ module.exports = (function () {
 	};
 
 	return rand;
-})();
+}();

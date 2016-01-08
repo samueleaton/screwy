@@ -1,6 +1,6 @@
 'use strict';
 
-var commandClick = (function () {
+var commandClick = function () {
   var path = require('path');
   var EventEmitter = require('events').EventEmitter;
 
@@ -62,4 +62,4 @@ var commandClick = (function () {
 
     event.emit('commandInit');
   };
-})();
+}();

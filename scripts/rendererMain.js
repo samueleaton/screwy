@@ -1,6 +1,6 @@
 'use strict';
 
-var main = (function () {
+var main = function () {
 	'use strict';
 
 	var path = require('path');
@@ -140,4 +140,4 @@ var main = (function () {
 			});
 		}
 	};
-})();
+}();

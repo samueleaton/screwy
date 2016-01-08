@@ -1,6 +1,6 @@
 'use strict';
 
-module.exports = (function () {
+module.exports = function () {
 	var _cache = {};
 
 	function cleanCache() {
@@ -219,4 +219,4 @@ module.exports = (function () {
 		}
 	};
 	return _dom;
-})();
+}();

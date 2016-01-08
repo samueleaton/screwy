@@ -1,6 +1,6 @@
 'use strict';
 
-var theme = (function () {
+var theme = function () {
 	'use strict';
 
 	var fs = require('fs');
@@ -48,4 +48,4 @@ var theme = (function () {
 			});
 		}
 	};
-})();
+}();
