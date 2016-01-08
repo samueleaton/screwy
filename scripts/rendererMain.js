@@ -133,6 +133,11 @@ var main = function () {
 		logger(e.stack);
 	});
 
+	window.addEventListener('resize', function (evt) {
+		console.log('resized');
+		dom('html').style.height = window.innerHeight;
+	});
+
 	return {
 		quitApp: function quitApp() {
 			processQueue.killAll(function () {

@@ -149,7 +149,8 @@ select {
 }
 html {
   border: 1px solid #e6e6e6;
-  height: 273px;
+  min-height: 273px;
+  height: 100%;
   width: 518px;
   overflow: hidden;
 }

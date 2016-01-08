@@ -139,6 +139,11 @@ const main = (function() {
 		logger(e.stack);
 	});
 
+	window.addEventListener('resize', evt => {
+		console.log('resized');
+		dom('html').style.height = window.innerHeight;
+	});
+
 	return {
 		quitApp() {
 			processQueue.killAll(() => ipcRenderer.send('can-quit'));

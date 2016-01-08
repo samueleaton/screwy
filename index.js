@@ -71,10 +71,14 @@ app.on('ready', function (evt) {
 
 		app.renderer = new Renderer({
 			width: 520,
+			maxWidth: 520,
+			minWidth: 520,
 			height: 275,
+			minHeight: 275,
+			maxHeight: 400,
 			'title-bar-style': 'hidden-inset',
 			fullscreen: false,
-			resizable: false,
+			// resizable: false,
 			alwaysOnTop: alwaysOnTop
 		});
 
