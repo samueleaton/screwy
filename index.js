@@ -96,16 +96,32 @@ app.on('ready', function (evt) {
 		});
 
 		if (_typeof(configData.hotkeys) === 'object') {
-			Object.keys(configData.hotkeys).forEach(function (cmd) {
-				var hotkeys = configData.hotkeys[cmd];
-				globalShortcut.register(hotkeys, function () {
-					app.renderer.webContents.executeJavaScript('buttonTrigger("' + cmd + '");');
+			(function () {
+				var killCmdRegex = new RegExp('^kill ', 'i');
+				var restartCmdRegex = new RegExp('^restart ', 'i');
+
+				Object.keys(configData.hotkeys).forEach(function (cmd) {
+					var hotkey = configData.hotkeys[cmd];
+					var command = cmd;
+					var func = 'buttonTrigger';
+
+					if (killCmdRegex.test(cmd)) {
+						command = cmd.slice(5);
+						func = 'buttonKiller';
+					} else if (restartCmdRegex.test(cmd)) {
+						command = cmd.slice(8);
+						func = 'buttonRestarter';
+					}
+
+					globalShortcut.register(hotkey, function () {
+						app.renderer.webContents.executeJavaScript(func + '("' + command + '");');
+					});
 				});
-			});
+			})();
 		}
 
 		app.renderer.loadURL(path.join('file://', __dirname, 'index.html'));
-		// app.renderer.toggleDevTools(); // uncomment to view dev tools in renderer
+		app.renderer.toggleDevTools(); // uncomment to view dev tools in renderer
 	});
 });
 

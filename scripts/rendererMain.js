@@ -21,7 +21,8 @@ var main = function () {
 	var ipcRenderer = electron.ipcRenderer;
 	var remoteElectron = remote.require('electron');
 	var globalShortcut = remoteElectron.globalShortcut;
-
+	var EventEmitter = require('events').EventEmitter;
+	global.evt = new EventEmitter();
 	var logger = require.local('scripts', 'terminalLogger');
 	var dom = require.local('scripts', 'dom');
 	var fang = require('fangs');
@@ -134,7 +135,6 @@ var main = function () {
 	});
 
 	window.addEventListener('resize', function (evt) {
-		console.log('resized');
 		dom('html').style.height = window.innerHeight;
 	});
 

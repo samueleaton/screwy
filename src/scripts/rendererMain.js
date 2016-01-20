@@ -15,7 +15,8 @@ const main = (function() {
 	const ipcRenderer = electron.ipcRenderer;
 	const remoteElectron = remote.require('electron');
 	const globalShortcut = remoteElectron.globalShortcut;
-
+	const EventEmitter = require('events').EventEmitter;
+	global.evt = new EventEmitter();
 	const logger = require.local('scripts', 'terminalLogger');
 	const dom = require.local('scripts', 'dom');
 	const fang = require('fangs');
@@ -140,7 +141,6 @@ const main = (function() {
 	});
 
 	window.addEventListener('resize', evt => {
-		console.log('resized');
 		dom('html').style.height = window.innerHeight;
 	});
 

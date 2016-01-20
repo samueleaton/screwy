@@ -102,16 +102,33 @@ app.on('ready', function(evt) {
 		});
 
 		if (typeof configData.hotkeys === 'object') {
+			const killCmdRegex = new RegExp('^kill ', 'i');
+			const restartCmdRegex = new RegExp('^restart ', 'i');
+
 			Object.keys(configData.hotkeys).forEach(cmd => {
-				const hotkeys = configData.hotkeys[cmd];
-				globalShortcut.register(hotkeys, () => {
-					app.renderer.webContents.executeJavaScript('buttonTrigger("' + cmd + '");');
+				const hotkey = configData.hotkeys[cmd];
+				let command = cmd;
+				let func = 'buttonTrigger';
+				
+				if (killCmdRegex.test(cmd)) {
+					command = cmd.slice(5);
+					func = 'buttonKiller';
+				}
+				else if (restartCmdRegex.test(cmd)) {
+					command = cmd.slice(8);
+					func = 'buttonRestarter';
+				}
+
+				globalShortcut.register(hotkey, () => {
+					app.renderer.webContents.executeJavaScript(`${func}("${command}");`);
 				});
+
+				
 			});
 		}
 
 		app.renderer.loadURL(path.join('file://',  __dirname, 'index.html'));
-		// app.renderer.toggleDevTools(); // uncomment to view dev tools in renderer
+		app.renderer.toggleDevTools(); // uncomment to view dev tools in renderer
 	});
 
 	

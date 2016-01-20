@@ -1,11 +1,13 @@
 {
-	"name": "NSG",
+	"name": "My site",
 	"primary": ["stylus"],
 	"exclude": ["babel-postinstall", "postinstall"],
-	"alwaysOnTop": true,
-  "theme": "dark",
+	"alwaysOnTop": false,
+  "theme": "light",
   "hotkeys": {
   	"babel-scripts": "Control+Cmd+Alt+s",
-  	"stylus": "Control+Cmd+Alt+c"
+  	"stylus": "Control+Cmd+Alt+c",
+    "kill stylus": "Control+Cmd+Alt+k",
+    "restart stylus": "Control+Cmd+Alt+r"
   }
 }
