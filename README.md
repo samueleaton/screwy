@@ -87,7 +87,7 @@ After specifying a path, you need to specify **which** npm script task to respon
 
 - **`START`** (default, may be excluded)
 -  **`KILL`**
-- **`RESTART`** (if the task is not yet running, it will start it, otherwise, it will kill it and restart it)
+- **`RESTART`** (if the task is running, this will kill it and start it)
 
 **NOTE:** A whitespace is required after any of the keywords.
 
@@ -127,7 +127,7 @@ Just as with file watching, the `START`, `RESTART`, and `KILL` commands may be u
 }
 ```
 
-In the above example, assuming the `start` command's job is to spin up a server, then `Control+Cmd+Alt+s` would start the server if it wasn't on, `Control+Cmd+Alt+r` would restart it if it was running (and also start it if it wasn't on), and `Control+Cmd+Alt+k` would shut it down. 
+In the above example, assuming the `start` command's job is to spin up a server, then `Control+Cmd+Alt+s` would start the server if it wasn't on, `Control+Cmd+Alt+r` would restart it if it was running, and `Control+Cmd+Alt+k` would shut it down. 
 
 More hotkey examples are in the Configurations section.
 
