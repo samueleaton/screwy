@@ -17,7 +17,7 @@ function buttonRestarter(commandName) {
 
   if (btn instanceof HTMLElement) {
     if (btn.classList.contains('in-progress')) {
-      global.evt.once(commandName + '-commandEnd', function (cmdName) {
+      window.globalEvent.once(commandName + '-commandEnd', function (cmdName) {
         process.nextTick(function () {
           return buttonTrigger(cmdName);
         });

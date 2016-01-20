@@ -9,6 +9,7 @@ var Renderer = require('browser-window');
 var Menu = require('menu');
 var fs = require('fs');
 
+var regexMap = require('./scripts/regexCommandMap');
 var globalShortcut = electron.globalShortcut;
 var ipcMain = electron.ipcMain;
 
@@ -96,32 +97,36 @@ app.on('ready', function (evt) {
 		});
 
 		if (_typeof(configData.hotkeys) === 'object') {
-			(function () {
-				var killCmdRegex = new RegExp('^kill ', 'i');
-				var restartCmdRegex = new RegExp('^restart ', 'i');
 
-				Object.keys(configData.hotkeys).forEach(function (cmd) {
-					var hotkey = configData.hotkeys[cmd];
-					var command = cmd;
-					var func = 'buttonTrigger';
+			Object.keys(configData.hotkeys).forEach(function (cmd) {
+				var hotkey = configData.hotkeys[cmd];
 
-					if (killCmdRegex.test(cmd)) {
-						command = cmd.slice(5);
-						func = 'buttonKiller';
-					} else if (restartCmdRegex.test(cmd)) {
-						command = cmd.slice(8);
-						func = 'buttonRestarter';
-					}
+				// defaults to START if none specified
+				if (!/ /g.test(cmd)) cmd = 'START ' + cmd;
 
-					globalShortcut.register(hotkey, function () {
-						app.renderer.webContents.executeJavaScript(func + '("' + command + '");');
-					});
+				var command = '';
+				var func = '';
+
+				if (regexMap.start.test(cmd)) {
+					command = cmd.slice(5).trim();
+					func = 'buttonTrigger';
+				}
+				if (regexMap.kill.test(cmd)) {
+					command = cmd.slice(4).trim();
+					func = 'buttonKiller';
+				} else if (regexMap.restart.test(cmd)) {
+					command = cmd.slice(7).trim();
+					func = 'buttonRestarter';
+				}
+
+				globalShortcut.register(hotkey, function () {
+					app.renderer.webContents.executeJavaScript(func + '("' + command + '");');
 				});
-			})();
+			});
 		}
 
 		app.renderer.loadURL(path.join('file://', __dirname, 'index.html'));
-		app.renderer.toggleDevTools(); // uncomment to view dev tools in renderer
+		// app.renderer.toggleDevTools(); // uncomment to view dev tools in renderer
 	});
 });
 

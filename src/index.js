@@ -7,6 +7,7 @@ const Renderer = require('browser-window');
 const Menu = require('menu');
 const fs = require('fs');
 
+const regexMap = require('./scripts/regexCommandMap');
 const globalShortcut = electron.globalShortcut;
 const ipcMain = electron.ipcMain;
 
@@ -102,20 +103,26 @@ app.on('ready', function(evt) {
 		});
 
 		if (typeof configData.hotkeys === 'object') {
-			const killCmdRegex = new RegExp('^kill ', 'i');
-			const restartCmdRegex = new RegExp('^restart ', 'i');
 
 			Object.keys(configData.hotkeys).forEach(cmd => {
 				const hotkey = configData.hotkeys[cmd];
-				let command = cmd;
-				let func = 'buttonTrigger';
+
+				// defaults to START if none specified
+				if (!(/ /g).test(cmd)) cmd = 'START ' + cmd;
+
+				let command = '';
+				let func = '';
 				
-				if (killCmdRegex.test(cmd)) {
-					command = cmd.slice(5);
+				if (regexMap.start.test(cmd)) {
+					command = cmd.slice(5).trim();
+					func = 'buttonTrigger';
+				}
+				if (regexMap.kill.test(cmd)) {
+					command = cmd.slice(4).trim();
 					func = 'buttonKiller';
 				}
-				else if (restartCmdRegex.test(cmd)) {
-					command = cmd.slice(8);
+				else if (regexMap.restart.test(cmd)) {
+					command = cmd.slice(7).trim();
 					func = 'buttonRestarter';
 				}
 
@@ -128,7 +135,7 @@ app.on('ready', function(evt) {
 		}
 
 		app.renderer.loadURL(path.join('file://',  __dirname, 'index.html'));
-		app.renderer.toggleDevTools(); // uncomment to view dev tools in renderer
+		// app.renderer.toggleDevTools(); // uncomment to view dev tools in renderer
 	});
 
 	

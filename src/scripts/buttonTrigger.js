@@ -17,7 +17,7 @@ function buttonRestarter(commandName) {
 
   if (btn instanceof HTMLElement) {
     if (btn.classList.contains('in-progress')) {
-      global.evt.once(commandName + '-commandEnd', cmdName => {
+      window.globalEvent.once(commandName + '-commandEnd', cmdName => {
         process.nextTick(() => buttonTrigger(cmdName));
       });
       btn.dispatchEvent(new Event("dblclick"));

@@ -4,10 +4,14 @@
 	"exclude": ["babel-postinstall", "postinstall"],
 	"alwaysOnTop": false,
   "theme": "light",
+  "watch": {
+    "src/scripts": "RESTART stylus",
+    "src/styles": "babel-index"
+  },
   "hotkeys": {
   	"babel-scripts": "Control+Cmd+Alt+s",
   	"stylus": "Control+Cmd+Alt+c",
-    "kill stylus": "Control+Cmd+Alt+k",
-    "restart stylus": "Control+Cmd+Alt+r"
+    "KILL stylus": "Control+Cmd+Alt+k",
+    "RESTART stylus": "Control+Cmd+Alt+r"
   }
 }

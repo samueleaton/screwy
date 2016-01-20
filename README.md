@@ -73,9 +73,59 @@ Whether NSG is installed globally or as a dependency, any text output associated
 
 To **quit** the app, it is safer to close the actual renderer window rather than quiting the process from the command line. If quiting from the command line, NSG may not do the check to make sure all processes are killed before closing. 
 
-#### On Stopping a Running Script   
+#### Killing a Running Script   
 
 Processes will die automatically when they finish or when the app is closed, but there may be times when you want to manually kill a process. Simply **double click the button**. 
+
+## File Watching
+
+You can tell NSG to watch files and how to respond to those changes. You need to create a `watch` block in the `.nsgrc` file. You can watch directories, files, and use the `*` and `**` wildcards. 
+
+After specifying a path, you need to specify **which** npm script task to respond to the file change and **how** it should respond. There are 3 options regarding the type of action to perform:
+
+- **`START`** (default, may be excluded)
+-  **`KILL`**
+- **`RESTART`** (if the task is not yet running, it will start it, otherwise, it will kill it and restart it)
+
+**NOTE:** A whitespace is required after any of the keywords.
+
+Example:
+
+``` json
+{
+    "watch": {
+        "src/scripts/*.js": "RESTART transpile-scripts",
+        "./index.js": "RESTART start-server",
+        "src/styles": "stylus"
+    }
+}
+```
+
+In the example, the first watcher will restart the `transpile-scripts` task when any `.js` files are changed at `src/scripts`. The second watcher will apparently restart the server when the `index.js` file is changed. The last watcher will run `START stylus` (`START` is default).
+
+## Hotkeys  
+
+Hotkey combinations are configurable in the ` .nsgrc ` file. These allow you to trigger any npm scripts without needing to even click on the button or even being focused on the GUI window. 
+
+Again, you can have the GUI window minimized and the hotkeys will still trigger button clicks, and output will be sent to the terminal.
+
+Hotkeys are defined in the ` .nsgrc ` file. They require the name of the npm script as the key and the hotkey combination as the value. 
+
+Just as with file watching, the `START`, `RESTART`, and `KILL` commands may be used with the npm task name.
+
+``` json
+{
+    "hotkeys": {
+        "start": "Control+Cmd+Alt+s",
+        "RESTART start": "Control+Cmd+Alt+r",
+        "KILL start": "Control+Cmd+Alt+k"
+    }
+}
+```
+
+In the above example, assuming the `start` command's job is to spin up a server, then `Control+Cmd+Alt+s` would start the server if it wasn't on, `Control+Cmd+Alt+r` would restart it if it was running (and also start it if it wasn't on), and `Control+Cmd+Alt+k` would shut it down. 
+
+More hotkey examples are in the Configurations section.
 
 ## Configurations  
 
@@ -83,11 +133,12 @@ NSG will automatically search for a ` .nsgrc ` in the same directory as the ` pa
 
 These are the available options:
 - **name**, choose different name than defined in ` package.json `
-- **primary**, the primary script buttons for scripts that will be ran more frequently
+- **primary**, the primary script buttons (red buttons) for scripts that will be ran more frequently
 - **exclude**, scripts to NOT include in the GUI
 - **alwaysOnTop**, whether the window is always in front of other windows
 - **font-stack**, the fonts in the GUI
 - **theme**, choose a light or dark theme for window
+- **watch**, specify paths to watch and tasks to respond to file changes
 - **hotkeys**, define hotkey combinations that will trigger npm scripts
 
 **.nsgrc Example**  
@@ -100,23 +151,21 @@ These are the available options:
     "alwaysOnTop": true,
     "font-stack": ["source code pro", "menlo", "helvetica neue"],
     "theme": "dark",
+    "watch": {
+        "src/scripts/*.js": "RESTART production",
+        "src/styles": "RESTART stylus"
+    },
     "hotkeys": {
         "build": "Control+Alt+b",
         "run-production": "Shift+Command+1",
-        "run-sandbox": "Shift+Command+2"
+        "run-sandbox": "Shift+Command+2",
+        "RESTART run-production": "Control+Cmd+Alt+r"
+        "KILL run-production": "Control+Cmd+Alt+k"
     }
 }
 ```
 
 Any script not specified in ` primary ` or ` exclude ` will show up as a normal button.
-
-## Hotkeys  
-
-Hotkey combinations are configurable in the ` .nsgrc ` file. These allow you to trigger any npm scripts without needing to even click on the button or even being focused on the GUI window. 
-
-Again, you can have the GUI window minimized and the hotkeys will still trigger button clicks, and output will be sent to the terminal.
-
-Hotkeys are defined in the ` .nsgrc ` file. They require the name of the npm script as the key and the hotkey combination as the value. Hotkey examples are in the Configurations section.
 
 ## Npm Package Installer
 
