@@ -1,19 +1,12 @@
 'use strict';
 
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
+
 var main = function () {
 	'use strict';
 
 	var path = require('path');
 	var fs = require('fs');
-
-	require.local = function () {
-		for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-			args[_key] = arguments[_key];
-		}
-
-		args.unshift(__dirname);
-		return require(require('path').join.apply(null, args));
-	};
 
 	var remote = require('remote');
 	var app = remote.require('app');
@@ -21,7 +14,8 @@ var main = function () {
 	var ipcRenderer = electron.ipcRenderer;
 	var remoteElectron = remote.require('electron');
 	var globalShortcut = remoteElectron.globalShortcut;
-
+	var EventEmitter = require('events').EventEmitter;
+	window.globalEvent = new EventEmitter();
 	var logger = require.local('scripts', 'terminalLogger');
 	var dom = require.local('scripts', 'dom');
 	var fang = require('fangs');
@@ -33,8 +27,11 @@ var main = function () {
 	var primaryCommands = {};
 	var excludedCommands = {};
 
-	fang(
-	// read .nsgrc config file
+	var readConfigs = fang(
+
+	/* read .nsgrc config file
+ *
+ */
 	function (next) {
 		fs.readFile(app.config, 'utf8', function (err, data) {
 			if (err) {
@@ -80,10 +77,17 @@ var main = function () {
 
 			theme.set(jsonData.theme);
 
+			// set file watchers
+			if (_typeof(jsonData.watch) === 'object') window.watchConfig(jsonData.watch);
+
 			return next();
 		});
-	}, function (next) {
-		// read package.json file
+	},
+
+	/* read package.json file
+ *
+ */
+	function (next) {
 		fs.readFile(packageJsonPath, 'utf8', function (err, data) {
 			if (err) {
 				logger('(package.json error) ' + err);
@@ -126,7 +130,7 @@ var main = function () {
 			// if no primary commands are found, remove the container
 			if (Object.keys(primaryCommands).length === 0) dom.remove(primaryScriptsCont);
 		});
-	})();
+	});
 
 	process.on('uncaughtException', function (e) {
 		logger('NSG ERROR:');
@@ -134,9 +138,10 @@ var main = function () {
 	});
 
 	window.addEventListener('resize', function (evt) {
-		console.log('resized');
 		dom('html').style.height = window.innerHeight;
 	});
+
+	window.globalEvent.on('ready', readConfigs);
 
 	return {
 		quitApp: function quitApp() {

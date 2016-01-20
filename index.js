@@ -9,6 +9,7 @@ var Renderer = require('browser-window');
 var Menu = require('menu');
 var fs = require('fs');
 
+var regexMap = require('./scripts/regexCommandMap');
 var globalShortcut = electron.globalShortcut;
 var ipcMain = electron.ipcMain;
 
@@ -96,10 +97,30 @@ app.on('ready', function (evt) {
 		});
 
 		if (_typeof(configData.hotkeys) === 'object') {
+
 			Object.keys(configData.hotkeys).forEach(function (cmd) {
-				var hotkeys = configData.hotkeys[cmd];
-				globalShortcut.register(hotkeys, function () {
-					app.renderer.webContents.executeJavaScript('buttonTrigger("' + cmd + '");');
+				var hotkey = configData.hotkeys[cmd];
+
+				// defaults to START if none specified
+				if (!/ /g.test(cmd)) cmd = 'START ' + cmd;
+
+				var command = '';
+				var func = '';
+
+				if (regexMap.start.test(cmd)) {
+					command = cmd.slice(5).trim();
+					func = 'buttonTrigger';
+				}
+				if (regexMap.kill.test(cmd)) {
+					command = cmd.slice(4).trim();
+					func = 'buttonKiller';
+				} else if (regexMap.restart.test(cmd)) {
+					command = cmd.slice(7).trim();
+					func = 'buttonRestarter';
+				}
+
+				globalShortcut.register(hotkey, function () {
+					app.renderer.webContents.executeJavaScript(func + '("' + command + '");');
 				});
 			});
 		}

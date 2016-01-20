@@ -4,18 +4,14 @@ const main = (function() {
 	const path = require('path');
 	const fs = require('fs');
 
-	require.local = function(...args) {
-	  args.unshift(__dirname);
-	  return require(require('path').join.apply(null, args));
-	}
-
 	const remote = require('remote');
 	const app = remote.require('app');
 	const electron = require('electron');
 	const ipcRenderer = electron.ipcRenderer;
 	const remoteElectron = remote.require('electron');
 	const globalShortcut = remoteElectron.globalShortcut;
-
+	const EventEmitter = require('events').EventEmitter;
+	window.globalEvent = new EventEmitter();
 	const logger = require.local('scripts', 'terminalLogger');
 	const dom = require.local('scripts', 'dom');
 	const fang = require('fangs');
@@ -27,8 +23,11 @@ const main = (function() {
 	let primaryCommands = {};
 	let excludedCommands = {};
 	
-	fang(
-		// read .nsgrc config file
+	const readConfigs = fang(
+
+		/* read .nsgrc config file
+		*
+		*/
 		next => {
 			fs.readFile(app.config, 'utf8', (err, data) => {
 				if (err) {
@@ -75,12 +74,18 @@ const main = (function() {
 
 				theme.set(jsonData.theme);
 
+				// set file watchers
+				if (typeof jsonData.watch === 'object')
+					window.watchConfig(jsonData.watch);
+
 				return next();
 			});
 		},
 
+		/* read package.json file
+		*
+		*/
 		next => {
-			// read package.json file
 			fs.readFile(packageJsonPath, 'utf8', (err, data) => {
 				if (err) {
 					logger('(package.json error) ' + err);
@@ -132,7 +137,7 @@ const main = (function() {
 					dom.remove(primaryScriptsCont);
 			});
 		}
-	)();
+	);
 
 	process.on('uncaughtException', function(e) {
 		logger('NSG ERROR:');
@@ -140,9 +145,10 @@ const main = (function() {
 	});
 
 	window.addEventListener('resize', evt => {
-		console.log('resized');
 		dom('html').style.height = window.innerHeight;
 	});
+
+	window.globalEvent.on('ready', readConfigs);
 
 	return {
 		quitApp() {

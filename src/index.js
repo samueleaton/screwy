@@ -7,6 +7,7 @@ const Renderer = require('browser-window');
 const Menu = require('menu');
 const fs = require('fs');
 
+const regexMap = require('./scripts/regexCommandMap');
 const globalShortcut = electron.globalShortcut;
 const ipcMain = electron.ipcMain;
 
@@ -102,11 +103,34 @@ app.on('ready', function(evt) {
 		});
 
 		if (typeof configData.hotkeys === 'object') {
+
 			Object.keys(configData.hotkeys).forEach(cmd => {
-				const hotkeys = configData.hotkeys[cmd];
-				globalShortcut.register(hotkeys, () => {
-					app.renderer.webContents.executeJavaScript('buttonTrigger("' + cmd + '");');
+				const hotkey = configData.hotkeys[cmd];
+
+				// defaults to START if none specified
+				if (!(/ /g).test(cmd)) cmd = 'START ' + cmd;
+
+				let command = '';
+				let func = '';
+				
+				if (regexMap.start.test(cmd)) {
+					command = cmd.slice(5).trim();
+					func = 'buttonTrigger';
+				}
+				if (regexMap.kill.test(cmd)) {
+					command = cmd.slice(4).trim();
+					func = 'buttonKiller';
+				}
+				else if (regexMap.restart.test(cmd)) {
+					command = cmd.slice(7).trim();
+					func = 'buttonRestarter';
+				}
+
+				globalShortcut.register(hotkey, () => {
+					app.renderer.webContents.executeJavaScript(`${func}("${command}");`);
 				});
+
+				
 			});
 		}
 

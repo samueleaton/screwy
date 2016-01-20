@@ -30,6 +30,5 @@ module.exports = (function() {
 		return rand(length, 'special');
 	};
 	
-
 	return rand;
 })();

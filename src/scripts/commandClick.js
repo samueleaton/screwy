@@ -45,7 +45,9 @@ const commandClick = (function() {
 
       cmd.on('exit', function(code, signal) {
         logger('\n["' + cmdName + '" command ended]\n');
-        event.emit('commandEnd');
+        event.emit('commandEnd', cmdName);
+        window.globalEvent.emit('commandEnd', cmdName);
+        window.globalEvent.emit(cmdName + '-commandEnd', cmdName);
       });
     }
 
@@ -58,7 +60,9 @@ const commandClick = (function() {
       removeSpinner();
     });
 
-    event.emit('commandInit');
+    event.emit('commandInit', btn.dataset.cmd);
+    window.globalEvent.emit('commandInit', btn.dataset.cmd);
+    window.globalEvent.emit(btn.dataset.cmd + '-commandInit', btn.dataset.cmd);
 
   };
 })();
