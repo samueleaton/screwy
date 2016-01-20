@@ -1,17 +1,17 @@
 {
-	"name": "My site",
-	"primary": ["stylus"],
-	"exclude": ["babel-postinstall", "postinstall"],
-	"alwaysOnTop": false,
+  "name": "My site",
+  "primary": ["stylus"],
+  "exclude": ["babel-postinstall", "postinstall"],
+  "alwaysOnTop": false,
   "theme": "light",
   "watch": {
     "src/scripts": "RESTART stylus",
     "src/styles": "babel-index"
   },
   "hotkeys": {
-  	"babel-scripts": "Control+Cmd+Alt+s",
-  	"stylus": "Control+Cmd+Alt+c",
-    "KILL stylus": "Control+Cmd+Alt+k",
-    "RESTART stylus": "Control+Cmd+Alt+r"
+    "Control+Cmd+Alt+s": "babel-scripts",
+    "Control+Cmd+Alt+c": "stylus",
+    "Control+Cmd+Alt+k": "KILL stylus",
+    "Control+Cmd+Alt+r": "RESTART stylus"
   }
 }

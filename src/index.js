@@ -104,33 +104,31 @@ app.on('ready', function(evt) {
 
 		if (typeof configData.hotkeys === 'object') {
 
-			Object.keys(configData.hotkeys).forEach(cmd => {
-				const hotkey = configData.hotkeys[cmd];
+			Object.keys(configData.hotkeys).forEach(keyCombo => {
+				let cmd = configData.hotkeys[keyCombo];
 
-				// defaults to START if none specified
+				// command defaults to START if none specified
 				if (!(/ /g).test(cmd)) cmd = 'START ' + cmd;
 
-				let command = '';
+				let npmCommand = '';
 				let func = '';
 				
 				if (regexMap.start.test(cmd)) {
-					command = cmd.slice(5).trim();
+					npmCommand = cmd.slice(5).trim();
 					func = 'buttonTrigger';
 				}
-				if (regexMap.kill.test(cmd)) {
-					command = cmd.slice(4).trim();
+				else if (regexMap.kill.test(cmd)) {
+					npmCommand = cmd.slice(4).trim();
 					func = 'buttonKiller';
 				}
 				else if (regexMap.restart.test(cmd)) {
-					command = cmd.slice(7).trim();
+					npmCommand = cmd.slice(7).trim();
 					func = 'buttonRestarter';
 				}
 
-				globalShortcut.register(hotkey, () => {
-					app.renderer.webContents.executeJavaScript(`${func}("${command}");`);
+				globalShortcut.register(keyCombo, () => {
+					app.renderer.webContents.executeJavaScript(`${func}("${npmCommand}");`);
 				});
-
-				
 			});
 		}
 

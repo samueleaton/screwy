@@ -77,6 +77,8 @@ To **quit** the app, it is safer to close the actual renderer window rather than
 
 Processes will die automatically when they finish or when the app is closed, but there may be times when you want to manually kill a process. Simply **double click the button**. 
 
+You can also use the `KILL` command with file watching and hotkeys.
+
 ## File Watching
 
 You can tell NSG to watch files and how to respond to those changes. You need to create a `watch` block in the `.nsgrc` file. You can watch directories, files, and use the `*` and `**` wildcards. 
@@ -113,12 +115,14 @@ Hotkeys are defined in the ` .nsgrc ` file. They require the name of the npm scr
 
 Just as with file watching, the `START`, `RESTART`, and `KILL` commands may be used with the npm task name.
 
+**Note:** As of v0.0.17, the order of the hotkey/npm command has switched to match the file watching format. The hotkey combo should now come first.
+
 ``` json
 {
     "hotkeys": {
-        "start": "Control+Cmd+Alt+s",
-        "RESTART start": "Control+Cmd+Alt+r",
-        "KILL start": "Control+Cmd+Alt+k"
+        "Control+Cmd+Alt+s": "start",
+        "Control+Cmd+Alt+r": "RESTART start",
+        "Control+Cmd+Alt+k": "KILL start"
     }
 }
 ```
@@ -156,11 +160,11 @@ These are the available options:
         "src/styles": "RESTART stylus"
     },
     "hotkeys": {
-        "build": "Control+Alt+b",
-        "run-production": "Shift+Command+1",
-        "run-sandbox": "Shift+Command+2",
-        "RESTART run-production": "Control+Cmd+Alt+r"
-        "KILL run-production": "Control+Cmd+Alt+k"
+        "Control+Alt+b": "build",
+        "Shift+Command+1": "run-production",
+        "Shift+Command+2": "run-sandbox",
+        "Control+Cmd+Alt+r": "RESTART run-production",
+        "Control+Cmd+Alt+k": "KILL run-production"
     }
 }
 ```
