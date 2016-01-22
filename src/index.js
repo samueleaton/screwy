@@ -6,26 +6,19 @@ const path = require('path');
 const Renderer = require('browser-window');
 const Menu = require('menu');
 const fs = require('fs');
-
 const regexMap = require('./scripts/regexCommandMap');
 const globalShortcut = electron.globalShortcut;
 const ipcMain = electron.ipcMain;
-
-app.canQuit = false;
-
-ipcMain.on('can-quit', () => {
-	app.canQuit = true;
-	app.renderer.close();
-});
-
-ipcMain.on('error', (evt, msg) => {
-	app.canQuit = true;
-	app.renderer.close();
-});
+const EventEmitter = require('events').EventEmitter;
 
 const configName = '.nsgrc';
 app.config = path.join(process.cwd(), configName);
+app.canQuit = true; // set to false once gui opens
+app.renderer = null;
 
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// Menu Bar
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 const menuTemplate = [
 	{
 		label: 'Window',
@@ -56,25 +49,52 @@ const menuTemplate = [
 	}
 ];
 
-app.renderer = null;
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// Events
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+app.on('error', msg => {
+	console.error(
+		'\n' + require('chalk').red(msg)
+	);
+	app.error = true;
+	app.canQuit = true;
+	app.quit();
+	process.exit(1);
+});
+
+process.on('uncaughtException', err => {
+	app.emit('error', err);
+	app.canQuit = true;
+	app.error = true;
+	app.quit();
+});
+
+ipcMain.on('can-quit', () => {
+	app.canQuit = true;
+	app.renderer.close();
+});
+
+ipcMain.on('error', (evt, msg) => {
+	app.canQuit = true;
+	app.renderer.close();
+});
+
+app.on('before-quit', evt => {
+	if (app.canQuit) return;
+	evt.preventDefault();
+});
 
 app.on('ready', function(evt) {
 	const menu = Menu.buildFromTemplate(menuTemplate);
 	Menu.setApplicationMenu(menu);
 
-	fs.readFile(app.config, 'utf8', function(err, data) {
-		let configData = {};
-		if (!err) {
-			try {
-				configData = JSON.parse(data);
-			}
-			catch (e) {
-				configData = {};
-				console.error('ERROR with ' + configName + ' parse: ', e);
-			}
-		}
+	fs.readFile(app.config, 'utf8', function(err, configData) {
+		let configObj = {};
+
+		if (!err) // if .nsgrc exists
+			configObj = parseJson(configData);
 		
-		const alwaysOnTop = configData.alwaysOnTop === true;
+		const alwaysOnTop = configObj.alwaysOnTop === true;
 
 		app.renderer = new Renderer({
 			width: 520,
@@ -85,7 +105,6 @@ app.on('ready', function(evt) {
 			maxHeight: 400,
 			'title-bar-style': 'hidden-inset',
 			fullscreen: false,
-			// resizable: false,
 			alwaysOnTop
 		});
 
@@ -102,46 +121,62 @@ app.on('ready', function(evt) {
 			app.renderer.webContents.executeJavaScript('main.quitApp();');
 		});
 
-		if (typeof configData.hotkeys === 'object') {
+		// Hotkeys
+		if (typeof configObj.hotkeys === 'object')
+			configureHotkeys(configObj);
 
-			Object.keys(configData.hotkeys).forEach(keyCombo => {
-				let cmd = configData.hotkeys[keyCombo];
+		// Init Renderer
+		if (!app.error) {
+			app.renderer.loadURL(path.join('file://',  __dirname, 'index.html'));
+			app.canQuit = false;
+			// app.renderer.toggleDevTools(); // uncomment to view dev tools in renderer
+		}
+	});
+});
 
-				// command defaults to START if none specified
-				if (!(/ /g).test(cmd)) cmd = 'START ' + cmd;
+function parseJson(jsonString) {
+	let jsonObj;
+	try {
+		jsonObj = JSON.parse(jsonString);
+	}
+	catch (e) {
+		jsonObj = {};
+		app.emit('error', 'ERROR with ' + configName + ' parse: ' + e);
+	}
+	return jsonObj;
+}
 
-				let npmCommand = '';
-				let func = '';
-				
-				if (regexMap.start.test(cmd)) {
-					npmCommand = cmd.slice(5).trim();
-					func = 'buttonTrigger';
-				}
-				else if (regexMap.kill.test(cmd)) {
-					npmCommand = cmd.slice(4).trim();
-					func = 'buttonKiller';
-				}
-				else if (regexMap.restart.test(cmd)) {
-					npmCommand = cmd.slice(7).trim();
-					func = 'buttonRestarter';
-				}
+function configureHotkeys(configObj) {
+	Object.keys(configObj.hotkeys).forEach(keyCombo => {
+		let cmd = configObj.hotkeys[keyCombo];
 
-				globalShortcut.register(keyCombo, () => {
-					app.renderer.webContents.executeJavaScript(`${func}("${npmCommand}");`);
-				});
-			});
+		// command defaults to START if none specified
+		if (!(/ /g).test(cmd))
+			cmd = 'START ' + cmd;
+
+		let npmCommand = '';
+		let func = '';
+		
+		if (regexMap.start.test(cmd)) {
+			npmCommand = cmd.slice(5).trim();
+			func = 'buttonTrigger';
+		}
+		else if (regexMap.kill.test(cmd)) {
+			npmCommand = cmd.slice(4).trim();
+			func = 'buttonKiller';
+		}
+		else if (regexMap.restart.test(cmd)) {
+			npmCommand = cmd.slice(7).trim();
+			func = 'buttonRestarter';
 		}
 
-		app.renderer.loadURL(path.join('file://',  __dirname, 'index.html'));
-		// app.renderer.toggleDevTools(); // uncomment to view dev tools in renderer
+		try {
+			globalShortcut.register(keyCombo, () => {
+				app.renderer.webContents.executeJavaScript(`${func}("${npmCommand}");`);
+			});
+		}
+		catch (e) {
+			app.emit('error', 'Error registering hotkeys "' + keyCombo + '"');
+		}
 	});
-
-	
-});
-
-app.on('before-quit', evt => {
-	if (app.canQuit) return;
-	evt.preventDefault();
-});
-
-
+}
