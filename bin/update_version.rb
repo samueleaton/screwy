@@ -1,18 +1,28 @@
 #!/usr/bin/env ruby
+
+#
+# Usage:
+#   run `npm run update-version` from the command line
+#
+
 require 'json'
+
 package_json_path = File.expand_path("../package.json", __dir__)
 package_json = JSON.parse(File.read package_json_path)
 version = package_json["version"]
 
+# current versions
 major, minor, patch = version.split(".").map!(&:to_i)
 
+# version incrementors
 inc_major = -> {"#{major + 1}.0.0"}
 inc_minor = -> {"#{major}.#{minor + 1}.0"}
 inc_patch = -> {"#{major}.#{minor}.#{patch + 1}"}
 
+# prompts increment type
 get_increment_type = -> {
   puts "current version: #{version}"
-  print "(major), (minor), or (patch)? "
+  print "Type of update: (major, minor, patch) "
   user_input = gets.chomp
   unless (user_input =~ /^\s*(major|minor|patch)\s*$/i)
     puts "Bad input. Aborting..."
@@ -21,6 +31,7 @@ get_increment_type = -> {
   user_input
 }
 
+# calculate new version
 get_new_version = -> (inc_type) {
   if inc_type =~ /^\s*major\s*$/i
     inc_major.()
@@ -31,6 +42,7 @@ get_new_version = -> (inc_type) {
   end
 }
 
+# confirm new version
 confirm_version = -> (new_version) {
   print "#{new_version} is ok? Y/(n) "
   confirm = gets.chomp
