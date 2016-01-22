@@ -17,7 +17,7 @@ A ~~GUI~~ gooey interface for npm scripts.
 </p>
 <br>
 
-*Tested on OS X Yosemite and El Capitan*
+*Tested on OS X Yosemite, OS X El Capitan, and Ubuntu*
 
 ## Install  
 
@@ -129,6 +129,26 @@ Just as with file watching, the `START`, `RESTART`, and `KILL` commands may be u
 
 In the above example, assuming the `start` command's job is to spin up a server, then `Control+Cmd+Alt+s` would start the server if it wasn't on, `Control+Cmd+Alt+r` would restart it if it was running, and `Control+Cmd+Alt+k` would shut it down. 
 
+##### Multi-platform Compatibility
+
+If you expect others to run NSG on a different platform than you are developing on, you will need to specify the platform to avoid conflicts.
+
+For Mac, use: `OSX` or `darwin`
+
+For Linux, use: `linux`
+
+``` json
+{
+    "hotkeys": {
+        "darwin": {
+            "Control+Cmd+Alt+s": "start",
+            "Control+Cmd+Alt+r": "RESTART start",
+            "Control+Cmd+Alt+k": "KILL start"
+        }
+    }
+}
+```
+
 More hotkey examples are in the Configurations section.
 
 ## Configurations  
@@ -191,7 +211,7 @@ Just like with the npm scripts buttons, output for the npm package installer wil
 
 If there is a non-zero return code (aka an error code) for the ` npm install ` then the Npm Package installer will flash red--you should also see errors in the terminal. 
 
-### Future Configuration Plans:  
+### Future Configuration Ides:  
 - ability to sort scripts (e.g. alphabetically)
 - create custom commands not in package.json (specific to gui)
 - run npm scripts in silent mode (good for linting tasks)

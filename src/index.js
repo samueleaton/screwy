@@ -10,9 +10,7 @@ const regexMap = require('./scripts/regexCommandMap');
 const globalShortcut = electron.globalShortcut;
 const ipcMain = electron.ipcMain;
 const EventEmitter = require('events').EventEmitter;
-
-const configName = '.nsgrc';
-app.config = path.join(process.cwd(), configName);
+const exec = require('child_process').exec;
 app.canQuit = true; // set to false once gui opens
 app.renderer = null;
 
@@ -63,6 +61,7 @@ app.on('error', msg => {
 });
 
 process.on('uncaughtException', err => {
+	console.log('exception');
 	app.emit('error', err);
 	app.canQuit = true;
 	app.error = true;
@@ -87,6 +86,12 @@ app.on('before-quit', evt => {
 app.on('ready', function(evt) {
 	const menu = Menu.buildFromTemplate(menuTemplate);
 	Menu.setApplicationMenu(menu);
+
+	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	// Configurations
+	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	const configName = '.nsgrc';
+	app.config = path.join(process.cwd(), configName);
 
 	fs.readFile(app.config, 'utf8', function(err, configData) {
 		let configObj = {};
@@ -123,7 +128,7 @@ app.on('ready', function(evt) {
 
 		// Hotkeys
 		if (typeof configObj.hotkeys === 'object')
-			configureHotkeys(configObj);
+			configureHotkeys(parsePlatformHotkeys(configObj.hotkeys));
 
 		// Init Renderer
 		if (!app.error) {
@@ -146,9 +151,51 @@ function parseJson(jsonString) {
 	return jsonObj;
 }
 
-function configureHotkeys(configObj) {
-	Object.keys(configObj.hotkeys).forEach(keyCombo => {
-		let cmd = configObj.hotkeys[keyCombo];
+function parsePlatformHotkeys(hotkeysObj) {
+	const platform = process.platform;
+	if (platform === 'darwin')
+		return parseDarwinHotkeys(hotkeysObj);
+	else if (platform === 'linux')
+		return parseLinuxHotkeys(hotkeysObj);
+	else
+		return {};
+}
+
+function parseDarwinHotkeys(hotkeysObj) {
+	const platformHotkeys = {};
+	Object.keys(hotkeysObj).forEach(key => {
+		if (/^(windows|linux)$/i.test(key.trim()))
+			return;
+		else if (/^(osx|darwin)$/i.test(key.trim())) {
+			Object.keys(hotkeysObj[key]).forEach(k => {
+				platformHotkeys[k] = hotkeysObj[key][k]
+			});
+		}
+		else if (!platformHotkeys[key])
+			platformHotkeys[key] = hotkeysObj[key];
+	});
+	return platformHotkeys;
+}
+
+function parseLinuxHotkeys(hotkeysObj) {
+	const platformHotkeys = {};
+	Object.keys(hotkeysObj).forEach(key => {
+		if (/^(windows|osx|darwin)$/i.test(key.trim()))
+			return;
+		else if (/^linux$/i.test(key.trim())) {
+			Object.keys(hotkeysObj[key]).forEach(k => {
+				platformHotkeys[k] = hotkeysObj[key][k]
+			});
+		}
+		else if (!platformHotkeys[key])
+			platformHotkeys[key] = hotkeysObj[key];
+	});
+	return platformHotkeys;
+}
+
+function configureHotkeys(hotkeysObj) {
+	Object.keys(hotkeysObj).forEach(keyCombo => {
+		let cmd = hotkeysObj[keyCombo];
 
 		// command defaults to START if none specified
 		if (!(/ /g).test(cmd))

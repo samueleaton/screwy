@@ -14,7 +14,7 @@
     "babel-scripts": "babel src/scripts --out-dir scripts",
     "babel-cli": "babel src/cli.js > bin/cli.js",
     "babel-index": "babel src/index.js > index.js",
-    "babel-postinstall": "babel --watch src/postInstall.js --out-file postInstall.js",
+    "babel-postinstall": "babel src/postInstall.js --out-file postInstall.js",
     "postinstall": "node postInstall.js",
     "update-version": "./bin/update_version.rb"
   },
