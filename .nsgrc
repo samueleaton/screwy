@@ -1,7 +1,7 @@
 {
   "name": "My site",
   "primary": ["stylus"],
-  "exclude": ["babel-postinstall", "postinstall"],
+  "exclude": ["postinstall"],
   "alwaysOnTop": false,
   "theme": "light",
   "watch": {
@@ -9,9 +9,11 @@
     "src/styles": "babel-index"
   },
   "hotkeys": {
-    "Control+Cmd+Alt+s": "babel-scripts",
-    "Control+Cmd+Alt+c": "stylus",
-    "Control+Cmd+Alt+k": "KILL stylus",
-    "Control+Cmd+Alt+r": "RESTART stylus"
+    "OSX": {
+      "Control+Cmd+Alt+s": "babel-scripts",
+      "Control+Cmd+Alt+c": "stylus",
+      "Control+Cmd+Alt+k": "KILL stylus",
+      "Control+Cmd+Alt+r": "RESTART stylus"
+    }
   }
 }
