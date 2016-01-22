@@ -47,17 +47,6 @@ function kill(cmdName, cb) {
 	} else if (typeof cb === 'function') cb();
 }
 
-function runBash(obj) {
-	queue[obj.id] = spawn(obj.command, obj.arguments, {
-		cwd: process.cwd(),
-		stdio: [0, 1, 2]
-	}).on('error', function (err) {
-		logger('ERROR WITH COMMAND: ' + obj.command + ' ' + obj.arguments.join(' '));
-		kill(obj.id);
-	});
-	return queue[obj.id];
-}
-
 function install(obj) {
 	var opts = ['install'];
 
@@ -83,6 +72,5 @@ module.exports = {
 	kill: kill,
 	killAll: killAll,
 	run: run,
-	install: install,
-	runBash: runBash
+	install: install
 };
