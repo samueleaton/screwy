@@ -2,7 +2,6 @@
 const fs = require('fs');
 const path = require('path');
 
-
 function darwinPostInstall() {
 	// == Info.plist ==
 	const infoPlistPath = path.join(
@@ -34,4 +33,3 @@ function darwinPostInstall() {
 }
 
 if (process.platform === 'darwin') darwinPostInstall();
-

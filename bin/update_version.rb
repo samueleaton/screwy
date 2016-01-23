@@ -23,7 +23,7 @@ inc_patch = -> {"#{major}.#{minor}.#{patch + 1}"}
 get_increment_type = -> {
   puts "current version: #{version}"
   print "Type of update: (major, minor, patch) "
-  user_input = gets.chomp
+  user_input = gets.strip
   unless (user_input =~ /^\s*(major|minor|patch)\s*$/i)
     puts "Bad input. Aborting..."
     exit(1)
@@ -45,17 +45,30 @@ get_new_version = -> (inc_type) {
 # confirm new version
 confirm_version = -> (new_version) {
   print "#{new_version} is ok? Y/(n) "
-  confirm = gets.chomp
+  confirm = gets.strip
   unless (confirm =~ /^Y(es)?$/i)
     puts "Not confirmed. Aborting..."
     exit(1)
   end
 }
 
+# update git tag
+update_git_tag = -> (version) {
+  loop do
+    print "enter a git tag message: "
+    message = gets.strip
+    next if message.empty?
+
+    system "git tag -a #{version} -m '#{message}'"
+
+    break
+  end
+}
 
 inc_type = get_increment_type.()
 new_version = get_new_version.(inc_type)
 confirm_version.(new_version)
+update_git_tag.(new_version)
 
 package_json["version"] = new_version
 File.write(package_json_path, JSON.pretty_generate(package_json))
