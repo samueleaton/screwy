@@ -1,7 +1,7 @@
 {
   "name": "My site",
   "primary": ["stylus"],
-  "exclude": ["postinstall"],
+  "exclude": ["postinstall", "prepublish"],
   "alwaysOnTop": false,
   "theme": "light",
   "watch": {

@@ -9,14 +9,16 @@
     "nsg": "bin/cli.js"
   },
   "scripts": {
-    "stylus": "stylus --watch src/styles/base.styl --use autoprefixer-stylus --out styles",
-    "stylus-themes": "stylus --watch src/styles/themes --use autoprefixer-stylus --out styles/themes",
-    "babel-scripts": "babel src/scripts --out-dir scripts",
-    "babel-cli": "babel src/cli.js > bin/cli.js",
-    "babel-index": "babel src/index.js > index.js",
-    "babel-postinstall": "babel src/postInstall.js --out-file postInstall.js",
+    "stylus": "stylus src/styles/base.styl --use autoprefixer-stylus --out styles",
+    "stylus-themes": "stylus src/styles/themes --use autoprefixer-stylus --out styles/themes",
+    "transpile-scripts": "babel src/scripts --out-dir scripts",
+    "transpile-cli": "babel src/cli.js > bin/cli.js",
+    "transpile-index": "babel src/index.js > index.js",
+    "transpile-postinstall": "babel src/postInstall.js --out-file postInstall.js",
+    "test": "echo 'no tests'",
     "postinstall": "node postInstall.js",
-    "update-version": "./bin/update_version.rb"
+    "update-version": "./bin/update_version.rb",
+    "prepublish":"./bin/prepublish.rb"
   },
   "author": "Sam Eaton",
   "license": "MIT",
