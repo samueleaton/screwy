@@ -6,39 +6,32 @@
 	<style id="user-styles" type="text/css"></style>
 </head>
 <body>
-<h1 id="title"></h1>
-<img id="npm-logo" src="">
-<section id="primaryScripts"></section>
-<section id="secondaryScripts"></section>
-
-<div id="cover" class="hide"></div>
-
-<section id="npm-installer" class="hide">
-	<form id="npm-installer-form">
-		<div id="npm-installer-command-line">
-			<div class="npm-install">npm install</div>
-			<input id="package-name" placeholder="package name (optional)">
-		</div>
-		<fieldset class="radios">
-			<label>Save<input name="dependency" value="save" type="radio"></label><br>
-			<label>Save Dev<input name="dependency" value="save-dev" type="radio"></label><br>
-		</fieldset>
-		
-		<input id="npm-installer-submit" type="submit" value="Run">
-
-		<img id="npm-installer-loader" class="loader" src="images/loader-white.png">
-
-	</form>
-</section>
-
-
-<script src="scripts/theme.js"></script>
-<script src="scripts/requireLocal.js"></script>
-<script src="scripts/rendererMain.js"></script>
-<script src="scripts/npmPackageInstaller.js"></script>
-<script src="scripts/commandClick.js"></script>
-<script src="scripts/buttonTrigger.js"></script>
-<script src="scripts/watchConfig.js"></script>
-<script>window.globalEvent.emit('ready');</script>
+	<h1 id="title"></h1>
+	<img id="npm-logo" src="">
+	<section id="primaryScripts"></section>
+	<section id="secondaryScripts"></section>
+	<div id="cover" class="hide"></div>
+	<section id="npm-installer" class="hide">
+		<form id="npm-installer-form">
+			<div id="npm-installer-command-line">
+				<div class="npm-install">npm install</div>
+				<input id="package-name" placeholder="package name (optional)">
+			</div>
+			<fieldset class="radios">
+				<label>Save<input name="dependency" value="save" type="radio"></label><br>
+				<label>Save Dev<input name="dependency" value="save-dev" type="radio"></label><br>
+			</fieldset>
+			<input id="npm-installer-submit" type="submit" value="Run">
+			<img id="npm-installer-loader" class="loader" src="images/loader-white.png">
+		</form>
+	</section>
+	<script src="scripts/theme.js"></script>
+	<script src="scripts/requireLocal.js"></script>
+	<script src="scripts/rendererMain.js"></script>
+	<script src="scripts/npmPackageInstaller.js"></script>
+	<script src="scripts/commandClick.js"></script>
+	<script src="scripts/buttonTrigger.js"></script>
+	<script src="scripts/watchConfig.js"></script>
+	<script>window.globalEvent.emit('ready');</script>
 </body>
 </html>
