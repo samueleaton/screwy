@@ -69,4 +69,4 @@ loop do
   break
 end
 
-puts "All successful. Publishing..."
+puts "All successful. Ready to Publish."
