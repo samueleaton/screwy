@@ -1,7 +1,7 @@
 {
   "name": "npm-scripts-gui",
   "productName": "NSG",
-  "version": "0.0.19",
+  "version": "0.0.20",
   "description": "GUI for npm scripts",
   "main": "bin/cli.js",
   "bin": {
