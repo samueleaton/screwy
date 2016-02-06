@@ -26,6 +26,7 @@ var main = function () {
 	var secondaryScriptsCont = dom('secondaryScripts');
 	var primaryCommands = {};
 	var excludedCommands = {};
+	var silentCommands = {};
 
 	var readConfigs = fang(
 
@@ -61,6 +62,13 @@ var main = function () {
 			if (Array.isArray(jsonData.exclude)) {
 				jsonData.exclude.forEach(function (cmd) {
 					excludedCommands[cmd] = true;
+				});
+			}
+
+			// get commands that run silently
+			if (Array.isArray(jsonData.silent)) {
+				jsonData.silent.forEach(function (cmd) {
+					silentCommands[cmd] = true;
 				});
 			}
 
@@ -122,6 +130,8 @@ var main = function () {
 						return processQueue.kill(btn.dataset.cmd);
 					});
 				});
+
+				if (silentCommands[cmdName]) btn.dataset.silent = "true";
 
 				// does button have primary or normal status
 				if (primaryCommands[cmdName]) primaryScriptsCont.appendChild(btn.attr('data-primary', 'true'));else secondaryScriptsCont.appendChild(btn);

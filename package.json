@@ -18,7 +18,8 @@
     "test": "echo 'no tests'",
     "postinstall": "node postInstall.js",
     "update-version": "./bin/update_version.rb",
-    "prepublish": "./bin/prepublish.rb"
+    "prepublish": "./bin/prepublish.rb",
+    "fail": "echo 'i will fail!' ; exit 1"
   },
   "author": "Sam Eaton",
   "license": "MIT",

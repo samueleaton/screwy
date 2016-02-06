@@ -41,9 +41,10 @@ var commandClick = function () {
 
     function runCommand() {
       var cmdName = btn.dataset.cmd;
+      var isSilent = btn.dataset.silent === "true";
       logger('\n[Running "' + cmdName + '" command...]\n');
 
-      var cmd = processQueue.run(cmdName);
+      var cmd = processQueue.run(cmdName, isSilent);
 
       cmd.on('exit', function (code, signal) {
         logger('\n["' + cmdName + '" command ended]\n');

@@ -8,6 +8,7 @@
     "src/scripts": "RESTART stylus",
     "src/styles": "babel-index"
   },
+  "silent": ["fail"],
   "hotkeys": {
     "OSX": {
       "Control+Cmd+Alt+s": "babel-scripts",

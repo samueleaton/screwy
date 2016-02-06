@@ -164,6 +164,7 @@ These are the available options:
 - **theme**, choose a light or dark theme for window
 - **watch**, specify paths to watch and tasks to respond to file changes
 - **hotkeys**, define hotkey combinations that will trigger npm scripts
+- **silent**, suppress all of the npm's native error message and error log. (This is good for tests or linting, where you usually get error messages anyways.)
 
 **.nsgrc Example**  
 
@@ -172,6 +173,7 @@ These are the available options:
     "name": "Qualtrics to SFDC",
     "primary": ["build", "run-production", "run-sandbox"],
     "exclude": ["scripts-gui", "prebuild"],
+    "silent": ["lint", "test"]
     "alwaysOnTop": true,
     "font-stack": ["source code pro", "menlo", "helvetica neue"],
     "theme": "dark",
@@ -214,5 +216,5 @@ If there is a non-zero return code (aka an error code) for the ` npm install ` t
 ### Future Configuration Ides:  
 - ability to sort scripts (e.g. alphabetically)
 - create custom commands not in package.json (specific to gui)
-- run npm scripts in silent mode (good for linting tasks)
+- ~~run npm scripts in silent mode (good for linting tasks)~~ (done)
 

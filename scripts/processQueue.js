@@ -60,8 +60,9 @@ function install(obj) {
 	return queue[obj.id];
 }
 
-function run(cmdName) {
-	queue[cmdName] = spawn('npm', ['run', cmdName], {
+function run(cmdName, isSilent) {
+	var args = isSilent ? ['run', '-s', cmdName] : ['run', cmdName];
+	queue[cmdName] = spawn('npm', args, {
 		cwd: process.cwd(),
 		stdio: [0, 1, 2]
 	});

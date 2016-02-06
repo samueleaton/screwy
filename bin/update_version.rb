@@ -23,7 +23,12 @@ inc_patch = -> {"#{major}.#{minor}.#{patch + 1}"}
 get_increment_type = -> {
   puts "current version: #{version}"
   print "Type of update: (major, minor, patch) "
-  user_input = gets.strip
+  begin
+    user_input = gets.strip
+  rescue Interrupt
+    puts "\nAborting..."
+    exit
+  end
   unless (user_input =~ /^\s*(major|minor|patch)\s*$/i)
     puts "Bad input. Aborting..."
     exit(1)
@@ -45,7 +50,12 @@ get_new_version = -> (inc_type) {
 # confirm new version
 confirm_version = -> (new_version) {
   print "#{new_version} is ok? Y/(n) "
-  confirm = gets.strip
+  begin
+    confirm = gets.strip
+  rescue Interrupt
+    puts "\nAborting..."
+    exit
+  end
   unless (confirm =~ /^Y(es)?$/i)
     puts "Not confirmed. Aborting..."
     exit(1)
@@ -56,7 +66,12 @@ confirm_version = -> (new_version) {
 update_git_tag = -> (version) {
   loop do
     print "enter a git tag message: "
-    message = gets.strip
+    begin
+      message = gets.strip
+    rescue Interrupt
+      puts "\nAborting..."
+      exit
+    end
     next if message.empty?
 
     system "git tag -a #{version} -m '#{message}'"
