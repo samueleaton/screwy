@@ -14,6 +14,8 @@ const exec = require('child_process').exec;
 app.canQuit = true; // set to false once gui opens
 app.renderer = null;
 
+const configName = '.nsgrc';
+
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Menu Bar
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -90,7 +92,6 @@ app.on('ready', function(evt) {
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Configurations
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	const configName = '.nsgrc';
 	app.config = path.join(process.cwd(), configName);
 
 	fs.readFile(app.config, 'utf8', function(err, configData) {
@@ -146,7 +147,7 @@ function parseJson(jsonString) {
 	}
 	catch (e) {
 		jsonObj = {};
-		app.emit('error', 'ERROR with ' + configName + ' parse: ' + e);
+		app.emit('error', 'ERROR with ' + configName + ' parse (Invalid JSON): ' + e);
 	}
 	return jsonObj;
 }
