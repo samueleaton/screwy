@@ -9,8 +9,8 @@
     "nsg": "bin/cli.js"
   },
   "scripts": {
-    "stylus": "stylus src/styles/base.styl --use autoprefixer-stylus --out styles",
-    "stylus-themes": "stylus src/styles/themes --use autoprefixer-stylus --out styles/themes",
+    "stylus": "stylus -c src/styles/base.styl -u autoprefixer-stylus -o styles",
+    "stylus-themes": "stylus -c src/styles/themes -u autoprefixer-stylus -o styles/themes",
     "transpile-scripts": "babel src/scripts --out-dir scripts",
     "transpile-cli": "babel src/cli.js > bin/cli.js",
     "transpile-index": "babel src/index.js > index.js",
