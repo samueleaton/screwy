@@ -22,15 +22,18 @@ var configName = '.nsgrc';
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 var menuTemplate = [{
 	label: 'Window',
-	submenu: [{
-		label: 'Npm Package Installer',
-		accelerator: 'Cmd+i',
-		click: function click() {
-			app.renderer.webContents.executeJavaScript('npmInstaller.toggle();');
-		}
-	}, {
-		type: 'separator'
-	}, {
+	submenu: [
+	// {
+	// 	label: 'Npm Package Installer',
+	// 	accelerator: 'Cmd+i',
+	// 	click() {
+	// 		app.renderer.webContents.executeJavaScript('npmInstaller.toggle();');
+	// 	}
+	// },
+	// {
+	// 	type: 'separator'
+	// },
+	{
 		label: 'Minimize',
 		accelerator: 'CmdOrCtrl+M',
 		role: 'minimize'

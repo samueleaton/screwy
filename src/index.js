@@ -22,16 +22,16 @@ const menuTemplate = [
 	{
 		label: 'Window',
 		submenu: [
-			{
-				label: 'Npm Package Installer',
-				accelerator: 'Cmd+i',
-				click() {
-					app.renderer.webContents.executeJavaScript('npmInstaller.toggle();');
-				}
-			},
-			{
-				type: 'separator'
-			},
+			// {
+			// 	label: 'Npm Package Installer',
+			// 	accelerator: 'Cmd+i',
+			// 	click() {
+			// 		app.renderer.webContents.executeJavaScript('npmInstaller.toggle();');
+			// 	}
+			// },
+			// {
+			// 	type: 'separator'
+			// },
 			{
 				label: 'Minimize',
 				accelerator: 'CmdOrCtrl+M',
