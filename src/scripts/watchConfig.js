@@ -39,12 +39,11 @@ function createWatcher(pattern, command) {
 	const func = taskFunctionMap[task];
 	const npmScript = command.slice(task.length).trim();
 	
-	console.log('func: ', func);
-	console.log('npmScript: ', npmScript);
 	watcher.on('change', path => func(npmScript));
 }
 
 function parseWatchObject(watchObj) {
+	if (!watchObj) return;
 	Object.keys(watchObj).forEach(pattern => {
 		createWatcher(pattern.trim(), watchObj[pattern].trim())
 	});

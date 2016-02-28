@@ -38,14 +38,13 @@ function createWatcher(pattern, command) {
 	var func = taskFunctionMap[task];
 	var npmScript = command.slice(task.length).trim();
 
-	console.log('func: ', func);
-	console.log('npmScript: ', npmScript);
 	watcher.on('change', function (path) {
 		return func(npmScript);
 	});
 }
 
 function parseWatchObject(watchObj) {
+	if (!watchObj) return;
 	Object.keys(watchObj).forEach(function (pattern) {
 		createWatcher(pattern.trim(), watchObj[pattern].trim());
 	});
