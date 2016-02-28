@@ -11,7 +11,6 @@ const globalShortcut = electron.globalShortcut;
 const ipcMain = electron.ipcMain;
 const EventEmitter = require('events').EventEmitter;
 const exec = require('child_process').exec;
-app.canQuit = true; // set to false once gui opens
 app.renderer = null;
 
 const configName = '.nsgrc';
@@ -57,7 +56,6 @@ app.on('error', msg => {
 		'\n' + require('chalk').red(msg)
 	);
 	app.error = true;
-	app.canQuit = true;
 	app.quit();
 	process.exit(1);
 });
@@ -65,24 +63,13 @@ app.on('error', msg => {
 process.on('uncaughtException', err => {
 	console.log('exception');
 	app.emit('error', err);
-	app.canQuit = true;
 	app.error = true;
 	app.quit();
 });
 
-ipcMain.on('can-quit', () => {
-	app.canQuit = true;
-	app.renderer.close();
-});
 
 ipcMain.on('error', (evt, msg) => {
-	app.canQuit = true;
 	app.renderer.close();
-});
-
-app.on('before-quit', evt => {
-	if (app.canQuit) return;
-	evt.preventDefault();
 });
 
 app.on('ready', function(evt) {
@@ -92,9 +79,9 @@ app.on('ready', function(evt) {
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Configurations
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	app.config = path.join(process.cwd(), configName);
+	app.configPath = path.join(process.cwd(), configName);
 
-	fs.readFile(app.config, 'utf8', function(err, configData) {
+	fs.readFile(app.configPath, 'utf8', function(err, configData) {
 		let configObj = {};
 
 		if (!err) // if .nsgrc exists
@@ -104,11 +91,9 @@ app.on('ready', function(evt) {
 
 		app.renderer = new Renderer({
 			width: 520,
-			maxWidth: 520,
 			minWidth: 520,
 			height: 275,
 			minHeight: 275,
-			maxHeight: 400,
 			'title-bar-style': 'hidden-inset',
 			fullscreen: false,
 			alwaysOnTop
@@ -122,9 +107,7 @@ app.on('ready', function(evt) {
 		});
 
 		app.renderer.on('close', evt => {
-			if (app.canQuit) return;
-			evt.preventDefault();
-			app.renderer.webContents.executeJavaScript('main.quitApp();');
+			app.renderer.webContents.executeJavaScript('window.killAllProcesses();');
 		});
 
 		// Hotkeys
@@ -134,7 +117,6 @@ app.on('ready', function(evt) {
 		// Init Renderer
 		if (!app.error) {
 			app.renderer.loadURL(path.join('file://',  __dirname, 'index.html'));
-			app.canQuit = false;
 			// app.renderer.toggleDevTools(); // uncomment to view dev tools in renderer
 		}
 	});
@@ -203,24 +185,24 @@ function configureHotkeys(hotkeysObj) {
 			cmd = 'START ' + cmd;
 
 		let npmCommand = '';
-		let func = '';
+		let event = '';
 		
 		if (regexMap.start.test(cmd)) {
 			npmCommand = cmd.slice(5).trim();
-			func = 'buttonTrigger';
+			event = 'COMMAND_START';
 		}
 		else if (regexMap.kill.test(cmd)) {
 			npmCommand = cmd.slice(4).trim();
-			func = 'buttonKiller';
+			event = 'COMMAND_KILL';
 		}
 		else if (regexMap.restart.test(cmd)) {
 			npmCommand = cmd.slice(7).trim();
-			func = 'buttonRestarter';
+			event = 'COMMAND_RESTART';
 		}
 
 		try {
 			globalShortcut.register(keyCombo, () => {
-				app.renderer.webContents.executeJavaScript(`${func}("${npmCommand}");`);
+				app.renderer.webContents.executeJavaScript(`store.emit('${event}', '${npmCommand}');`);
 			});
 		}
 		catch (e) {

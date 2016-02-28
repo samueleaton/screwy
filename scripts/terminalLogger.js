@@ -1,9 +1,9 @@
 'use strict';
 
-var spawn = require('child_process').spawn;
+var _child_process = require('child_process');
 
 module.exports = function (message) {
-  var logSpawn = spawn('echo', [message], {
+  var logSpawn = (0, _child_process.spawn)('echo', [message], {
     cwd: process.cwd(),
     stdio: 'inherit'
   });

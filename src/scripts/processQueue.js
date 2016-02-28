@@ -1,11 +1,8 @@
 'use strict';
-const spawn = require('child_process').spawn;
-const psTree = require('ps-tree');
-require.local = function(...args) {
-  args.unshift(__dirname);
-  return require(require('path').join.apply(null, args));
-}
-const logger = require.local('terminalLogger');
+
+import { spawn } from 'child_process';
+import psTree from 'ps-tree';
+import logger from './terminalLogger';
 
 const queue = {};
 
@@ -71,3 +68,5 @@ module.exports = {
 	run,
 	install
 };
+
+window.killAllProcesses = killAll;

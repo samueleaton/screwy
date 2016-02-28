@@ -1,5 +1,6 @@
 'use strict';
-const spawn = require('child_process').spawn;
+
+import { spawn } from 'child_process';
 
 module.exports = function (message) {
   const logSpawn = spawn('echo', [message], {
@@ -10,4 +11,4 @@ module.exports = function (message) {
   logSpawn.on('exit', function(error) {
     logSpawn.kill();
   });
-}
+};

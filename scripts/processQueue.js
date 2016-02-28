@@ -1,22 +1,22 @@
 'use strict';
 
-var spawn = require('child_process').spawn;
-var psTree = require('ps-tree');
-require.local = function () {
-	for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-		args[_key] = arguments[_key];
-	}
+var _child_process = require('child_process');
 
-	args.unshift(__dirname);
-	return require(require('path').join.apply(null, args));
-};
-var logger = require.local('terminalLogger');
+var _psTree = require('ps-tree');
+
+var _psTree2 = _interopRequireDefault(_psTree);
+
+var _terminalLogger = require('./terminalLogger');
+
+var _terminalLogger2 = _interopRequireDefault(_terminalLogger);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var queue = {};
 
 function terminate(pid, cb) {
-	psTree(pid, function (err, children) {
-		spawn('kill', ['-9'].concat(children.map(function (p) {
+	(0, _psTree2.default)(pid, function (err, children) {
+		(0, _child_process.spawn)('kill', ['-9'].concat(children.map(function (p) {
 			return p.PID;
 		})));
 		if (typeof cb === 'function') return cb(err);
@@ -53,7 +53,7 @@ function install(obj) {
 	if (obj.package.length) opts.push(obj.package);
 	if (obj.depType) opts.push(obj.depType);
 
-	queue[obj.id] = spawn('npm', opts, {
+	queue[obj.id] = (0, _child_process.spawn)('npm', opts, {
 		cwd: process.cwd(),
 		stdio: [0, 1, 2]
 	});
@@ -62,7 +62,7 @@ function install(obj) {
 
 function run(cmdName, isSilent) {
 	var args = isSilent ? ['run', '-s', cmdName] : ['run', cmdName];
-	queue[cmdName] = spawn('npm', args, {
+	queue[cmdName] = (0, _child_process.spawn)('npm', args, {
 		cwd: process.cwd(),
 		stdio: [0, 1, 2]
 	});
@@ -75,3 +75,5 @@ module.exports = {
 	run: run,
 	install: install
 };
+
+window.killAllProcesses = killAll;

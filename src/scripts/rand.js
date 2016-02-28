@@ -6,8 +6,8 @@ module.exports = (function() {
 		special: 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@$&_'
 	};
 
-	function rand(_length, map) {
-		const length = _length || 32;
+	function rand(size, map) {
+		const length = size || 32;
 		let randomChars = '';
 		const list = charMap[ map || 'alphaNumeric' ] ;
 

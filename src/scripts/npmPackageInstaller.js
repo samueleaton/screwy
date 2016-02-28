@@ -1,21 +1,15 @@
-// will run in global scope in renderer
+import _ from 'lodash';
+import rand from './scripts/rand';
+import logger from './scripts/terminalLogger';
+
 const npmInstaller = (function() {
   
   let active = false;
 
-  require.local = function(...args) {
-    args.unshift(__dirname);
-    return require(require('path').join.apply(null, args));
-  }
-  
-  const toArr = require.local('scripts', 'toArray');
-  const rand = require.local('scripts', 'rand');
-  const logger = require.local('scripts', 'terminalLogger');
-
   const section = document.getElementById('npm-installer');
   const form = document.getElementById('npm-installer-form');
   const packageNameField = document.getElementById('package-name');
-  const radios = toArr(section.querySelectorAll('input[type=radio]'));
+  const radios = _.toArray(section.querySelectorAll('input[type=radio]'));
   const cover = document.getElementById('cover');
   const loader = document.getElementById('npm-installer-loader');
 
@@ -101,5 +95,5 @@ const npmInstaller = (function() {
     run();
   });
 
-  return {toggle};
+  return { toggle };
 })();

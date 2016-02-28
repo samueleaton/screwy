@@ -1,27 +1,27 @@
 'use strict';
 
-// will run in global scope in renderer
+var _lodash = require('lodash');
+
+var _lodash2 = _interopRequireDefault(_lodash);
+
+var _rand = require('./scripts/rand');
+
+var _rand2 = _interopRequireDefault(_rand);
+
+var _terminalLogger = require('./scripts/terminalLogger');
+
+var _terminalLogger2 = _interopRequireDefault(_terminalLogger);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 var npmInstaller = function () {
 
   var active = false;
 
-  require.local = function () {
-    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-      args[_key] = arguments[_key];
-    }
-
-    args.unshift(__dirname);
-    return require(require('path').join.apply(null, args));
-  };
-
-  var toArr = require.local('scripts', 'toArray');
-  var rand = require.local('scripts', 'rand');
-  var logger = require.local('scripts', 'terminalLogger');
-
   var section = document.getElementById('npm-installer');
   var form = document.getElementById('npm-installer-form');
   var packageNameField = document.getElementById('package-name');
-  var radios = toArr(section.querySelectorAll('input[type=radio]'));
+  var radios = _lodash2.default.toArray(section.querySelectorAll('input[type=radio]'));
   var cover = document.getElementById('cover');
   var loader = document.getElementById('npm-installer-loader');
 
@@ -89,10 +89,10 @@ var npmInstaller = function () {
     if (packName.length) commandString += ' ' + packName;
     if (checkedRadio) commandString += ' ' + checkedRadio;
 
-    logger('\n[Running "' + commandString + '"...]\n');
+    (0, _terminalLogger2.default)('\n[Running "' + commandString + '"...]\n');
 
     var cmd = processQueue.install({
-      id: rand(12),
+      id: (0, _rand2.default)(12),
       package: packName,
       depType: checkedRadio
     });
@@ -100,7 +100,7 @@ var npmInstaller = function () {
     loader.classList.add('active');
 
     cmd.on('exit', function (code, signal) {
-      logger('\n["' + commandString + '" ended]\n');
+      (0, _terminalLogger2.default)('\n["' + commandString + '" ended]\n');
       loader.classList.remove('active');
       if (code === 0) installerSuccess();else installerError();
     });

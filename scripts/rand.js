@@ -8,8 +8,8 @@ module.exports = function () {
 		special: 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@$&_'
 	};
 
-	function rand(_length, map) {
-		var length = _length || 32;
+	function rand(size, map) {
+		var length = size || 32;
 		var randomChars = '';
 		var list = charMap[map || 'alphaNumeric'];
 

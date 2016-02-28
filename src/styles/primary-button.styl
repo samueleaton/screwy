@@ -1,0 +1,22 @@
+section#primaryScripts
+	background-color darken(backgroundColor, 4%)
+	border 1px solid darken(backgroundColor, 15%)
+	border-radius 2px
+	padding 5px
+	margin 10px 0 10px
+
+	button
+		border 1px solid darken(primaryColor, 15%)
+		background-color primaryColor
+		color lighten(primaryColor, 90%)
+		margin 6px
+		font-size primaryBtnFontSize
+		line-height primaryBtnFontSize
+		&.in-progress
+			background-color primaryColor
+		&:hover
+			border 1px solid primaryColor
+			background-color lighten(primaryColor, 15%)
+			color lighten(primaryColor, 90%)
+		img.in-progress
+			height primaryBtnFontSize
