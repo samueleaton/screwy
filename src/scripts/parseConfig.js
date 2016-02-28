@@ -25,7 +25,6 @@ function parseConfig(configObj, cb) {
 		logoPath: null
 	};
 
-	console.log('configPath: ', configPath);
 	fs.readFile(configPath, 'utf8', (err, data) => {
 		if (err) {
 			logger('no .nsgrc found');

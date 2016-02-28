@@ -30,7 +30,6 @@ var packageJsonPath = _path2.default.join(process.cwd(), 'package.json');
 var ipcRenderer = _electron2.default.ipcRenderer;
 
 function parsePackageJson(configObj, cb) {
-	console.log('package path:', packageJsonPath);
 	_fs2.default.readFile(packageJsonPath, 'utf8', function (err, data) {
 		if (err) {
 			(0, _terminalLogger2.default)('(package.json error) ' + err);
@@ -46,12 +45,9 @@ function parsePackageJson(configObj, cb) {
 		}
 
 		// set title if not already set
-		if (!configObj.name) {
-			console.log('name not set');
-			configObj.name = jsonData.name;
-		}
+		if (!configObj.name) configObj.name = jsonData.name;
 
-		if (!jsonData.scripts) console.log('No Scripts.'); // add error handler
+		if (!jsonData.scripts) (0, _terminalLogger2.default)('\nNo scripts found in package.json\n');
 
 		configObj.scripts = jsonData.scripts;
 

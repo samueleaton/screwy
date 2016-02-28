@@ -46,7 +46,6 @@ function parseConfig(configObj, cb) {
 		logoPath: null
 	};
 
-	console.log('configPath: ', configPath);
 	_fs2.default.readFile(configPath, 'utf8', function (err, data) {
 		if (err) {
 			(0, _terminalLogger2.default)('no .nsgrc found');

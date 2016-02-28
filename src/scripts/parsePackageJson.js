@@ -9,7 +9,6 @@ const packageJsonPath = path.join(process.cwd(), 'package.json');
 const ipcRenderer = electron.ipcRenderer;
 
 function parsePackageJson(configObj, cb) {
-	console.log('package path:', packageJsonPath);
 	fs.readFile(packageJsonPath, 'utf8', (err, data) => {
 		if (err) {
 			logger('(package.json error) ' + err);
@@ -26,13 +25,11 @@ function parsePackageJson(configObj, cb) {
 		}
 
 		// set title if not already set
-		if (!configObj.name) {
-			console.log('name not set');
+		if (!configObj.name)
 			configObj.name = jsonData.name;
-		}
 
 		if (!jsonData.scripts)
-			console.log('No Scripts.'); // add error handler
+			logger('\nNo scripts found in package.json\n');
 
 		configObj.scripts = jsonData.scripts;
 
