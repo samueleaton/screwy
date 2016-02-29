@@ -27,7 +27,7 @@ function parseConfig(configObj, cb) {
 
 	fs.readFile(configPath, 'utf8', (err, data) => {
 		if (err) {
-			logger('no .nsgrc found');
+			logger('no .screwyrc found');
 			return cb(configObj);
 		}
 
@@ -48,11 +48,11 @@ function parseConfig(configObj, cb) {
 		if (configObj.theme.name !== 'light' && configObj.theme.name !== 'dark')
 			configObj.theme.name = 'light';
 
-		// get primary commands from the .nsgrc file
+		// get primary commands from the .screwyrc file
 		if (_.isArray(jsonData.primary))
 			configObj.primaryScripts = jsonData.primary;
 
-		// get commands to exclude from the .nsgrc file
+		// get commands to exclude from the .screwyrc file
 		if (_.isArray(jsonData.exclude))
 			configObj.excludeScripts = jsonData.exclude;
 
@@ -60,7 +60,7 @@ function parseConfig(configObj, cb) {
 		if (_.isArray(jsonData.silent))
 			configObj.silentScripts = jsonData.silent;
 
-		// get font-stack from the .nsgrc file
+		// get font-stack from the .screwyrc file
 		if (_.isArray(jsonData.fontStack))
 			configObj.fontStack = jsonData.fontStack;
 

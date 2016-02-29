@@ -13,7 +13,7 @@ const EventEmitter = require('events').EventEmitter;
 const exec = require('child_process').exec;
 app.renderer = null;
 
-const configName = '.nsgrc';
+const configName = '.screwyrc';
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Menu Bar
@@ -84,7 +84,7 @@ app.on('ready', function(evt) {
 	fs.readFile(app.configPath, 'utf8', function(err, configData) {
 		let configObj = {};
 
-		if (!err) // if .nsgrc exists
+		if (!err) // if .screwyrc exists
 			configObj = parseJson(configData);
 		
 		const alwaysOnTop = configObj.alwaysOnTop === true;
@@ -101,7 +101,7 @@ app.on('ready', function(evt) {
 
 		app.renderer.on('closed', () => {
 			app.renderer = null;
-			console.log('NSG exited');
+			console.log('Screwy exited');
 			globalShortcut.unregisterAll();
 			app.exit(0);
 		});

@@ -48,7 +48,7 @@ function parseConfig(configObj, cb) {
 
 	_fs2.default.readFile(configPath, 'utf8', function (err, data) {
 		if (err) {
-			(0, _terminalLogger2.default)('no .nsgrc found');
+			(0, _terminalLogger2.default)('no .screwyrc found');
 			return cb(configObj);
 		}
 
@@ -65,16 +65,16 @@ function parseConfig(configObj, cb) {
 
 		if (configObj.theme.name !== 'light' && configObj.theme.name !== 'dark') configObj.theme.name = 'light';
 
-		// get primary commands from the .nsgrc file
+		// get primary commands from the .screwyrc file
 		if (_lodash2.default.isArray(jsonData.primary)) configObj.primaryScripts = jsonData.primary;
 
-		// get commands to exclude from the .nsgrc file
+		// get commands to exclude from the .screwyrc file
 		if (_lodash2.default.isArray(jsonData.exclude)) configObj.excludeScripts = jsonData.exclude;
 
 		// get commands that run silently
 		if (_lodash2.default.isArray(jsonData.silent)) configObj.silentScripts = jsonData.silent;
 
-		// get font-stack from the .nsgrc file
+		// get font-stack from the .screwyrc file
 		if (_lodash2.default.isArray(jsonData.fontStack)) configObj.fontStack = jsonData.fontStack;
 
 		if (_typeof(jsonData.watch) === 'object') configObj.watchScripts = jsonData.watch;

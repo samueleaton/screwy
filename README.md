@@ -6,10 +6,10 @@
 <br>  
 <br>  
 
-# npm scripts gui (NSG)  
-A GUI interface for npm scripts.
+# Screwy
+The npm scripts GUI. (Formerly npm-scripts-gui)
 
-[![npm version](https://badge.fury.io/js/npm-scripts-gui.svg)](https://badge.fury.io/js/npm-scripts-gui) <img src="https://img.shields.io/badge/license-MIT-blue.svg">
+<img src="https://img.shields.io/badge/license-MIT-blue.svg">
 
 <br>
 <p align="center">
@@ -23,12 +23,12 @@ A GUI interface for npm scripts.
 
 Install as a Dev Dependency  
 ```
-npm i -D npm-scripts-gui
+npm i -D screwy
 ```
 
 ...Or Install Globally  
 ```
-npm i -g npm-scripts-gui
+npm i -g screwy
 ```
 
 Installing as a dev dependency allows anyone who downloads your project to also get access to the gui... for free!
@@ -37,31 +37,32 @@ Installing as a dev dependency allows anyone who downloads your project to also 
 
 #### Launching
 
-To launch Npm Script GUI (NSG), you must be in a directory with a ` package.json ` file.   
+To launch Screwy, you must be in a directory with a ` package.json ` file.   
 
 **If Installed Globally**
 
-Then simply run:  
-` npm-script-gui ` or the shorter ` nsg `
+Then simply run:  ` screwy `
 
 **If Installed as a Dev Dependency (Recommended)**
 
-You must create an npm script task in the ` package.json ` that runs the ` nsg ` command and then you would run ` npm run <command_name> ` from the terminal. 
+You must create an npm script task in the ` package.json ` that runs the ` screwy ` command and then you would run ` npm run <command_name> ` from the terminal. 
 
 ```json
 {
     "scripts": {
-        "nsg": "nsg"
+        "screwy": "screwy"
     }
 }
 ```
+
+Installing as a dev dependency is recommended because it allows the Screwy to be bundled with your project and available for everyone who run `npm i` in your project.
 
 <br>
 
 
 #### Seeing Output  
 
-Whether NSG is installed globally or as a dependency, any text output associated with any npm script task will be printed to the command line where NSG was launched. 
+Whether Screwy is installed globally or as a dependency, any text output associated with any npm script task will be printed to the command line where Screwy was launched. 
 
 <p align="center">
 <img width="400" src="https://raw.githubusercontent.com/samueleaton/design/master/nsg.gif">  
@@ -71,7 +72,7 @@ Whether NSG is installed globally or as a dependency, any text output associated
 
 #### Quiting the App  
 
-To **quit** the app, it is safer to close the actual renderer window rather than quiting the process from the command line. If quiting from the command line, NSG may not do the check to make sure all processes are killed before closing. 
+To **quit** the app, it is safer to close the actual renderer window rather than quiting the process from the command line. If quiting from the command line, Screwy may not do the check to make sure all processes are killed before closing. 
 
 #### Killing a Running Script   
 
@@ -81,7 +82,7 @@ You can also use the `KILL` command with file watching and hotkeys.
 
 ## File Watching
 
-You can tell NSG to watch files and how to respond to those changes. You need to create a `watch` block in the `.nsgrc` file. You can watch directories, files, and use the `*` and `**` wildcards. 
+You can tell Screwy to watch files and how to respond to those changes. You need to create a `watch` block in the  .screwyrc` file. You can watch directories, files, and use the `*` and `**` wildcards. 
 
 After specifying a path, you need to specify **which** npm script task to respond to the file change and **how** it should respond. There are 3 options regarding the type of action to perform:
 
@@ -107,11 +108,11 @@ In the example, the first watcher will restart the `transpile-scripts` task when
 
 ## Hotkeys  
 
-Hotkey combinations are configurable in the ` .nsgrc ` file. These allow you to trigger any npm scripts without needing to even click on the button or even being focused on the GUI window. 
+Hotkey combinations are configurable in the ` .screwyrc ` file. These allow you to trigger any npm scripts without needing to even click on the button or even being focused on the GUI window. 
 
 Again, you can have the GUI window minimized and the hotkeys will still trigger button clicks, and output will be sent to the terminal.
 
-Hotkeys are defined in the ` .nsgrc ` file. They require the name of the npm script as the key and the hotkey combination as the value. 
+Hotkeys are defined in the ` .screwyrc ` file. They require the name of the npm script as the key and the hotkey combination as the value. 
 
 Just as with file watching, the `START`, `RESTART`, and `KILL` commands may be used with the npm task name.
 
@@ -131,7 +132,7 @@ In the above example, assuming the `start` command's job is to spin up a server,
 
 ##### Multi-platform Compatibility
 
-If you expect others to run NSG on a different platform than you are developing on, you will need to specify the platform to avoid conflicts.
+If you expect others to run Screwy on a different platform than you are developing on, you will need to specify the platform to avoid conflicts.
 
 For Mac, use: `OSX` or `darwin`
 
@@ -153,7 +154,7 @@ More hotkey examples are in the Configurations section.
 
 ## Configurations  
 
-NSG will automatically search for a ` .nsgrc ` in the same directory as the ` package.json `. It should be in json format.
+Screwy will automatically search for a ` .screwyrc ` in the same directory as the ` package.json `. It should be in json format.
 
 These are the available options:
 - **name**, choose different name than defined in ` package.json `
@@ -165,7 +166,7 @@ These are the available options:
 - **hotkeys**, define hotkey combinations that will trigger npm scripts
 - **silent**, suppress all of the npm's native error message and error log. (This is good for tests or linting, where you usually get error messages anyways.)
 
-**.nsgrc Example**  
+* .screwyrc Example**  
 
 ```
 {
