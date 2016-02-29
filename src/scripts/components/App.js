@@ -3,7 +3,6 @@ import { render } from 'react-dom';
 import store from 'cubbie';
 import parseConfig from './scripts/parseConfig';
 import parsePackageJson from './scripts/parsePackageJson';
-import './scripts/buttonTrigger';
 import themeConfig from './scripts/themeConfig';
 import watchConfig from './scripts/watchConfig';
 

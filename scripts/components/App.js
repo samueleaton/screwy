@@ -20,8 +20,6 @@ var _parsePackageJson = require('./scripts/parsePackageJson');
 
 var _parsePackageJson2 = _interopRequireDefault(_parsePackageJson);
 
-require('./scripts/buttonTrigger');
-
 var _themeConfig = require('./scripts/themeConfig');
 
 var _themeConfig2 = _interopRequireDefault(_themeConfig);
