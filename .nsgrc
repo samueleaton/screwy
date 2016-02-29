@@ -2,7 +2,7 @@
   "name": "My site",
   "primary": ["stylus"],
   "exclude": ["postinstall", "prepublish"],
-  "alwaysOnTop": true,
+  "alwaysOnTop": false,
   "theme": "light",
   "watch": {
     "src/scripts": "transpile-scripts",
