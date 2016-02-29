@@ -1,7 +1,7 @@
 {
   "name": "npm-scripts-gui",
   "productName": "NSG",
-  "version": "0.0.22",
+  "version": "0.0.23",
   "description": "GUI for npm scripts",
   "main": "bin/cli.js",
   "bin": {
@@ -33,6 +33,7 @@
   "dependencies": {
     "chalk": "^1.1.1",
     "chokidar": "^1.4.2",
+    "cubbie": "0.0.8",
     "electron-prebuilt": "^0.35.4",
     "fangs": "0.0.11",
     "lodash": "^4.5.1",
