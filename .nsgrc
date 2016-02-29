@@ -5,8 +5,7 @@
   "alwaysOnTop": true,
   "theme": "light",
   "watch": {
-    "src/scripts/*.js": "transpile-scripts",
-    "src/scripts/components/*.js": "transpile-scripts",
+    "src/scripts": "transpile-scripts",
     "src/index.js": "transpile-index",
     "src/cli.js": "transpile-cli",
     "src/styles/*.styl": "stylus"
