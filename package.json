@@ -1,12 +1,13 @@
 {
-  "name": "npm-scripts-gui",
+  "name": "scrui",
   "productName": "NSG",
-  "version": "0.0.23",
+  "version": "0.0.1",
   "description": "GUI for npm scripts",
   "main": "bin/cli.js",
   "bin": {
     "npm-scripts-gui": "bin/cli.js",
-    "nsg": "bin/cli.js"
+    "nsg": "bin/cli.js",
+    "scrui": "bin/cli.js"
   },
   "scripts": {
     "stylus": "stylus -c src/styles/base.styl -u autoprefixer-stylus -o styles",
