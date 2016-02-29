@@ -160,7 +160,6 @@ These are the available options:
 - **primary**, the primary script buttons (red buttons) for scripts that will be ran more frequently
 - **exclude**, scripts to NOT include in the GUI
 - **alwaysOnTop**, whether the window is always in front of other windows
-- **font-stack**, the fonts in the GUI
 - **theme**, choose a light or dark theme for window
 - **watch**, specify paths to watch and tasks to respond to file changes
 - **hotkeys**, define hotkey combinations that will trigger npm scripts
@@ -175,7 +174,6 @@ These are the available options:
     "exclude": ["scripts-gui", "prebuild"],
     "silent": ["lint", "test"]
     "alwaysOnTop": true,
-    "font-stack": ["source code pro", "menlo", "helvetica neue"],
     "theme": "dark",
     "watch": {
         "src/scripts/*.js": "RESTART production",
