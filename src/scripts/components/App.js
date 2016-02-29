@@ -38,7 +38,6 @@ parseConfig({}, state => {
 		themeConfig(initialState);
 		watchConfig(initialState.watchScripts);
 		store.initialState = initialState;
-		console.log('initialState: ', store.initialState);
 	});
 });
 

@@ -96,7 +96,6 @@ _cubbie2.default.on(_cubbie2.default.stateEvents, function () {
 		(0, _themeConfig2.default)(initialState);
 		(0, _watchConfig2.default)(initialState.watchScripts);
 		_cubbie2.default.initialState = initialState;
-		console.log('initialState: ', _cubbie2.default.initialState);
 	});
 });
 
