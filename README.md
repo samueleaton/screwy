@@ -82,7 +82,7 @@ You can also use the `KILL` command with file watching and hotkeys.
 
 ## File Watching
 
-You can tell Screwy to watch files and how to respond to those changes. You need to create a `watch` block in the  .screwyrc` file. You can watch directories, files, and use the `*` and `**` wildcards. 
+You can tell Screwy to watch files and how to respond to those changes. You need to create a `watch` block in the  `.screwyrc` file. You can watch directories, files, and use the `*` and `**` wildcards. 
 
 After specifying a path, you need to specify **which** npm script task to respond to the file change and **how** it should respond. There are 3 options regarding the type of action to perform:
 
