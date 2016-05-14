@@ -54,6 +54,7 @@ export default class ScriptButton extends Component {
     logger('\n["' + this.cmdName + '" command ended]\n');
     this.cmdProcess = null;
     this.setState({ inProgress: false });
+    store.emit('COMMAND_END', this.cmdName);
   }
 
   componentDidMount() {

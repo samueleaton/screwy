@@ -45,6 +45,7 @@ function parseConfig(configObj, cb) {
 		secondarySpinnerPath: null,
 		logoPath: null
 	};
+	configObj.windowClosing = false;
 
 	_fs2.default.readFile(configPath, 'utf8', function (err, data) {
 		if (err) {
@@ -52,7 +53,7 @@ function parseConfig(configObj, cb) {
 			return cb(configObj);
 		}
 
-		var jsonData = undefined;
+		var jsonData = void 0;
 		try {
 			jsonData = JSON.parse(data);
 		} catch (e) {

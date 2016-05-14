@@ -8,7 +8,8 @@
     "src/scripts": "transpile-scripts",
     "src/index.js": "transpile-index",
     "src/cli.js": "transpile-cli",
-    "src/styles/*.styl": "stylus"
+    "src/styles/*.styl": "stylus",
+    "CMD transpile-scripts": "RESTART start"
   },
   "silent": ["fail"],
   "hotkeys": {

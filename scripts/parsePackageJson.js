@@ -36,7 +36,7 @@ function parsePackageJson(configObj, cb) {
 			ipcRenderer.send('error');
 		}
 
-		var jsonData = undefined;
+		var jsonData = void 0;
 		try {
 			jsonData = JSON.parse(data);
 		} catch (e) {

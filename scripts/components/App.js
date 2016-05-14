@@ -58,6 +58,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 // components
 
+
 var App = function (_Component) {
 	_inherits(App, _Component);
 

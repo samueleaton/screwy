@@ -24,6 +24,7 @@ function parseConfig(configObj, cb) {
 		secondarySpinnerPath: null,
 		logoPath: null
 	};
+	configObj.windowClosing = false;
 
 	fs.readFile(configPath, 'utf8', (err, data) => {
 		if (err) {

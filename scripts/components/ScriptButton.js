@@ -1,10 +1,10 @@
 'use strict';
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _react = require('react');
 
@@ -93,6 +93,7 @@ var ScriptButton = function (_Component) {
       (0, _terminalLogger2.default)('\n["' + this.cmdName + '" command ended]\n');
       this.cmdProcess = null;
       this.setState({ inProgress: false });
+      _cubbie2.default.emit('COMMAND_END', this.cmdName);
     }
   }, {
     key: 'componentDidMount',
@@ -139,6 +140,7 @@ var ScriptButton = function (_Component) {
 }(_react.Component);
 
 exports.default = ScriptButton;
+
 
 ScriptButton.propTypes = {
   inProgress: _react2.default.PropTypes.bool

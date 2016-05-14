@@ -2,7 +2,8 @@
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
 
-process.env.NODE_ENV = 'production';
+if (process.env.NODE_ENV !== 'development') process.env.NODE_ENV = 'production';
+
 var electron = require('electron');
 var app = electron.app;
 var path = require('path');
@@ -103,7 +104,7 @@ app.on('ready', function (evt) {
 		});
 
 		app.renderer.on('close', function (evt) {
-			app.renderer.webContents.executeJavaScript('window.killAllProcesses();');
+			app.renderer.webContents.executeJavaScript('window.killApp();');
 		});
 
 		// Hotkeys
@@ -112,13 +113,13 @@ app.on('ready', function (evt) {
 		// Init Renderer
 		if (!app.error) {
 			app.renderer.loadURL(path.join('file://', __dirname, 'index.html'));
-			// app.renderer.toggleDevTools(); // uncomment to view dev tools in renderer
+			if (process.env.NODE_ENV === 'development') app.renderer.toggleDevTools(); // uncomment to view dev tools in renderer
 		}
 	});
 });
 
 function parseJson(jsonString) {
-	var jsonObj = undefined;
+	var jsonObj = void 0;
 	try {
 		jsonObj = JSON.parse(jsonString);
 	} catch (e) {

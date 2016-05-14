@@ -76,4 +76,9 @@ module.exports = {
 	install: install
 };
 
-window.killAllProcesses = killAll;
+window.killApp = function () {
+	window.store.modifyState(function (state) {
+		state.windowClosing = true;
+	});
+	killAll();
+};

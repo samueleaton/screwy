@@ -1,5 +1,7 @@
 'use strict';
-process.env.NODE_ENV = 'production';
+if (process.env.NODE_ENV !== 'development')
+	process.env.NODE_ENV = 'production';
+
 const electron = require('electron');
 const app = electron.app;
 const path = require('path');
@@ -107,7 +109,7 @@ app.on('ready', function(evt) {
 		});
 
 		app.renderer.on('close', evt => {
-			app.renderer.webContents.executeJavaScript('window.killAllProcesses();');
+			app.renderer.webContents.executeJavaScript('window.killApp();');
 		});
 
 		// Hotkeys
@@ -117,7 +119,8 @@ app.on('ready', function(evt) {
 		// Init Renderer
 		if (!app.error) {
 			app.renderer.loadURL(path.join('file://',  __dirname, 'index.html'));
-			// app.renderer.toggleDevTools(); // uncomment to view dev tools in renderer
+			if (process.env.NODE_ENV === 'development')
+				app.renderer.toggleDevTools(); // uncomment to view dev tools in renderer
 		}
 	});
 });

@@ -20,7 +20,8 @@
     "postinstall": "node postInstall.js",
     "update-version": "./bin/update_version.rb",
     "prepublish": "./bin/prepublish.rb",
-    "fail": "echo 'i will fail!' ; exit 1"
+    "fail": "echo 'i will fail!' ; exit 1",
+    "start": "env NODE_ENV=development ./bin/cli.js"
   },
   "author": "Sam Eaton",
   "license": "MIT",
@@ -34,7 +35,7 @@
   "dependencies": {
     "chalk": "^1.1.1",
     "chokidar": "^1.4.2",
-    "cubbie": "0.0.8",
+    "cubbie": "0.0.17",
     "electron-prebuilt": "^0.35.4",
     "fangs": "0.0.11",
     "lodash": "^4.5.1",
