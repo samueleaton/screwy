@@ -106,6 +106,23 @@ Example:
 
 In the example, the first watcher will restart the `transpile-scripts` task when any `.js` files are changed at `src/scripts`. The second watcher will apparently restart the server when the `index.js` file is changed. The last watcher will run `START stylus` (`START` is default).
 
+## Watching Other Commands
+
+You can tell Screwy to run a command whenever another specific command finishes. Within the same block as file watching, simply replace the file path with `CMD <command_name>`
+
+Example:
+
+``` json
+{
+    "watch": {
+        "CMD transpile-scripts": "RESTART start-server",
+        "./index.js": "RESTART start-server"
+    }
+}
+```
+
+In the example, the `RESTART start-server` command will run every time the `transpile-scripts` command finishes and when `index.js` is changed.
+
 ## Hotkeys  
 
 Hotkey combinations are configurable in the ` .screwyrc ` file. These allow you to trigger any npm scripts without needing to even click on the button or even being focused on the GUI window. 
