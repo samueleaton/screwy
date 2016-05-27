@@ -13,6 +13,8 @@ import PrimaryScripts from './scripts/components/PrimaryScripts';
 import SecondaryScripts from './scripts/components/SecondaryScripts';
 import NpmPackageInstaller from './scripts/components/NpmPackageInstaller';
 
+import terminalLogger from './scripts/terminalLogger';
+terminalLogger('from renderer');
 
 class App extends Component {
 	render() {

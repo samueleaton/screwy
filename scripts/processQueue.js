@@ -6,11 +6,13 @@ var _psTree = require('ps-tree');
 
 var _psTree2 = _interopRequireDefault(_psTree);
 
-var _terminalLogger = require('./terminalLogger');
-
-var _terminalLogger2 = _interopRequireDefault(_terminalLogger);
+var _electron = require('electron');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var logger = function logger(msg) {
+	return _electron.ipcRenderer.send('log', msg);
+};
 
 var queue = {};
 

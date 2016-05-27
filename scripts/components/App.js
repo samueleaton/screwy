@@ -48,6 +48,10 @@ var _NpmPackageInstaller = require('./scripts/components/NpmPackageInstaller');
 
 var _NpmPackageInstaller2 = _interopRequireDefault(_NpmPackageInstaller);
 
+var _terminalLogger = require('./scripts/terminalLogger');
+
+var _terminalLogger2 = _interopRequireDefault(_terminalLogger);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -58,6 +62,8 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 // components
 
+
+(0, _terminalLogger2.default)('from renderer');
 
 var App = function (_Component) {
 	_inherits(App, _Component);

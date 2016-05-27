@@ -36,7 +36,7 @@
     "chalk": "^1.1.1",
     "chokidar": "^1.4.2",
     "cubbie": "0.0.17",
-    "electron-prebuilt": "^0.35.4",
+    "electron-prebuilt": "^1.2.0",
     "fangs": "0.0.11",
     "lodash": "^4.5.1",
     "ps-tree": "^1.0.1",

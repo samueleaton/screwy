@@ -2,22 +2,44 @@
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
 
+var _electron = require('electron');
+
+var _electron2 = _interopRequireDefault(_electron);
+
+var _path = require('path');
+
+var _path2 = _interopRequireDefault(_path);
+
+var _fs = require('fs');
+
+var _fs2 = _interopRequireDefault(_fs);
+
+var _regexCommandMap = require('./scripts/regexCommandMap');
+
+var _regexCommandMap2 = _interopRequireDefault(_regexCommandMap);
+
+var _events = require('events');
+
+var _child_process = require('child_process');
+
+var _terminalLogger = require('./scripts/terminalLogger');
+
+var _terminalLogger2 = _interopRequireDefault(_terminalLogger);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 if (process.env.NODE_ENV !== 'development') process.env.NODE_ENV = 'production';
 
-var electron = require('electron');
-var app = electron.app;
-var path = require('path');
-var Renderer = require('browser-window');
-var Menu = require('menu');
-var fs = require('fs');
-var regexMap = require('./scripts/regexCommandMap');
-var globalShortcut = electron.globalShortcut;
-var ipcMain = electron.ipcMain;
-var EventEmitter = require('events').EventEmitter;
-var exec = require('child_process').exec;
-app.renderer = null;
+var app = _electron2.default.app;
 
+
+var globalShortcut = _electron2.default.globalShortcut;
+var ipcMain = _electron2.default.ipcMain;
+
+(0, _terminalLogger2.default)('this is test 1');
 var configName = '.screwyrc';
+
+var renderer = null;
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Menu Bar
@@ -29,7 +51,7 @@ var menuTemplate = [{
 	// 	label: 'Npm Package Installer',
 	// 	accelerator: 'Cmd+i',
 	// 	click() {
-	// 		app.renderer.webContents.executeJavaScript('npmInstaller.toggle();');
+	// 		renderer.webContents.executeJavaScript('npmInstaller.toggle();');
 	// 	}
 	// },
 	// {
@@ -43,7 +65,7 @@ var menuTemplate = [{
 		label: 'Quit',
 		accelerator: 'Cmd+Q',
 		click: function click() {
-			app.renderer.close();
+			renderer.close();
 		}
 	}]
 }];
@@ -66,19 +88,24 @@ process.on('uncaughtException', function (err) {
 });
 
 ipcMain.on('error', function (evt, msg) {
-	app.renderer.close();
+	renderer.close();
+});
+
+ipcMain.on('log', function (evt, msg) {
+	console.log('got event ' + evt + ' with msg: ', msg);
+	(0, _terminalLogger2.default)(msg);
 });
 
 app.on('ready', function (evt) {
-	var menu = Menu.buildFromTemplate(menuTemplate);
-	Menu.setApplicationMenu(menu);
+	var menu = _electron.Menu.buildFromTemplate(menuTemplate);
+	_electron.Menu.setApplicationMenu(menu);
 
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// Configurations
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	app.configPath = path.join(process.cwd(), configName);
+	app.configPath = _path2.default.join(process.cwd(), configName);
 
-	fs.readFile(app.configPath, 'utf8', function (err, configData) {
+	_fs2.default.readFile(app.configPath, 'utf8', function (err, configData) {
 		var configObj = {};
 
 		if (!err) // if .screwyrc exists
@@ -86,25 +113,25 @@ app.on('ready', function (evt) {
 
 		var alwaysOnTop = configObj.alwaysOnTop === true;
 
-		app.renderer = new Renderer({
+		renderer = new _electron.BrowserWindow({
 			width: 520,
 			minWidth: 520,
 			height: 275,
 			minHeight: 275,
-			'title-bar-style': 'hidden-inset',
-			fullscreen: false,
+			// frame: false,
+			titleBarStyle: 'hidden',
 			alwaysOnTop: alwaysOnTop
 		});
 
-		app.renderer.on('closed', function () {
-			app.renderer = null;
+		renderer.on('closed', function () {
+			renderer = null;
 			console.log('Screwy exited');
 			globalShortcut.unregisterAll();
 			app.exit(0);
 		});
 
-		app.renderer.on('close', function (evt) {
-			app.renderer.webContents.executeJavaScript('window.killApp();');
+		renderer.on('close', function (evt) {
+			renderer.webContents.executeJavaScript('window.killApp();');
 		});
 
 		// Hotkeys
@@ -112,8 +139,9 @@ app.on('ready', function (evt) {
 
 		// Init Renderer
 		if (!app.error) {
-			app.renderer.loadURL(path.join('file://', __dirname, 'index.html'));
-			if (process.env.NODE_ENV === 'development') app.renderer.toggleDevTools(); // uncomment to view dev tools in renderer
+			renderer.loadURL(_path2.default.join('file://', __dirname, 'index.html'));
+			// if (process.env.NODE_ENV === 'development')
+			renderer.toggleDevTools();
 		}
 	});
 });
@@ -168,24 +196,28 @@ function configureHotkeys(hotkeysObj) {
 		var npmCommand = '';
 		var event = '';
 
-		if (regexMap.start.test(cmd)) {
+		if (_regexCommandMap2.default.start.test(cmd)) {
 			npmCommand = cmd.slice(5).trim();
 			event = 'COMMAND_START';
-		} else if (regexMap.kill.test(cmd)) {
+		} else if (_regexCommandMap2.default.kill.test(cmd)) {
 			npmCommand = cmd.slice(4).trim();
 			event = 'COMMAND_KILL';
-		} else if (regexMap.restart.test(cmd)) {
+		} else if (_regexCommandMap2.default.restart.test(cmd)) {
 			npmCommand = cmd.slice(7).trim();
 			event = 'COMMAND_RESTART';
 		}
 
 		try {
 			globalShortcut.register(keyCombo, function () {
-				app.renderer.webContents.executeJavaScript('store.emit(\'' + event + '\', \'' + npmCommand + '\');');
+				renderer.webContents.executeJavaScript('store.emit(\'' + event + '\', \'' + npmCommand + '\');');
 			});
 		} catch (e) {
 			app.emit('error', 'Error registering hotkeys "' + keyCombo + '"');
 		}
 	});
 }
+
+setTimeout(function () {
+	(0, _terminalLogger2.default)('this is test 2');
+}, 5000);
 

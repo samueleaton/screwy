@@ -1,6 +1,7 @@
 import _ from 'lodash';
 import rand from './scripts/rand';
-import logger from './scripts/terminalLogger';
+import { ipcRenderer } from 'electron';
+const logger = (msg) => ipcRenderer.send('log', msg);
 
 const npmInstaller = (function() {
   

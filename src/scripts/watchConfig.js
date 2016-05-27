@@ -1,7 +1,8 @@
 'use strict';
 
 const chokidar = require('chokidar');
-const logger = require('./terminalLogger');
+import { ipcRenderer } from 'electron';
+const logger = (msg) => ipcRenderer.send('log', msg);
 const regexMap = require('./regexCommandMap');
 
 const taskFunctionMap = {
@@ -29,7 +30,6 @@ function getTask(command) {
 }
 
 function createCmdWatcher(keyPattern, valuePattern) {
-	console.log('\n**\nfound CMD: ', keyPattern);
 	// default task is 'START' // check for blank spaces
 	if ((/ /g).test(valuePattern) === false)
 		valuePattern = 'START ' + valuePattern;
@@ -42,10 +42,6 @@ function createCmdWatcher(keyPattern, valuePattern) {
 
 	const func = taskFunctionMap[valueTask];
 	const valueNpmScript = valuePattern.slice(valueTask.length).trim();
-
-	console.log('keyNpmScript: ', keyNpmScript);
-	console.log('valueTask: ', valueTask);
-	console.log('valueNpmScript: ', valueNpmScript);
 
 	window.store.on('COMMAND_END', cmdName => {
 		if (window.store.state.windowClosing)
@@ -69,10 +65,6 @@ function createFileWatcher(pattern, command) {
 	const func = taskFunctionMap[task];
 	const npmScript = command.slice(task.length).trim();
 	
-	console.log('\n--\npattern: ', pattern);
-	console.log('task: ', task);
-	console.log('func: ', func);
-	console.log('npmScript: ', npmScript);
 	fileWatcher.on('change', path => func(npmScript));
 }
 

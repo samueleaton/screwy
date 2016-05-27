@@ -8,11 +8,13 @@ var _rand = require('./scripts/rand');
 
 var _rand2 = _interopRequireDefault(_rand);
 
-var _terminalLogger = require('./scripts/terminalLogger');
-
-var _terminalLogger2 = _interopRequireDefault(_terminalLogger);
+var _electron = require('electron');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var logger = function logger(msg) {
+  return _electron.ipcRenderer.send('log', msg);
+};
 
 var npmInstaller = function () {
 
@@ -89,7 +91,7 @@ var npmInstaller = function () {
     if (packName.length) commandString += ' ' + packName;
     if (checkedRadio) commandString += ' ' + checkedRadio;
 
-    (0, _terminalLogger2.default)('\n[Running "' + commandString + '"...]\n');
+    logger('\n[Running "' + commandString + '"...]\n');
 
     var cmd = processQueue.install({
       id: (0, _rand2.default)(12),
@@ -100,7 +102,7 @@ var npmInstaller = function () {
     loader.classList.add('active');
 
     cmd.on('exit', function (code, signal) {
-      (0, _terminalLogger2.default)('\n["' + commandString + '" ended]\n');
+      logger('\n["' + commandString + '" ended]\n');
       loader.classList.remove('active');
       if (code === 0) installerSuccess();else installerError();
     });

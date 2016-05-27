@@ -2,7 +2,8 @@
 
 import { spawn } from 'child_process';
 import psTree from 'ps-tree';
-import logger from './terminalLogger';
+import { ipcRenderer } from 'electron';
+const logger = (msg) => ipcRenderer.send('log', msg);
 
 const queue = {};
 

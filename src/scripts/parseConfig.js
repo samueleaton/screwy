@@ -2,9 +2,8 @@
 
 import path from 'path';
 import fs from 'fs';
-import electron from 'electron';
-import remote from 'remote';
-import logger from './terminalLogger';
+import electron, { remote, ipcRenderer } from 'electron';
+const logger = (msg) => ipcRenderer.send('log', msg);
 import _ from 'lodash';
 
 const app = remote.app;

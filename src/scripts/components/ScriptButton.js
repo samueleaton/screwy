@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import store from 'cubbie';
-import logger from '../terminalLogger';
+import { ipcRenderer } from 'electron';
+const logger = (msg) => ipcRenderer.send('log', msg);
 import processQueue from '../processQueue';
 
 export default class ScriptButton extends Component {

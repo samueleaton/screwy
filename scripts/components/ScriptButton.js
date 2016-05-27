@@ -14,9 +14,7 @@ var _cubbie = require('cubbie');
 
 var _cubbie2 = _interopRequireDefault(_cubbie);
 
-var _terminalLogger = require('../terminalLogger');
-
-var _terminalLogger2 = _interopRequireDefault(_terminalLogger);
+var _electron = require('electron');
 
 var _processQueue = require('../processQueue');
 
@@ -29,6 +27,10 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var logger = function logger(msg) {
+  return _electron.ipcRenderer.send('log', msg);
+};
 
 var ScriptButton = function (_Component) {
   _inherits(ScriptButton, _Component);
@@ -58,7 +60,7 @@ var ScriptButton = function (_Component) {
 
       this.setState({ inProgress: true });
 
-      (0, _terminalLogger2.default)('\n[Running "' + cmdName + '" command...]\n');
+      logger('\n[Running "' + cmdName + '" command...]\n');
 
       this.cmdProcess = _processQueue2.default.run(cmdName, this.isSilent);
 
@@ -90,7 +92,7 @@ var ScriptButton = function (_Component) {
   }, {
     key: 'scriptEnd',
     value: function scriptEnd() {
-      (0, _terminalLogger2.default)('\n["' + this.cmdName + '" command ended]\n');
+      logger('\n["' + this.cmdName + '" command ended]\n');
       this.cmdProcess = null;
       this.setState({ inProgress: false });
       _cubbie2.default.emit('COMMAND_END', this.cmdName);

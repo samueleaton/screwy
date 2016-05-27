@@ -1,12 +1,10 @@
 import path from 'path';
 import fs from 'fs';
-import logger from './terminalLogger';
 import _ from 'lodash';
-import electron from 'electron';
-import remote from 'remote';
+import electron, { remote, ipcRenderer } from 'electron';
+const logger = (msg) => ipcRenderer.send('log', msg);
 
 const packageJsonPath = path.join(process.cwd(), 'package.json');
-const ipcRenderer = electron.ipcRenderer;
 
 function parsePackageJson(configObj, cb) {
 	fs.readFile(packageJsonPath, 'utf8', (err, data) => {

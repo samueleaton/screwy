@@ -14,21 +14,18 @@ var _electron = require('electron');
 
 var _electron2 = _interopRequireDefault(_electron);
 
-var _remote = require('remote');
-
-var _remote2 = _interopRequireDefault(_remote);
-
-var _terminalLogger = require('./terminalLogger');
-
-var _terminalLogger2 = _interopRequireDefault(_terminalLogger);
-
 var _lodash = require('lodash');
 
 var _lodash2 = _interopRequireDefault(_lodash);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var app = _remote2.default.app;
+var logger = function logger(msg) {
+	return _electron.ipcRenderer.send('log', msg);
+};
+
+
+var app = _electron.remote.app;
 var configPath = app.configPath;
 
 function parseConfig(configObj, cb) {
@@ -49,7 +46,7 @@ function parseConfig(configObj, cb) {
 
 	_fs2.default.readFile(configPath, 'utf8', function (err, data) {
 		if (err) {
-			(0, _terminalLogger2.default)('no .screwyrc found');
+			logger('no .screwyrc found');
 			return cb(configObj);
 		}
 
