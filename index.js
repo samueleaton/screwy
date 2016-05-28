@@ -26,19 +26,17 @@ var _terminalLogger = require('./scripts/terminalLogger');
 
 var _terminalLogger2 = _interopRequireDefault(_terminalLogger);
 
+var _processQueue = require('./scripts/processQueue');
+
+var _processQueue2 = _interopRequireDefault(_processQueue);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 if (process.env.NODE_ENV !== 'development') process.env.NODE_ENV = 'production';
 
 var app = _electron2.default.app;
 
-
-var globalShortcut = _electron2.default.globalShortcut;
-var ipcMain = _electron2.default.ipcMain;
-
-(0, _terminalLogger2.default)('this is test 1');
 var configName = '.screwyrc';
-
 var renderer = null;
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -81,19 +79,50 @@ app.on('error', function (msg) {
 });
 
 process.on('uncaughtException', function (err) {
-	console.log('exception');
 	app.emit('error', err);
 	app.error = true;
+	_processQueue2.default && _processQueue2.default.killAll();
 	app.quit();
 });
 
-ipcMain.on('error', function (evt, msg) {
-	renderer.close();
+app.on('before-quit', function () {
+	return console.log(' Screwy Quitting...');
 });
 
-ipcMain.on('log', function (evt, msg) {
-	console.log('got event ' + evt + ' with msg: ', msg);
+app.on('quit', function (evt) {
+	_electron.globalShortcut.unregisterAll();
+	_processQueue2.default.killAll(function () {});
+});
+
+_electron.ipcMain.on('log', function (evt, msg) {
 	(0, _terminalLogger2.default)(msg);
+});
+
+_electron.ipcMain.on('run', function (evt, cmdObj) {
+	var cmdProcess = _processQueue2.default.run(cmdObj.cmdName, cmdObj.isSilent);
+	cmdProcess.on('exit', function (code, signal) {
+		evt.sender.send('killed', cmdObj.cmdName);
+	});
+});
+
+_electron.ipcMain.on('kill', function (evt, cmdObj) {
+	_processQueue2.default.kill(cmdObj.cmdName);
+});
+
+_electron.ipcMain.on('restart', function (evt, cmdObj) {
+	process.nextTick(function () {
+		_processQueue2.default.kill(cmdObj.cmdName, function () {
+			setTimeout(function () {
+				evt.sender.send('killed', cmdObj.cmdName);
+			}, 250);
+		});
+	});
+
+	(0, _terminalLogger2.default)(msg);
+});
+
+_electron.ipcMain.on('error', function (evt, msg) {
+	renderer.close();
 });
 
 app.on('ready', function (evt) {
@@ -114,24 +143,14 @@ app.on('ready', function (evt) {
 		var alwaysOnTop = configObj.alwaysOnTop === true;
 
 		renderer = new _electron.BrowserWindow({
+			title: 'screwy',
 			width: 520,
 			minWidth: 520,
 			height: 275,
 			minHeight: 275,
 			// frame: false,
-			titleBarStyle: 'hidden',
+			// titleBarStyle: 'hidden-inset',
 			alwaysOnTop: alwaysOnTop
-		});
-
-		renderer.on('closed', function () {
-			renderer = null;
-			console.log('Screwy exited');
-			globalShortcut.unregisterAll();
-			app.exit(0);
-		});
-
-		renderer.on('close', function (evt) {
-			renderer.webContents.executeJavaScript('window.killApp();');
 		});
 
 		// Hotkeys
@@ -208,7 +227,7 @@ function configureHotkeys(hotkeysObj) {
 		}
 
 		try {
-			globalShortcut.register(keyCombo, function () {
+			_electron.globalShortcut.register(keyCombo, function () {
 				renderer.webContents.executeJavaScript('store.emit(\'' + event + '\', \'' + npmCommand + '\');');
 			});
 		} catch (e) {
@@ -216,8 +235,4 @@ function configureHotkeys(hotkeysObj) {
 		}
 	});
 }
-
-setTimeout(function () {
-	(0, _terminalLogger2.default)('this is test 2');
-}, 5000);
 

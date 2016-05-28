@@ -2,8 +2,6 @@
 
 import { spawn } from 'child_process';
 import psTree from 'ps-tree';
-import { ipcRenderer } from 'electron';
-const logger = (msg) => ipcRenderer.send('log', msg);
 
 const queue = {};
 
@@ -18,13 +16,11 @@ function killAll(cb) {
 	const cmds = Object.keys(queue);
 	const total = cmds.length;
 	let completedCount = 0;
-	if (total === 0) return cb();
-
+	if (total === 0) return cb && cb();
 	cmds.forEach(cmd => {
 		kill(cmd, function() {
 			completedCount++;
-			
-			if (completedCount === total) cb();
+			if (completedCount === total) cb && cb();
 		});
 	});
 }
@@ -70,9 +66,9 @@ module.exports = {
 	install
 };
 
-window.killApp = function() {
-	window.store.modifyState(state => {
-		state.windowClosing = true;
-	});
-	killAll();
-};
+// window.killApp = function() {
+// 	window.store.modifyState(state => {
+// 		state.windowClosing = true;
+// 	});
+// 	killAll();
+// };

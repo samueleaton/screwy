@@ -2,20 +2,17 @@
 if (process.env.NODE_ENV !== 'development')
 	process.env.NODE_ENV = 'production';
 
-import electron, { BrowserWindow, Menu } from 'electron';
+import electron, { BrowserWindow, Menu, ipcMain, globalShortcut } from 'electron';
 const app = electron.app;
 import path from 'path';
 import fs from 'fs';
 import regexMap from './scripts/regexCommandMap';
 
-const globalShortcut = electron.globalShortcut;
-const ipcMain = electron.ipcMain;
 import { EventEmitter } from 'events';
 import { exec } from 'child_process';
 import terminalLogger from './scripts/terminalLogger';
-terminalLogger('this is test 1');
+import processQueue from './scripts/processQueue';
 const configName = '.screwyrc';
-
 let renderer = null;
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -64,20 +61,50 @@ app.on('error', msg => {
 });
 
 process.on('uncaughtException', err => {
-	console.log('exception');
 	app.emit('error', err);
 	app.error = true;
+	processQueue && processQueue.killAll();
 	app.quit();
+});
+
+app.on('before-quit', () => console.log(' Screwy Quitting...'));
+
+app.on('quit', evt => {
+	globalShortcut.unregisterAll();
+	processQueue.killAll(() => {
+	});
+});
+
+ipcMain.on('log', (evt, msg) => {
+  terminalLogger(msg);
+});
+
+ipcMain.on('run', (evt, cmdObj) => {
+  const cmdProcess = processQueue.run(cmdObj.cmdName, cmdObj.isSilent);
+  cmdProcess.on('exit', (code, signal) => {
+    evt.sender.send('killed', cmdObj.cmdName);
+  });
+});
+
+ipcMain.on('kill', (evt, cmdObj) => {
+  processQueue.kill(cmdObj.cmdName);
+});
+
+ipcMain.on('restart', (evt, cmdObj) => {
+  process.nextTick(() => {
+    processQueue.kill(cmdObj.cmdName, () => {
+      setTimeout(() => {
+        evt.sender.send('killed', cmdObj.cmdName);
+      }, 250);
+    });
+  });
+
+  terminalLogger(msg);
 });
 
 
 ipcMain.on('error', (evt, msg) => {
 	renderer.close();
-});
-
-ipcMain.on('log', (evt, msg) => {
-	console.log('got event ' + evt + ' with msg: ', msg);
-	terminalLogger(msg);
 });
 
 app.on('ready', function(evt) {
@@ -98,25 +125,16 @@ app.on('ready', function(evt) {
 		const alwaysOnTop = configObj.alwaysOnTop === true;
 
 		renderer = new BrowserWindow({
+			title: 'screwy',
 			width: 520,
 			minWidth: 520,
 			height: 275,
 			minHeight: 275,
 			// frame: false,
-			titleBarStyle: 'hidden',
+			// titleBarStyle: 'hidden-inset',
 			alwaysOnTop
 		});
 
-		renderer.on('closed', () => {
-			renderer = null;
-			console.log('Screwy exited');
-			globalShortcut.unregisterAll();
-			app.exit(0);
-		});
-
-		renderer.on('close', evt => {
-			renderer.webContents.executeJavaScript('window.killApp();');
-		});
 
 		// Hotkeys
 		if (typeof configObj.hotkeys === 'object')
@@ -219,7 +237,3 @@ function configureHotkeys(hotkeysObj) {
 		}
 	});
 }
-
-setTimeout(() => {
-	terminalLogger('this is test 2');
-}, 5000);

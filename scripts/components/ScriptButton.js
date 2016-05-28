@@ -28,10 +28,6 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var logger = function logger(msg) {
-  return _electron.ipcRenderer.send('log', msg);
-};
-
 var ScriptButton = function (_Component) {
   _inherits(ScriptButton, _Component);
 
@@ -46,93 +42,79 @@ var ScriptButton = function (_Component) {
     _this.cmdName = props.cmdName;
     _this.isSilent = props.isSilent;
     _this.cmdProcess = null;
+    _electron.ipcRenderer.send('test', [1, 2, 3]);
     return _this;
   }
 
   _createClass(ScriptButton, [{
     key: 'runScript',
     value: function runScript() {
-      var _this2 = this;
-
       if (this.state.inProgress) return;
-
-      var cmdName = this.cmdName;
-
       this.setState({ inProgress: true });
-
-      logger('\n[Running "' + cmdName + '" command...]\n');
-
-      this.cmdProcess = _processQueue2.default.run(cmdName, this.isSilent);
-
-      this.cmdProcess.on('exit', function (code, signal) {
-        _this2.scriptEnd();
-      });
+      _electron.ipcRenderer.send('log', '\n[Running "' + this.cmdName + '" command...]\n');
+      _electron.ipcRenderer.send('run', { cmdName: this.cmdName, isSilent: this.isSilent });
     }
   }, {
     key: 'killScript',
     value: function killScript() {
       if (!this.state.inProgress) return;
-      _processQueue2.default.kill(this.cmdName);
-      this.scriptEnd();
+      _electron.ipcRenderer.send('kill', { cmdName: this.cmdName });
     }
   }, {
     key: 'restartScript',
     value: function restartScript() {
-      var _this3 = this;
-
       if (!this.state.inProgress) return;
-      process.nextTick(function () {
-        _processQueue2.default.kill(_this3.cmdName, function () {
-          setTimeout(function () {
-            _this3.runScript();
-          }, 250);
-        });
-      });
+      _electron.ipcRenderer.send('restart', { cmdName: this.cmdName, isSilent: this.isSilent });
     }
   }, {
     key: 'scriptEnd',
     value: function scriptEnd() {
-      logger('\n["' + this.cmdName + '" command ended]\n');
-      this.cmdProcess = null;
+      _electron.ipcRenderer.send('log', '\n["' + this.cmdName + '" command ended]\n');
       this.setState({ inProgress: false });
       _cubbie2.default.emit('COMMAND_END', this.cmdName);
     }
   }, {
     key: 'componentDidMount',
     value: function componentDidMount() {
-      var _this4 = this;
+      var _this2 = this;
 
+      _electron.ipcRenderer.on('killed', function (evt, cmdName) {
+        if (cmdName === _this2.cmdName) _this2.scriptEnd();
+      });
+      _electron.ipcRenderer.on('can-restart', function (evt, cmdName) {
+        if (_this2.cmdName === cmdName) _this2.runScript();
+      });
       _cubbie2.default.on('COMMAND_START', function (cmdName) {
-        if (cmdName === _this4.props.cmdName) _this4.runScript();
+        if (cmdName === _this2.cmdName) _this2.runScript();
       });
       _cubbie2.default.on('COMMAND_KILL', function (cmdName) {
-        if (cmdName === _this4.props.cmdName) _this4.killScript();
+        if (cmdName === _this2.cmdName) _this2.killScript();
       });
       _cubbie2.default.on('COMMAND_RESTART', function (cmdName) {
-        if (cmdName === _this4.props.cmdName) {
-          if (!_this4.state.inProgress) return;
-          _this4.restartScript();
+        if (cmdName === _this2.cmdName) {
+          if (!_this2.state.inProgress) return;
+          _this2.restartScript();
         }
       });
     }
   }, {
     key: 'render',
     value: function render() {
-      var _this5 = this;
+      var _this3 = this;
 
       return _react2.default.createElement(
         'button',
         {
           onClick: function onClick() {
-            return _this5.runScript();
+            return _this3.runScript();
           },
           onDoubleClick: function onDoubleClick() {
-            return _this5.killScript();
+            return _this3.killScript();
           },
           className: this.state.inProgress ? 'in-progress' : '',
-          'data-cmd': this.props.cmdName
+          'data-cmd': this.cmdName
         },
-        this.props.cmdName,
+        this.cmdName,
         _react2.default.createElement('img', { className: 'in-progress', src: this.props.spinnerImg })
       );
     }

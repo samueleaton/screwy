@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import store from 'cubbie';
 import { ipcRenderer } from 'electron';
-const logger = (msg) => ipcRenderer.send('log', msg);
 import processQueue from '../processQueue';
 
 export default class ScriptButton extends Component {
@@ -13,62 +12,54 @@ export default class ScriptButton extends Component {
     this.cmdName = props.cmdName;
     this.isSilent = props.isSilent;
     this.cmdProcess = null;
+    ipcRenderer.send('test', [1, 2, 3]);
   }
 
   runScript() {
     if (this.state.inProgress)
       return;
-
-    const cmdName = this.cmdName;
-  
     this.setState({ inProgress: true });
-
-    logger('\n[Running "' + cmdName + '" command...]\n');
-
-    this.cmdProcess = processQueue.run(cmdName, this.isSilent);
-
-    this.cmdProcess.on('exit', (code, signal) => {
-      this.scriptEnd();
-    });
+    ipcRenderer.send('log', '\n[Running "' + this.cmdName + '" command...]\n');
+    ipcRenderer.send('run', { cmdName: this.cmdName, isSilent: this.isSilent });
   }
 
   killScript() {
     if (!this.state.inProgress)
       return;
-    processQueue.kill(this.cmdName);
-    this.scriptEnd();
+    ipcRenderer.send('kill', { cmdName: this.cmdName });
   }
 
   restartScript() {
     if (!this.state.inProgress)
       return;
-    process.nextTick(() => {
-      processQueue.kill(this.cmdName, () => {
-        setTimeout(() => {
-          this.runScript();
-        }, 250);
-      });
-    });
+    ipcRenderer.send('restart', { cmdName: this.cmdName, isSilent: this.isSilent });
   }
 
   scriptEnd() {
-    logger('\n["' + this.cmdName + '" command ended]\n');
-    this.cmdProcess = null;
+    ipcRenderer.send('log', '\n["' + this.cmdName + '" command ended]\n');
     this.setState({ inProgress: false });
     store.emit('COMMAND_END', this.cmdName);
   }
 
   componentDidMount() {
+    ipcRenderer.on('killed', (evt, cmdName) => {
+      if (cmdName === this.cmdName)
+        this.scriptEnd();
+    });
+    ipcRenderer.on('can-restart', (evt, cmdName) => {
+      if (this.cmdName === cmdName)
+        this.runScript();
+    });
     store.on('COMMAND_START', cmdName => {
-      if (cmdName === this.props.cmdName)
+      if (cmdName === this.cmdName)
         this.runScript();
     });
     store.on('COMMAND_KILL', cmdName => {
-      if (cmdName === this.props.cmdName)
+      if (cmdName === this.cmdName)
         this.killScript();
     });
     store.on('COMMAND_RESTART', cmdName => {
-      if (cmdName === this.props.cmdName) {
+      if (cmdName === this.cmdName) {
         if (!this.state.inProgress)
           return;
         this.restartScript();
@@ -77,15 +68,14 @@ export default class ScriptButton extends Component {
   }
 
   render() {
-
     return (
       <button
       onClick={() => this.runScript()}
       onDoubleClick={() => this.killScript()}
       className={this.state.inProgress ? 'in-progress' : ''}
-      data-cmd={this.props.cmdName}
+      data-cmd={this.cmdName}
       >
-        {this.props.cmdName}
+        {this.cmdName}
         <img className="in-progress" src={this.props.spinnerImg} />
       </button>
     );

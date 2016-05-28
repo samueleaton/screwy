@@ -6,13 +6,7 @@ var _psTree = require('ps-tree');
 
 var _psTree2 = _interopRequireDefault(_psTree);
 
-var _electron = require('electron');
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var logger = function logger(msg) {
-	return _electron.ipcRenderer.send('log', msg);
-};
 
 var queue = {};
 
@@ -29,13 +23,11 @@ function killAll(cb) {
 	var cmds = Object.keys(queue);
 	var total = cmds.length;
 	var completedCount = 0;
-	if (total === 0) return cb();
-
+	if (total === 0) return cb && cb();
 	cmds.forEach(function (cmd) {
 		kill(cmd, function () {
 			completedCount++;
-
-			if (completedCount === total) cb();
+			if (completedCount === total) cb && cb();
 		});
 	});
 }
@@ -78,9 +70,9 @@ module.exports = {
 	install: install
 };
 
-window.killApp = function () {
-	window.store.modifyState(function (state) {
-		state.windowClosing = true;
-	});
-	killAll();
-};
+// window.killApp = function() {
+// 	window.store.modifyState(state => {
+// 		state.windowClosing = true;
+// 	});
+// 	killAll();
+// };
