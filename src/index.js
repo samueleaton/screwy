@@ -67,7 +67,7 @@ process.on('uncaughtException', err => {
 	app.quit();
 });
 
-app.on('before-quit', () => console.log(' Screwy Quitting...'));
+app.on('before-quit', () => console.log('Screwy Quitting...'));
 
 app.on('quit', evt => {
 	globalShortcut.unregisterAll();
@@ -127,11 +127,10 @@ app.on('ready', function(evt) {
 		renderer = new BrowserWindow({
 			title: 'screwy',
 			width: 520,
-			minWidth: 520,
+			minWidth: 250,
 			height: 275,
-			minHeight: 275,
-			// frame: false,
-			// titleBarStyle: 'hidden-inset',
+			minHeight: 180,
+			titleBarStyle: 'hidden-inset',
 			alwaysOnTop
 		});
 
@@ -143,8 +142,8 @@ app.on('ready', function(evt) {
 		// Init Renderer
 		if (!app.error) {
 			renderer.loadURL(path.join('file://',  __dirname, 'index.html'));
-			// if (process.env.NODE_ENV === 'development')
-			renderer.toggleDevTools(); 
+			if (process.env.NODE_ENV === 'development')
+				renderer.toggleDevTools(); 
 		}
 	});
 });

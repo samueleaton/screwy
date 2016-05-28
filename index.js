@@ -86,7 +86,7 @@ process.on('uncaughtException', function (err) {
 });
 
 app.on('before-quit', function () {
-	return console.log(' Screwy Quitting...');
+	return console.log('Screwy Quitting...');
 });
 
 app.on('quit', function (evt) {
@@ -145,11 +145,10 @@ app.on('ready', function (evt) {
 		renderer = new _electron.BrowserWindow({
 			title: 'screwy',
 			width: 520,
-			minWidth: 520,
+			minWidth: 250,
 			height: 275,
-			minHeight: 275,
-			// frame: false,
-			// titleBarStyle: 'hidden-inset',
+			minHeight: 180,
+			titleBarStyle: 'hidden-inset',
 			alwaysOnTop: alwaysOnTop
 		});
 
@@ -159,8 +158,7 @@ app.on('ready', function (evt) {
 		// Init Renderer
 		if (!app.error) {
 			renderer.loadURL(_path2.default.join('file://', __dirname, 'index.html'));
-			// if (process.env.NODE_ENV === 'development')
-			renderer.toggleDevTools();
+			if (process.env.NODE_ENV === 'development') renderer.toggleDevTools();
 		}
 	});
 });
