@@ -90,8 +90,7 @@ app.on('before-quit', function () {
 });
 
 app.on('quit', function (evt) {
-	_electron.globalShortcut.unregisterAll();
-	_processQueue2.default.killAll(function () {});
+	_processQueue2.default.killAll();
 });
 
 _electron.ipcMain.on('log', function (evt, msg) {
@@ -113,12 +112,10 @@ _electron.ipcMain.on('restart', function (evt, cmdObj) {
 	process.nextTick(function () {
 		_processQueue2.default.kill(cmdObj.cmdName, function () {
 			setTimeout(function () {
-				evt.sender.send('killed', cmdObj.cmdName);
+				evt.sender.send('can-restart', cmdObj.cmdName);
 			}, 250);
 		});
 	});
-
-	(0, _terminalLogger2.default)(msg);
 });
 
 _electron.ipcMain.on('error', function (evt, msg) {

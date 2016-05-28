@@ -70,9 +70,7 @@ process.on('uncaughtException', err => {
 app.on('before-quit', () => console.log('Screwy Quitting...'));
 
 app.on('quit', evt => {
-	globalShortcut.unregisterAll();
-	processQueue.killAll(() => {
-	});
+	processQueue.killAll();
 });
 
 ipcMain.on('log', (evt, msg) => {
@@ -94,12 +92,10 @@ ipcMain.on('restart', (evt, cmdObj) => {
   process.nextTick(() => {
     processQueue.kill(cmdObj.cmdName, () => {
       setTimeout(() => {
-        evt.sender.send('killed', cmdObj.cmdName);
+        evt.sender.send('can-restart', cmdObj.cmdName);
       }, 250);
     });
   });
-
-  terminalLogger(msg);
 });
 
 

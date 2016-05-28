@@ -92,7 +92,6 @@ var ScriptButton = function (_Component) {
       });
       _cubbie2.default.on('COMMAND_RESTART', function (cmdName) {
         if (cmdName === _this2.cmdName) {
-          if (!_this2.state.inProgress) return;
           _this2.restartScript();
         }
       });

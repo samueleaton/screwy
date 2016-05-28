@@ -60,8 +60,6 @@ export default class ScriptButton extends Component {
     });
     store.on('COMMAND_RESTART', cmdName => {
       if (cmdName === this.cmdName) {
-        if (!this.state.inProgress)
-          return;
         this.restartScript();
       }
     });
