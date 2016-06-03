@@ -1,7 +1,7 @@
 {
   "name": "screwy",
   "productName": "NSG",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "GUI for npm scripts",
   "main": "bin/cli.js",
   "bin": {
