@@ -1,6 +1,4 @@
 'use strict';
-if (process.env.NODE_ENV !== 'development')
-	process.env.NODE_ENV = 'production';
 
 import electron, { BrowserWindow, Menu, ipcMain, globalShortcut } from 'electron';
 const app = electron.app;

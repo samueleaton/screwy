@@ -32,8 +32,6 @@ var _processQueue2 = _interopRequireDefault(_processQueue);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-if (process.env.NODE_ENV !== 'development') process.env.NODE_ENV = 'production';
-
 var app = _electron2.default.app;
 
 var configName = '.screwyrc';
