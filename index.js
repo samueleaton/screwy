@@ -139,9 +139,9 @@ app.on('ready', function (evt) {
 
 		renderer = new _electron.BrowserWindow({
 			title: 'screwy',
-			width: 520,
+			width: 480,
 			minWidth: 250,
-			height: 275,
+			height: 270,
 			minHeight: 180,
 			titleBarStyle: 'hidden-inset',
 			alwaysOnTop: alwaysOnTop
