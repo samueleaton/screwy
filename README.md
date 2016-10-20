@@ -19,7 +19,7 @@ The npm scripts GUI. (Formerly npm-scripts-gui)
 
 *Tested on OS X Yosemite, OS X El Capitan, and Ubuntu*
 
-## Install  
+## Installation  
 
 Install as a Dev Dependency  
 ```
@@ -33,9 +33,7 @@ npm i -g screwy
 
 Installing as a dev dependency allows anyone who downloads your project to also get access to the gui... for free!
 
-## Instructions  
-
-#### Launching
+## Launching
 
 To launch Screwy, you must be in a directory with a ` package.json ` file.   
 
@@ -60,7 +58,7 @@ Installing as a dev dependency is recommended because it allows the Screwy to be
 <br>
 
 
-#### Seeing Output  
+## Seeing Output  
 
 Whether Screwy is installed globally or as a dependency, any text output associated with any npm script task will be printed to the command line where Screwy was launched. 
 
@@ -70,13 +68,15 @@ Whether Screwy is installed globally or as a dependency, any text output associa
 <br>
 
 
-#### Quiting the App  
+## Quiting the App  
 
 To **quit** the app, it is safer to close the actual renderer window rather than quiting the process from the command line. If quiting from the command line, Screwy may not do the check to make sure all processes are killed before closing. 
 
-#### Killing a Running Script   
+## Killing a Running Script   
 
-Processes will die automatically when they finish or when the app is closed, but there may be times when you want to manually kill a process. Simply **double click the button**. 
+Double Click a running button.
+
+Processes will die automatically when they finish or when the app is closed, but there may be times when you want to manually kill a process.
 
 You can also use the `KILL` command with file watching and hotkeys.
 
@@ -147,7 +147,7 @@ Just as with file watching, the `START`, `RESTART`, and `KILL` commands may be u
 
 In the above example, assuming the `start` command's job is to spin up a server, then `Control+Cmd+Alt+s` would start the server if it wasn't on, `Control+Cmd+Alt+r` would restart it if it was running, and `Control+Cmd+Alt+k` would shut it down. 
 
-##### Multi-platform Compatibility
+### Multi-platform Compatibility
 
 If you expect others to run Screwy on a different platform than you are developing on, you will need to specify the platform to avoid conflicts.
 
@@ -179,6 +179,8 @@ These are the available options:
 - **exclude**, scripts to NOT include in the GUI
 - **alwaysOnTop**, whether the window is always in front of other windows
 - **theme**, choose a light or dark theme for window
+- **width**, the initial window width
+- **height**, the initial window height
 - **watch**, specify paths to watch and tasks to respond to file changes
 - **hotkeys**, define hotkey combinations that will trigger npm scripts
 - **silent**, suppress all of the npm's native error message and error log. (This is good for tests or linting, where you usually get error messages anyways.)
@@ -193,6 +195,7 @@ These are the available options:
     "silent": ["lint", "test"]
     "alwaysOnTop": true,
     "theme": "dark",
+    "width": 500,
     "watch": {
         "src/scripts/*.js": "RESTART production",
         "src/styles": "RESTART stylus"

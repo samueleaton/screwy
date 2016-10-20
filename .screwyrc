@@ -1,6 +1,6 @@
 {
   "name": "My site",
-  "primary": ["stylus"],
+  "primary": ["stylus", "transpile-scripts", "transpile-index"],
   "exclude": ["postinstall", "prepublish"],
   "alwaysOnTop": false,
   "theme": "light",
@@ -19,5 +19,7 @@
       "Control+Cmd+Alt+k": "KILL stylus",
       "Control+Cmd+Alt+r": "RESTART stylus"
     }
-  }
+  },
+  "width": 520,
+  "height": 240
 }

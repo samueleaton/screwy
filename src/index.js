@@ -120,9 +120,9 @@ app.on('ready', function(evt) {
 
 		renderer = new BrowserWindow({
 			title: 'screwy',
-			width: 480,
+			width: parseInt(configObj.width) || 480,
 			minWidth: 250,
-			height: 270,
+			height: parseInt(configObj.height) || 270,
 			minHeight: 180,
 			titleBarStyle: 'hidden-inset',
 			alwaysOnTop
