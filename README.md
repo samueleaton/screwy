@@ -174,7 +174,7 @@ More hotkey examples are in the Configurations section.
 If you have lots of scripts and want to break them up by groups, specify a groups array in the `.screwyrc`.
 
 <p align="center">
-<img width="400" src="https://raw.githubusercontent.com/samueleaton/design/master/screwy-groups.png">    
+<img width="450" src="https://raw.githubusercontent.com/samueleaton/design/master/screwy-groups.png">    
 </p>
 
 **Example**  
