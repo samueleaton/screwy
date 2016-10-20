@@ -40,6 +40,17 @@ function parsePackageJson(configObj, cb) {
 			} 
 		});
 
+    if (_.isArray(configObj.groups)) {
+      _.forEach(configObj.groups.slice().reverse(), group => {
+        if (_.isArray(group)) {
+          group.forEach(script => {
+            _.remove(configObj.secondaryScripts, scriptName => scriptName === script)
+          });
+          configObj.secondaryScripts.unshift(group);
+        }
+      });
+    }
+
 		cb(configObj);
 	});
 }

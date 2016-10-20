@@ -1,7 +1,7 @@
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
-	value: true
+  value: true
 });
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -13,6 +13,10 @@ var _react2 = _interopRequireDefault(_react);
 var _cubbie = require('cubbie');
 
 var _cubbie2 = _interopRequireDefault(_cubbie);
+
+var _lodash = require('lodash');
+
+var _lodash2 = _interopRequireDefault(_lodash);
 
 var _ScriptButton = require('./ScriptButton');
 
@@ -26,33 +30,43 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+function secondaryScriptMapHandler(script, i) {
+  if (_lodash2.default.isArray(script)) {
+    return _react2.default.createElement(
+      'div',
+      { className: 'group', key: "group-" + i },
+      script.map(secondaryScriptMapHandler)
+    );
+  } else {
+    var isSilent = _cubbie2.default.state.silentScripts.some(function (x) {
+      return x === script;
+    });
+    return _react2.default.createElement(_ScriptButton2.default, { key: script, cmdName: script, isSilent: isSilent,
+      spinnerImg: _cubbie2.default.state.theme.secondarySpinnerPath });
+  }
+}
+
 var SecondaryScripts = function (_Component) {
-	_inherits(SecondaryScripts, _Component);
+  _inherits(SecondaryScripts, _Component);
 
-	function SecondaryScripts() {
-		_classCallCheck(this, SecondaryScripts);
+  function SecondaryScripts() {
+    _classCallCheck(this, SecondaryScripts);
 
-		return _possibleConstructorReturn(this, Object.getPrototypeOf(SecondaryScripts).apply(this, arguments));
-	}
+    return _possibleConstructorReturn(this, Object.getPrototypeOf(SecondaryScripts).apply(this, arguments));
+  }
 
-	_createClass(SecondaryScripts, [{
-		key: 'render',
-		value: function render() {
-			return _react2.default.createElement(
-				'section',
-				{ id: 'secondaryScripts' },
-				_cubbie2.default.state.secondaryScripts.map(function (script) {
-					var isSilent = _cubbie2.default.state.silentScripts.some(function (x) {
-						return x === script;
-					});
-					return _react2.default.createElement(_ScriptButton2.default, { key: script, cmdName: script, isSilent: isSilent,
-						spinnerImg: _cubbie2.default.state.theme.secondarySpinnerPath });
-				})
-			);
-		}
-	}]);
+  _createClass(SecondaryScripts, [{
+    key: 'render',
+    value: function render() {
+      return _react2.default.createElement(
+        'section',
+        { id: 'secondaryScripts' },
+        _cubbie2.default.state.secondaryScripts.map(secondaryScriptMapHandler)
+      );
+    }
+  }]);
 
-	return SecondaryScripts;
+  return SecondaryScripts;
 }(_react.Component);
 
 exports.default = SecondaryScripts;
