@@ -1,7 +1,7 @@
 {
   "name": "screwy",
   "productName": "screwy",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "GUI for npm scripts",
   "main": "bin/cli.js",
   "bin": {
