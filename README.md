@@ -94,7 +94,7 @@ After specifying a path, you need to specify **which** npm script task to respon
 
 Example:
 
-``` json
+```json
 {
     "watch": {
         "src/scripts/*.js": "RESTART transpile-scripts",
@@ -112,7 +112,7 @@ You can tell Screwy to run a command whenever another specific command finishes.
 
 Example:
 
-``` json
+```json
 {
     "watch": {
         "CMD transpile-scripts": "RESTART start-server",
@@ -125,17 +125,17 @@ In the example, the `RESTART start-server` command will run every time the `tran
 
 ## Hotkeys  
 
+Ever wanted to run an npm script by hitting a key combination on your keyboard?
+
 Hotkey combinations are configurable in the ` .screwyrc ` file. These allow you to trigger any npm scripts without needing to even click on the button or even being focused on the GUI window. 
 
 Again, you can have the GUI window minimized and the hotkeys will still trigger button clicks, and output will be sent to the terminal.
 
-Hotkeys are defined in the ` .screwyrc ` file. They require the name of the npm script as the key and the hotkey combination as the value. 
+Hotkeys are defined in the ` .screwyrc ` file. They require the name of the hotkey combination as the key and the npm script as the value. 
 
-Just as with file watching, the `START`, `RESTART`, and `KILL` commands may be used with the npm task name.
+Just as with file watching, the `START`, `RESTART`, and `KILL` commands may be used with the npm task name.  
 
-**Note:** As of v0.0.17, the order of the hotkey/npm command has switched to match the file watching format. The hotkey combo should now come first.
-
-``` json
+```json
 {
     "hotkeys": {
         "Control+Cmd+Alt+s": "start",
@@ -145,7 +145,7 @@ Just as with file watching, the `START`, `RESTART`, and `KILL` commands may be u
 }
 ```
 
-In the above example, assuming the `start` command's job is to spin up a server, then `Control+Cmd+Alt+s` would start the server if it wasn't on, `Control+Cmd+Alt+r` would restart it if it was running, and `Control+Cmd+Alt+k` would shut it down. 
+In the above example, assuming the `start` command's job is to spin up a server, then `Control+Cmd+Alt+s` would start the server if it weren't on, `Control+Cmd+Alt+r` would restart it if it was running, and `Control+Cmd+Alt+k` would shut it down (kill it). 
 
 ### Multi-platform Compatibility
 
@@ -155,7 +155,7 @@ For Mac, use: `OSX` or `darwin`
 
 For Linux, use: `linux`
 
-``` json
+```json
 {
     "hotkeys": {
         "darwin": {
