@@ -169,6 +169,25 @@ For Linux, use: `linux`
 
 More hotkey examples are in the Configurations section.
 
+## Groups
+
+If you have lots of scripts and want to break them up by groups, specify a groups array in the `.screwyrc`.
+
+<p align="center">
+<img width="350" src="https://raw.githubusercontent.com/samueleaton/design/master/screwy-groups.png">    
+</p>
+
+**Example**  
+```json
+{
+  "name": "My site",
+  "primary": ["stylus"],
+  "theme": "dark",
+  "groups": [
+    ["transpile-scripts", "transpile-index", "transpile-cli"]
+  ]
+```
+
 ## Configurations  
 
 Screwy will automatically search for a ` .screwyrc ` in the same directory as the ` package.json `. It should be in json format.
@@ -185,7 +204,8 @@ These are the available options:
 - **hotkeys**, define hotkey combinations that will trigger npm scripts
 - **silent**, suppress all of the npm's native error message and error log. (This is good for tests or linting, where you usually get error messages anyways.)
 
-* .screwyrc Example**  
+
+**.screwyrc Example**  
 
 ```
 {
