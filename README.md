@@ -192,7 +192,7 @@ These are the available options:
     "name": "Qualtrics to SFDC",
     "primary": ["build", "run-production", "run-sandbox"],
     "exclude": ["scripts-gui", "prebuild"],
-    "silent": ["lint", "test"]
+    "silent": ["lint", "test"],
     "alwaysOnTop": true,
     "theme": "dark",
     "width": 500,
