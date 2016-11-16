@@ -52,6 +52,19 @@ function parsePackageJson(configObj, cb) {
 			}
 		});
 
+		if (_lodash2.default.isArray(configObj.groups)) {
+			_lodash2.default.forEach(configObj.groups.slice().reverse(), function (group) {
+				if (_lodash2.default.isArray(group)) {
+					group.forEach(function (script) {
+						_lodash2.default.remove(configObj.secondaryScripts, function (scriptName) {
+							return scriptName === script;
+						});
+					});
+					configObj.secondaryScripts.unshift(group);
+				}
+			});
+		}
+
 		cb(configObj);
 	});
 }

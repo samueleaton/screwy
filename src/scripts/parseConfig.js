@@ -64,6 +64,10 @@ function parseConfig(configObj, cb) {
 		if (_.isArray(jsonData.fontStack))
 			configObj.fontStack = jsonData.fontStack;
 
+    // get font-stack from the .screwyrc file
+    if (_.isArray(jsonData.groups))
+      configObj.groups = jsonData.groups;
+
 		if (typeof jsonData.watch === 'object')
 			configObj.watchScripts = jsonData.watch;
 
